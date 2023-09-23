@@ -1,0 +1,19 @@
+.site-wrapper {
+    background-color: red;
+}
+
+.site-nav-header {
+    background-color: orange;
+}
+
+.site-nav {
+    background-color: yellow;
+}
+
+.site-nav-left {
+    background-color: blue;
+}
+
+.site-nav-content {
+    background-color: green;
+}
