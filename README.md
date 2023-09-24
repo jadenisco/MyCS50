@@ -7,10 +7,12 @@
 
 ## To Do Next
 
+- Look at Body
+
+## Completed
+
 - Work on Nav Bar
   - Create the links using \<li> look at [Johndenisco.org](https://johndenisco.org/pmc/thankyou2023/) nav bar.
   - Look at johndenisco.org nav bar, set it up the same way.
   - Use \<a> for links.
   - Create all the styles
-
-## Completed
