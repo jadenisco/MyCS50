@@ -60,3 +60,8 @@ sass variables.scss variables.css
 sass --watch variable.scss variables.css
 
 Look at nesting and inheritance,css
+
+## Project 0 notes
+
+- vw = Viewport width I used -5vw for nav bar
+- em = Width of letter "m

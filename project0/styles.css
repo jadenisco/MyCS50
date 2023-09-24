@@ -1,19 +1,43 @@
-.site-wrapper {
-    background-color: red;
+a {
+    text-decoration: none;
+    color: black;
 }
 
-.site-nav-header {
+.site-wrapper {
+    background-color: grey;
+}
+
+.site-header {
     background-color: orange;
 }
 
 .site-nav {
+    display: flex;
+    font-size: 1.17em;
+    background-color: aliceblue;
+}
+
+.nav-left {
+    list-style: none;
+}
+
+.nav-right {
+    display: flex;
+    list-style: none;
+}
+
+.nav-home {
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.nav-items {
+    display: flex;
+    padding-left: 1em;
+}
+
+.nav {
+    list-style: none;
+    text-decoration: none;
     background-color: yellow;
-}
-
-.site-nav-left {
-    background-color: blue;
-}
-
-.site-nav-content {
-    background-color: green;
 }
