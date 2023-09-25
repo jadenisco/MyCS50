@@ -7,7 +7,7 @@
 
 ## To Do Next
 
-- Look at Body
+- Start on form functionality
 
 ## Completed
 
@@ -16,3 +16,5 @@
   - Look at johndenisco.org nav bar, set it up the same way.
   - Use \<a> for links.
   - Create all the styles
+  - Look at Body
+  - Create a div and then try and center it.

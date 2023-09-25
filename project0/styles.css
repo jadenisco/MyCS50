@@ -4,35 +4,49 @@ a {
 }
 
 .site-wrapper {
-    background-color: grey;
+    background-color: lightgray;
 }
 
 .site-header {
-    background-color: orange;
+    background-color: lightgray;
+}
+
+.site-main {
+    background-color: lightgray;
 }
 
 .site-nav {
-    display: flex;
+    display: block;
     font-size: 1.17em;
-    background-color: aliceblue;
-}
-
-.nav-left {
     list-style: none;
 }
-
-.nav-right {
+.nav-content {
+    background-color: lightgray;
     display: flex;
+    flex-direction: row-reverse;
+    padding-top: 10px;
+    margin-right: 1em;
+    margin-left: 1em;
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+.nav-home {
+    padding-left: 1em;
+    font-weight: bold;
+    text-decoration: none;
     list-style: none;
 }
 
-.nav-home {
-    font-weight: bold;
+.nav-item {
+    padding-left: 1em;
+    list-style: none;
     text-decoration: none;
 }
 
-.nav-items {
+.site-content {
     display: flex;
-    padding-left: 1em;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 20px;
 }
-
