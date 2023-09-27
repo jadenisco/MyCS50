@@ -7,7 +7,7 @@
 
 ## To Do Next
 
-- Start on form functionality
+- Work on advanced search
 
 ## Completed
 
@@ -18,3 +18,4 @@
   - Create all the styles
   - Look at Body
   - Create a div and then try and center it.
+  - Start on form functionality
