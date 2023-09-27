@@ -9,21 +9,25 @@
         <div class="site-wrapper">
             <header class="site-header">
                 <div class="site-nav">
-                     <nav class="site-nav-left">
-                        <h3>Home</h3>
-                    </nav>
-                    <nav class="site-nav-content">
-                        <h3>Images</h3>
-                        <h3>Advanced</h3>
-                    </nav>
+                    <ul class="nav-content" role="menu">
+                        <li class="nav-home" role="menuitem">
+                            <a href=index.html>Home</a>
+                        </li>
+                        <li class="nav-item" role="menuitem">
+                            <a href=Advanced.html>Advanced</a>
+                        </li>
+                    </ul>
                 </div>
             </header>
-            <main>
-                <h1>Mr John's Image Search</h1>
-                <form action="https://google.com/search">
-                    <input type="text" name="q">
-                    <input type="submit" value="Google Search">
-                </form>
+            <main class="site-main">
+                <div class="site-content">
+                    <h1>Mr John's Image Search</h1>
+                        <form action="https://www.google.com/search" autocomplete="off" method="GET" role="search">
+                        <input type="text" name="q">
+                        <input type="hidden" name="tbm" value="isch">
+                        <input type="submit" value="Image Search">
+                    </form>
+                </div>
             </main>
         </div>
     </body>
