@@ -56,11 +56,12 @@ a {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    margin-top: -15px;
-    margin-bottom: 5px;
 }
 
 .as-input {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     margin-bottom: 2px;
 }
 
@@ -73,5 +74,4 @@ a {
     display: flex;
     flex-direction: row-reverse;
     margin-top: 2px;
-    margin-right: 10px;
 }
