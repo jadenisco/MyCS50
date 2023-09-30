@@ -7,15 +7,18 @@
 
 ## To Do Next
 
-- Work on advanced search
-
+- Look at index.html
+  - Add feel lucky button
+  - Take button types from bootstrap
+  
 ## Completed
 
 - Work on Nav Bar
   - Create the links using \<li> look at [Johndenisco.org](https://johndenisco.org/pmc/thankyou2023/) nav bar.
   - Look at johndenisco.org nav bar, set it up the same way.
   - Use \<a> for links.
-  - Create all the styles
-  - Look at Body
-  - Create a div and then try and center it.
-  - Start on form functionality
+- Create all the styles
+- Look at Body
+- Create a div and then try and center it.
+- Start on form functionality
+- Work on advanced search
