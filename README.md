@@ -7,10 +7,8 @@
 
 ## To Do Next
 
-- Look at index.html
-  - Add feel lucky button
-  - Take button types from bootstrap
-  
+- Cleanup and add asthetics
+
 ## Completed
 
 - Work on Nav Bar
@@ -22,3 +20,5 @@
 - Create a div and then try and center it.
 - Start on form functionality
 - Work on advanced search
+- Add feel lucky button
+- Take button types from bootstrap
