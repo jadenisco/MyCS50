@@ -7,7 +7,7 @@
 
 ## To Do Next
 
-- Cleanup and add asthetics
+- Submit project
 
 ## Completed
 
@@ -22,3 +22,5 @@
 - Work on advanced search
 - Add feel lucky button
 - Take button types from bootstrap
+- Cleanup and add asthetics
+

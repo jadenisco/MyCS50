@@ -55,27 +55,36 @@ a {
 }
 
 .as-input-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+    width: 100%;
+    clear: both;
 }
 
-.as-input {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 2px;
+.as-lbl3 {
+    clear: both;
 }
 
-.as-p {
-    margin: 5px;
-    margin-bottom: 10px;
+.as-lbl2 {
+    float: left;
+    display: block;
+    min-width: 220px;
+    width: 16%;
+    height: 42px;
+}
+
+.as-lbl1 {
+    height: 30px;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.as-lbl {
+    margin: 0px;
 }
 
 .as-submit {
     display: flex;
     flex-direction: row-reverse;
-    margin-top: 2px;
+    margin-top: 10px;
 }
 
 .sc-form {
@@ -105,4 +114,5 @@ a {
 .search-title {
     color: darkblue;
     font-family: cursive;
+    margin-bottom: 20px;
 }
