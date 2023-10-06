@@ -98,17 +98,25 @@ a {
     width: 50vw;
     box-shadow: none;
     border-radius: 24px;
+    padding-left: 10px;
 }
 
 .sc-form-search {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin-top: 10px;
+}
+
+.sc-home-form-search {
+    margin-top: 5px;
 }
 
 .st-submit {
     border: 1px solid gray;
     border-radius: 24px;
     box-shadow: none;
-
+    margin-top: 10px;
 }
 
 .search-title {
