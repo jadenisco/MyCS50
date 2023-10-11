@@ -8,7 +8,8 @@
             "name": "Python: Django",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/project1/wiki/manage.py",
+            "cwd": "./project1/wiki",
+            "program": "manage.py",
             "args": [
                 "runserver"
             ],
