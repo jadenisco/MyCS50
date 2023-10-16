@@ -1,0 +1,14 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block body %}
+    {% if content %}
+        <title>{{ title }}</title>
+        {{ content|safe }}
+    {% else %}
+        <h1>There is no entry for "{{ title }}"!</h1>
+    {% endif %}
+{% endblock %}

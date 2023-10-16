@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from markdown2 import Markdown
 
 from . import util
 
@@ -9,6 +10,10 @@ def index(request):
     })
 
 def title(request, title):
-    t = util.get_entry(title)
-    print(t)
-    return HttpResponse(f"Contents: {t}!")
+    md_content = util.get_entry(title)
+    mdc = Markdown()
+    html_content = mdc.convert(md_content)
+    return render(request, "encyclopedia/entry.html" , {
+        "title": title,
+        "content": html_content
+    })
