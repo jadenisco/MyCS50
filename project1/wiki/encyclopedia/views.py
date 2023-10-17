@@ -16,6 +16,9 @@ def _list_entries(search_string=None):
 
     return s_entries
 
+def create(request):
+    return render(request, "encyclopedia/create.html")
+
 def index(request):
     search_string = None
     entries = []
@@ -35,7 +38,6 @@ def index(request):
         "entries": entries,
         "search_string": search_string
     })
-
 def title(request, title):
     md_content = util.get_entry(title)
     mdc = Markdown()
