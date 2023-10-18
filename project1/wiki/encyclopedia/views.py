@@ -1,8 +1,15 @@
-from django.http import HttpResponse
+from django import forms
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse
 from markdown2 import Markdown
 
 from . import util
+
+class CreateForm(forms.Form):
+    created_content = forms.CharField(label="Hello John")
+#    priority = forms.IntegerField(label="Priority", min_value=1, max_value=5)
+
 
 def _list_entries(search_string=None):
     s_entries = []
@@ -16,8 +23,22 @@ def _list_entries(search_string=None):
 
     return s_entries
 
+
 def create(request):
-    return render(request, "encyclopedia/create.html")
+    if request.method == "POST":
+        form = CreateForm(request.POST)
+        if form.is_valid():
+            task = form.cleaned_data["task"]
+            request.session["tasks"] += [task]
+            return HttpResponseRedirect(reverse("tasks:index"))
+        else:
+            return render(request, "encyclopedia/create.html", {
+                "form": form 
+            })
+
+    return render(request, "encyclopedia/create.html", {
+        "form": CreateForm(),
+    })
 
 def index(request):
     search_string = None

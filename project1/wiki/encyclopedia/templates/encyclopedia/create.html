@@ -7,6 +7,8 @@
 {% block body %}
     <h1>Hello John!</h1>
     <form action="{% url 'wiki:create' %}" method="post">
-    <input type="submit">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit">
     </form>
 {% endblock %}
