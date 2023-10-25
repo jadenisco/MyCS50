@@ -8,7 +8,7 @@ from . import util
 
 class CreateEntryForm(forms.Form):
     title = forms.CharField(label="Title", max_length=100)
-    entry_content = forms.CharField(label="", widget=forms.Textarea)
+    content = forms.CharField(label="", widget=forms.Textarea)
 
 
 def _list_entries(search_string=None):
@@ -29,11 +29,9 @@ def create(request):
         form = CreateEntryForm(request.POST)
         if form.is_valid():
             title = form.cleaned_data["title"]
-            entry_content = form.cleaned_data["entry_content"]
-            return HttpResponseRedirect(reverse("wiki:create"))
-
-            # request.session["tasks"] += [task]
-            # return HttpResponseRedirect(reverse("tasks:index"))
+            content = form.cleaned_data["content"]
+            util.save_entry(title, content)
+            return HttpResponseRedirect(reverse("wiki:index"))
         else:
             return render(request, "encyclopedia/create.html", {
                 "form": form 
@@ -42,6 +40,7 @@ def create(request):
     return render(request, "encyclopedia/create.html", {
         "form": CreateEntryForm(),
     })
+
 
 def index(request):
     search_string = None
@@ -62,6 +61,8 @@ def index(request):
         "entries": entries,
         "search_string": search_string
     })
+
+
 def title(request, title):
     md_content = util.get_entry(title)
     mdc = Markdown()
