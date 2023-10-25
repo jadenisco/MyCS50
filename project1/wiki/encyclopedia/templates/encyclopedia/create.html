@@ -8,7 +8,9 @@
     <h1>Hello John!</h1>
     <form action="{% url 'wiki:create' %}" method="post">
         {% csrf_token %}
-        {{ form }}
-        <input type="submit">
+        <table>
+            {{ form }}
+        </table>
+        <input type="submit" value="submit">
     </form>
 {% endblock %}

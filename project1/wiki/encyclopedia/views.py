@@ -6,9 +6,9 @@ from markdown2 import Markdown
 
 from . import util
 
-class CreateForm(forms.Form):
-    created_content = forms.CharField(label="Hello John")
-#    priority = forms.IntegerField(label="Priority", min_value=1, max_value=5)
+class CreateEntryForm(forms.Form):
+    title = forms.CharField(label="Title", max_length=100)
+    entry_content = forms.CharField(label="", widget=forms.Textarea)
 
 
 def _list_entries(search_string=None):
@@ -26,18 +26,21 @@ def _list_entries(search_string=None):
 
 def create(request):
     if request.method == "POST":
-        form = CreateForm(request.POST)
+        form = CreateEntryForm(request.POST)
         if form.is_valid():
-            task = form.cleaned_data["task"]
-            request.session["tasks"] += [task]
-            return HttpResponseRedirect(reverse("tasks:index"))
+            title = form.cleaned_data["title"]
+            entry_content = form.cleaned_data["entry_content"]
+            return HttpResponseRedirect(reverse("wiki:create"))
+
+            # request.session["tasks"] += [task]
+            # return HttpResponseRedirect(reverse("tasks:index"))
         else:
             return render(request, "encyclopedia/create.html", {
                 "form": form 
             })
 
     return render(request, "encyclopedia/create.html", {
-        "form": CreateForm(),
+        "form": CreateEntryForm(),
     })
 
 def index(request):
