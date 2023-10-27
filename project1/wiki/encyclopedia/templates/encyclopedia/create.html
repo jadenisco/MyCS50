@@ -5,6 +5,12 @@
 {% endblock %}
 
 {% block body %}
+    {% if alert_message %}
+        <div class="alert alert-danger" role="alert">
+            {{ alert_message }}
+        </div>
+    {% endif %}
+
     <h1>Create New Page</h1>
     <form action="{% url 'wiki:create' %}" method="post">
         {% csrf_token %}

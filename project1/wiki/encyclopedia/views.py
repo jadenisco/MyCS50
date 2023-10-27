@@ -2,6 +2,7 @@ from django import forms
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.contrib import messages
 from markdown2 import Markdown
 
 from . import util
@@ -30,6 +31,12 @@ def create(request):
         if form.is_valid():
             title = form.cleaned_data["title"]
             content = form.cleaned_data["content"]
+            if title in util.list_entries():
+                message = f"{title} is being used, please choose a different title."
+                return(render(request, "encyclopedia/create.html",
+                              {"form": form,
+                               "alert_message": message}))
+
             util.save_entry(title, content)
             return HttpResponseRedirect(reverse("wiki:index"))
         else:
@@ -37,8 +44,13 @@ def create(request):
                 "form": form 
             })
 
+    # return render(request, "encyclopedia/alert.html")
+
+    form = CreateEntryForm()
+    form.fields['title'].initial = 'Title Here'
+    form.fields['content'].initial = 'Entry Content Here'
     return render(request, "encyclopedia/create.html", {
-        "form": CreateEntryForm(),
+        "form": form
     })
 
 
