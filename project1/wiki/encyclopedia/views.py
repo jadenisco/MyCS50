@@ -4,11 +4,12 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.contrib import messages
 from markdown2 import Markdown
+import html2markdown
 
 from . import util
 
 class CreateEntryForm(forms.Form):
-    title = forms.CharField(label="Title", max_length=100)
+    entry = forms.CharField(label="Entry", max_length=100)
     content = forms.CharField(label="", widget=forms.Textarea)
 
 
@@ -29,28 +30,52 @@ def create(request):
     if request.method == "POST":
         form = CreateEntryForm(request.POST)
         if form.is_valid():
-            title = form.cleaned_data["title"]
+            entry = form.cleaned_data["entry"]
             content = form.cleaned_data["content"]
-            if title in util.list_entries():
-                message = f"{title} is being used, please choose a different title."
+            if entry in util.list_entries():
+                message = f"The entry {entry} is being used, please choose a different title."
                 return(render(request, "encyclopedia/create.html",
                               {"form": form,
                                "alert_message": message}))
 
-            util.save_entry(title, content)
+            util.save_entry(entry, content)
             return HttpResponseRedirect(reverse("wiki:index"))
         else:
             return render(request, "encyclopedia/create.html", {
                 "form": form 
             })
 
-    # return render(request, "encyclopedia/alert.html")
-
     form = CreateEntryForm()
-    form.fields['title'].initial = 'Title Here'
+    form.fields['entry'].initial = 'Entry Name Here'
     form.fields['content'].initial = 'Entry Content Here'
     return render(request, "encyclopedia/create.html", {
         "form": form
+    })
+
+
+def edit(request):
+    form = CreateEntryForm(request.POST)
+    if form.is_valid():
+        new_form = CreateEntryForm()
+        new_form.fields['entry'].initial = form.cleaned_data['entry']
+        content = html2markdown.convert(form.cleaned_data["content"])
+        new_form.fields['content'].initial = content
+        return(render(request, "encyclopedia/edit.html",{
+            "form": new_form}))
+
+    message = "The edited form is not valid!"
+    return render(request, "encyclopedia/edit.html", {
+            "form": form,
+            "alert_message": message})
+
+
+def entry(request, title):
+    md_content = util.get_entry(title)
+    mdc = Markdown()
+    html_content = mdc.convert(md_content)
+    return render(request, "encyclopedia/entry.html" , {
+        "entry": title,
+        "content": html_content
     })
 
 
@@ -65,21 +90,11 @@ def index(request):
         # assignment, but saves a step to get to the page.
         # remove these 2 lines for the exact assignment functionality
         if len(entries) == 1:
-            return(title(request, entries[0]))
+            return(entry(request, entries[0]))
     else:
         entries = _list_entries()
 
     return render(request, "encyclopedia/index.html", {
         "entries": entries,
         "search_string": search_string
-    })
-
-
-def title(request, title):
-    md_content = util.get_entry(title)
-    mdc = Markdown()
-    html_content = mdc.convert(md_content)
-    return render(request, "encyclopedia/entry.html" , {
-        "title": title,
-        "content": html_content
     })

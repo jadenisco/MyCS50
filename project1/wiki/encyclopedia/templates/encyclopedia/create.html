@@ -5,18 +5,19 @@
 {% endblock %}
 
 {% block body %}
+    <h1>New Entry</h1>
+
     {% if alert_message %}
         <div class="alert alert-danger" role="alert">
             {{ alert_message }}
         </div>
     {% endif %}
 
-    <h1>Create New Page</h1>
     <form action="{% url 'wiki:create' %}" method="post">
         {% csrf_token %}
         <table>
             {{ form }}
         </table>
-        <input type="submit" value="Create">
+        <input type="submit" value="Save">
     </form>
 {% endblock %}
