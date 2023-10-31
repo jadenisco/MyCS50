@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.contrib import messages
 from markdown2 import Markdown
 import html2markdown
+import random
 
 from . import util
 
@@ -88,6 +89,12 @@ def entry(request, title):
         "entry": title,
         "content": html_content
     })
+
+
+def random_page(request):
+    entries = util.list_entries()
+    entry_page = entries[random.randint(0, len(entries)-1)] 
+    return(entry(request, entry_page))
 
 
 def index(request):
