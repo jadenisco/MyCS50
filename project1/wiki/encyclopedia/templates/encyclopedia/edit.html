@@ -7,16 +7,13 @@
 {% block body %}
     <h1>Edit Entry</h1>
 
-    <form action="{% url 'wiki:edit' %}" method="post">
+    <form action="{% url 'wiki:create' %}" method="post">
         {% csrf_token %}
         <table>
             {{ form }}
         </table>
-        <form action="{% url 'wiki:edit' %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="entry" value="{{ entry }}">
-            <input type="hidden" name="content" value="{{ content }}">
-            <input type="submit" value="Save">
-        </form>
+        <input type="hidden" name="overwrite" value="true">
+        <input type="submit" value="Save">
     </form>
+
 {% endblock %}

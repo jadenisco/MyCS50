@@ -8,6 +8,11 @@ import html2markdown
 
 from . import util
 
+class SaveEntryForm(forms.Form):
+    entry = forms.CharField(label="Entry", max_length=100)
+    content = forms.CharField(label="", widget=forms.Textarea)
+    overwrite = forms.CharField(widget=forms.HiddenInput)
+
 class CreateEntryForm(forms.Form):
     entry = forms.CharField(label="Entry", max_length=100)
     content = forms.CharField(label="", widget=forms.Textarea)
@@ -28,18 +33,24 @@ def _list_entries(search_string=None):
 
 def create(request):
     if request.method == "POST":
-        form = CreateEntryForm(request.POST)
+        if 'overwrite' in request.POST:
+            form = SaveEntryForm(request.POST)
+        else:
+            form = CreateEntryForm(request.POST)
+
         if form.is_valid():
             entry = form.cleaned_data["entry"]
             content = form.cleaned_data["content"]
-            if entry in util.list_entries():
-                message = f"The entry {entry} is being used, please choose a different title."
-                return(render(request, "encyclopedia/create.html",
-                              {"form": form,
-                               "alert_message": message}))
+            if 'overwrite' not in form.cleaned_data:
+                if entry in util.list_entries():
+                    message = f"The entry {entry} is being used, please choose a different title."
+                    return(render(request, "encyclopedia/create.html",
+                                {"form": form,
+                                "alert_message": message}))
 
             util.save_entry(entry, content)
-            return HttpResponseRedirect(reverse("wiki:index"))
+            return HttpResponseRedirect(reverse("wiki:entry",
+                                                kwargs={'title': entry}))
         else:
             return render(request, "encyclopedia/create.html", {
                 "form": form 
@@ -86,8 +97,8 @@ def index(request):
     if 'q' in request.GET:
         search_string = request.GET['q']
         entries = _list_entries(search_string)
-        # Brings you directly to the entry, not exactly the
-        # assignment, but saves a step to get to the page.
+        # Brings you directly to the entry. This is not exactly the
+        # assignment, but saves a step to get to the entry page.
         # remove these 2 lines for the exact assignment functionality
         if len(entries) == 1:
             return(entry(request, entries[0]))
