@@ -15,8 +15,8 @@ class SaveEntryForm(forms.Form):
     overwrite = forms.CharField(widget=forms.HiddenInput)
 
 class CreateEntryForm(forms.Form):
-    entry = forms.CharField(label="Entry", max_length=100)
-    content = forms.CharField(label="", widget=forms.Textarea)
+    entry = forms.CharField(label="Entry", max_length=100, widget=forms.TextInput(attrs={'placeholder': 'Enter Title Here'}))
+    content = forms.CharField(label="", widget=forms.Textarea(attrs={'placeholder': 'Enter Content Here'}))
 
 
 def _list_entries(search_string=None):
@@ -33,6 +33,9 @@ def _list_entries(search_string=None):
 
 
 def create(request):
+    if 'q' in request.GET:
+        return(index(request))
+
     if request.method == "POST":
         if 'overwrite' in request.POST:
             form = SaveEntryForm(request.POST)
@@ -58,14 +61,15 @@ def create(request):
             })
 
     form = CreateEntryForm()
-    form.fields['entry'].initial = 'Entry Name Here'
-    form.fields['content'].initial = 'Entry Content Here'
     return render(request, "encyclopedia/create.html", {
         "form": form
     })
 
 
 def edit(request):
+    if 'q' in request.GET:
+        return(index(request))
+
     form = CreateEntryForm(request.POST)
     if form.is_valid():
         new_form = CreateEntryForm()
@@ -82,6 +86,9 @@ def edit(request):
 
 
 def entry(request, title):
+    if 'q' in request.GET:
+        return(index(request))
+
     md_content = util.get_entry(title)
     if md_content:
         mdc = Markdown()
