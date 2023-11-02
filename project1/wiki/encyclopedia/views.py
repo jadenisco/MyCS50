@@ -44,7 +44,7 @@ def create(request):
             content = form.cleaned_data["content"]
             if 'overwrite' not in form.cleaned_data:
                 if entry in util.list_entries():
-                    message = f"The entry {entry} is being used, please choose a different title."
+                    message = f'The entry "{entry}" is being used, please choose a different title.'
                     return(render(request, "encyclopedia/create.html",
                                 {"form": form,
                                 "alert_message": message}))
@@ -83,11 +83,15 @@ def edit(request):
 
 def entry(request, title):
     md_content = util.get_entry(title)
-    mdc = Markdown()
-    html_content = mdc.convert(md_content)
+    if md_content:
+        mdc = Markdown()
+        html_content = mdc.convert(md_content)
+    else:
+        html_content = None
+
     return render(request, "encyclopedia/entry.html" , {
         "entry": title,
-        "content": html_content
+        "content": html_content,
     })
 
 
@@ -104,11 +108,6 @@ def index(request):
     if 'q' in request.GET:
         search_string = request.GET['q']
         entries = _list_entries(search_string)
-        # Brings you directly to the entry. This is not exactly the
-        # assignment, but saves a step to get to the entry page.
-        # remove these 2 lines for the exact assignment functionality
-        if len(entries) == 1:
-            return(entry(request, entries[0]))
     else:
         entries = _list_entries()
 

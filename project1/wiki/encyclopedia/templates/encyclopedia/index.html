@@ -5,8 +5,13 @@
 {% endblock %}
 
 {% block body %}
-    {% if search_string %}
-        <h1>All Pages with "{{ search_string }}"</h1>
+
+{% if search_string %}
+        {% if entries%}
+            <h1>All Pages with "{{ search_string }}"</h1>
+        {% else %}
+            <h1>There are no entries with "{{ search_string }}"</h1>
+        {% endif %}
     {% else %}
         <h1>All Pages</h1>
     {% endif %}

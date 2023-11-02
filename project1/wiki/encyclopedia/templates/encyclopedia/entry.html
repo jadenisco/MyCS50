@@ -8,15 +8,16 @@
     {% if content %}
         <title>{{ entry }}</title>
         {{ content|safe }}
+        <form action="{% url 'wiki:edit' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="entry" value="{{ entry }}">
+            <input type="hidden" name="content" value="{{ content }}">
+            <input type="submit" value="Edit">
+        </form>
     {% else %}
-        <h1>There is no entry for "{{ entry }}"!</h1>
+        <h1>There is no entry for "{{ entry }}."</h1>
+        <p>Please choose another entry.</p>
     {% endif %}
     
-    <form action="{% url 'wiki:edit' %}" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="entry" value="{{ entry }}">
-        <input type="hidden" name="content" value="{{ content }}">
-        <input type="submit" value="Edit">
-    </form>
     
 {% endblock %}
