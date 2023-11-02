@@ -15,7 +15,7 @@ class SaveEntryForm(forms.Form):
     overwrite = forms.CharField(widget=forms.HiddenInput)
 
 class CreateEntryForm(forms.Form):
-    entry = forms.CharField(label="Entry", max_length=100, widget=forms.TextInput(attrs={'placeholder': 'Enter Title Here'}))
+    entry = forms.CharField(label="Entry", max_length=100, widget=forms.TextInput(attrs={'placeholder': 'Enter Entry Title Here'}))
     content = forms.CharField(label="", widget=forms.Textarea(attrs={'placeholder': 'Enter Content Here'}))
 
 
@@ -47,7 +47,7 @@ def create(request):
             content = form.cleaned_data["content"]
             if 'overwrite' not in form.cleaned_data:
                 if entry in util.list_entries():
-                    message = f'The entry "{entry}" is being used, please choose a different title.'
+                    message = f'The entry "{entry}" is being used, please choose a different Entry Title.'
                     return(render(request, "encyclopedia/create.html",
                                 {"form": form,
                                 "alert_message": message}))
