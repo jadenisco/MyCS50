@@ -11,6 +11,10 @@ def index(request):
     return render(request, "auctions/index.html")
 
 
+def auction(request):
+    print("Auction")
+
+
 def login_view(request):
     if request.method == "POST":
 
