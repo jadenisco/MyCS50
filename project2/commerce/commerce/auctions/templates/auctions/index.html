@@ -1,7 +1,29 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>Active Listings</h2>
 
-    TODO
+    <h2>Profiles:</h2>
+        <ul>
+            {% for profile in profiles %}
+                <li>ID: {{ profile.id }} Name: {{ profile.first_name }} {{ profile.last_name }} Email: {{ profile.email }}</li>
+            {% endfor %}
+        </ul>
+
+    <h2>Auctions</h2>
+        <ul>
+            {% for auction in auctions %}
+                <li>ID: {{ auction.id }} Seller: {{ auction.seller }}</li>
+            {% endfor %}
+        </ul>
+
+    <h2>Users</h2>
+        <ul>
+            <li>None Yet</li>
+        </ul>
+
+    <h2>Listings</h2>
+        <ul>
+            <li>None Yet</li>
+        </ul>
+
 {% endblock %}

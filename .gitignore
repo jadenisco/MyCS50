@@ -1,6 +1,8 @@
 materials/
 Lecture3Practice/
 Lecture4Practice/
+project2/commerce/commerce/db.sqlite3
+project2/commerce/commerce/auctions/migrations/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
