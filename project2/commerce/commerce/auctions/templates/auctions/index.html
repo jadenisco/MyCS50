@@ -2,26 +2,28 @@
 
 {% block body %}
 
-    <h2>Profiles:</h2>
+    <h2>Listings:</h2>
         <ul>
-            {% for profile in profiles %}
-                <li>ID: {{ profile.id }} Name: {{ profile.first_name }} {{ profile.last_name }} Email: {{ profile.email }}</li>
+            {% for listing in listings %}
+                <li>ID: {{ listing.id }} Description: {{ listing.description }} Bid: {{ listing.bid }}</li>
             {% endfor %}
         </ul>
 
-    <h2>Auctions</h2>
+    <h2>Auctions:</h2>
         <ul>
             {% for auction in auctions %}
-                <li>ID: {{ auction.id }} Seller: {{ auction.seller }}</li>
+                <li>ID: {{ auction.id }} listing: {{ auction.listing }}</li>
+            {% endfor %}
+        </ul>
+
+    <h2>Profiles:</h2>
+        <ul>
+            {% for profile in profiles %}
+                <li>ID: {{ profile.id }} Name: {{ profile.first_name }} {{ profile.last_name }} Email: {{ profile.email }} Auction: {{ profile.auction }}</li>
             {% endfor %}
         </ul>
 
     <h2>Users</h2>
-        <ul>
-            <li>None Yet</li>
-        </ul>
-
-    <h2>Listings</h2>
         <ul>
             <li>None Yet</li>
         </ul>

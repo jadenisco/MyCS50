@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import Auction, Profile
+from .models import Auction, Listing, Profile
 
 '''
 jadfix;
@@ -15,6 +15,7 @@ from .models import User
 def index(request):
     return render(request, "auctions/index.html", {
         "auctions": Auction.objects.all(),
+        "listings": Listing.objects.all(),
         "profiles": Profile.objects.all()
     })
 
