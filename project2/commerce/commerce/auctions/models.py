@@ -35,9 +35,3 @@ class Profile(models.Model):
 
     def __str__(self):
         return f"ID: {self.id}, Name: {self.first_name} {self.last_name} Email: {self.email} Auctions: {self.auctions}"
-
-
-'''
-class User(AbstractUser):
-    pass
-'''
