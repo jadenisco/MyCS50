@@ -12,7 +12,11 @@
     <h2>Auctions:</h2>
         <ul>
             {% for auction in auctions %}
-                <li>ID: {{ auction.id }} listing: {{ auction.listing }}</li>
+                <li>
+                    <a href="{% url 'auction' auction.id %}">
+                        Auction: {{ auction.id }}, Listing: {{ auction.listing }}
+                    </a>
+                </li>
             {% endfor %}
         </ul>
 

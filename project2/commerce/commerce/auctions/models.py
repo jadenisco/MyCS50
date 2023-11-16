@@ -11,14 +11,15 @@ class Bid(models.Model):
     amount = models.IntegerField()
 
     def __str__(self):
-        return f"ID: {self.id}, Price: {self.amount}"
+        return f"ID: {self.id}, Amount: {self.amount}"
 
 class Listing(models.Model):
     description = models.CharField(max_length=64)
     bid = models.ForeignKey(Bid, on_delete=models.CASCADE, related_name="bids")
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"ID: {self.id}, Description: {self.description} Bid: {self.bid}"
+        return f"ID: {self.id}, Description: {self.description}, Comment: {self.comment} Bid: {self.bid}"
 
 class Auction(models.Model):
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="listings")

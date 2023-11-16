@@ -19,6 +19,12 @@ def index(request):
         "profiles": Profile.objects.all()
     })
 
+def auction(request, auction_id):
+    auction = Auction.objects.get(id=auction_id)
+    return render(request, "auctions/auction.html", {
+        "auction": auction        
+    })
+
 
 def login_view(request):
     print("login_view")
