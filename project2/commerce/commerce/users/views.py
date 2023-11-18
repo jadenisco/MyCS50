@@ -1,55 +1,36 @@
 from django.contrib.auth import authenticate, login, logout
-from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-
-'''
-jadfix;
-from .models import User
-'''
-
+from django.urls import reverse
 
 def index(request):
-    return render(request, "users/index.html")
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("login"))
+    return render(request, "users/user.html")
 
-
-# Create your views here.
 def login_view(request):
-    print("login_view")
-    '''
-    jadfix:
     if request.method == "POST":
-
-        # Attempt to sign user in
         username = request.POST["username"]
         password = request.POST["password"]
         user = authenticate(request, username=username, password=password)
-
-        # Check if authentication successful
         if user is not None:
             login(request, user)
             return HttpResponseRedirect(reverse("index"))
         else:
-            return render(request, "auctions/login.html", {
-                "message": "Invalid username and/or password."
+            return render(request, "users/login.html", {
+                "message": "Invalid credentials."
             })
     else:
-        return render(request, "auctions/login.html")
-    '''
-
+        return render(request, "users/login.html")
 
 def logout_view(request):
-    print("logout_view")
-    '''
-    jadfix:
     logout(request)
-    return HttpResponseRedirect(reverse("index"))
-    '''
+    return render(request, "users/login.html", {
+        "message": "Logged out."
+    })
 
 def register(request):
-    print(register)
-    '''
-    jadfix:
+    print("register")
     if request.method == "POST":
         username = request.POST["username"]
         email = request.POST["email"]
@@ -74,4 +55,3 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auctions/register.html")
-    '''
