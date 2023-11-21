@@ -4,22 +4,11 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import Auction, Listing, Profile
+from .models import User
 
 
 def index(request):
-    return render(request, "auctions/index.html", {
-        "auctions": Auction.objects.all(),
-        "listings": Listing.objects.all(),
-        "profiles": Profile.objects.all()
-    })
-
-
-def auction(request, auction_id):
-    auction = Auction.objects.get(id=auction_id)
-    return render(request, "auctions/auction.html", {
-        "auction": auction        
-    })
+    return render(request, "auctions/index.html")
 
 
 def login_view(request):
@@ -48,9 +37,6 @@ def logout_view(request):
 
 
 def register(request):
-    print("register")
-    # jadfix Need to figure out how to create a user
-    '''
     if request.method == "POST":
         username = request.POST["username"]
         email = request.POST["email"]
@@ -75,4 +61,3 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auctions/register.html")
-    '''
