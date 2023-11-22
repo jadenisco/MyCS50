@@ -1,10 +1,14 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseBadRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django import forms
 
 from .models import User
+
+class CreateListingForm(forms.Form):
+    description = forms.CharField(label="Description", max_length=200)
 
 
 def index(request):
@@ -61,3 +65,16 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auctions/register.html")
+
+def create(request):
+    if request.method == "GET":
+        print(f'create GET {request}')
+        if request.user.is_authenticated:  
+            form = CreateListingForm()
+            return render(request, "auctions/create.html", {
+                "form": form
+            })
+        else:
+            HttpResponseRedirect(reverse("login"))
+    else:
+        print(f'create POST {request}')
