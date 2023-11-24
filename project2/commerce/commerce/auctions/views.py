@@ -5,10 +5,13 @@ from django.shortcuts import render
 from django.urls import reverse
 from django import forms
 
-from .models import User
+from .models import User, Listing, Bid
 
-class CreateListingForm(forms.Form):
-    description = forms.CharField(label="Description", max_length=200)
+class ListingForm(forms.Form):
+
+    description = forms.CharField(label="Description", max_length=100)
+    comments  = forms.CharField(label="Comment", widget=forms.Textarea)
+    initial_bid = forms.DecimalField(label="Initial bid (Dollars)", max_value=10000, min_value=0)
 
 
 def index(request):
@@ -68,13 +71,12 @@ def register(request):
 
 def create(request):
     if request.method == "GET":
-        print(f'create GET {request}')
         if request.user.is_authenticated:  
-            form = CreateListingForm()
+            form = ListingForm()
             return render(request, "auctions/create.html", {
                 "form": form
             })
         else:
-            HttpResponseRedirect(reverse("login"))
+            return HttpResponseRedirect(reverse("login"))
     else:
         print(f'create POST {request}')
