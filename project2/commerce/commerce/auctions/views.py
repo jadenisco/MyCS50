@@ -5,13 +5,12 @@ from django.shortcuts import render
 from django.urls import reverse
 from django import forms
 
-from .models import User, Listing, Bid
+from .models import *
 
 class ListingForm(forms.Form):
-
     description = forms.CharField(label="Description", max_length=100)
-    comments  = forms.CharField(label="Comment", widget=forms.Textarea)
-    initial_bid = forms.DecimalField(label="Initial bid (Dollars)", max_value=10000, min_value=0)
+    comment  = forms.CharField(label="Comment", widget=forms.Textarea)
+    bid = forms.DecimalField(label="Starting bid (Dollars)", max_value=10000, min_value=0, decimal_places=2)
 
 
 def index(request):
@@ -70,13 +69,35 @@ def register(request):
         return render(request, "auctions/register.html")
 
 def create(request):
-    if request.method == "GET":
-        if request.user.is_authenticated:  
+    if request.user.is_authenticated:  
+        if request.method == "GET":
             form = ListingForm()
             return render(request, "auctions/create.html", {
                 "form": form
             })
         else:
-            return HttpResponseRedirect(reverse("login"))
+            form = ListingForm(request.POST)
+            if form.is_valid:
+                description = form.data["description"]
+                cf  = form.data["comment"]
+                bf = form.data["bid"]
+
+                comment = Comment(comment=cf)
+                bid = Bid(amount=float(bf))
+                listing = Listing(description=description)
+                comment.save()
+                bid.save()
+                listing.save()
+                
+                listing.comments.add(comment)
+                listing.bids.add(bid)
+                
+                # Add the listing to an auction
+                
+                # Add the auction to the user
+
+                return HttpResponseRedirect(reverse("index"))
+            else:
+                return HttpResponseBadRequest("Bad Request: Invalid Form")
     else:
-        print(f'create POST {request}')
+        return HttpResponseRedirect(reverse("login"))
