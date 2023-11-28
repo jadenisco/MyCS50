@@ -7,7 +7,7 @@ class Category(models.Model):
     description = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"ID: {self.id}, Category: {self.description}"
+        return f"{self.description}"
 
 
 class Comment(models.Model):
@@ -25,21 +25,25 @@ class Bid(models.Model):
 
 
 class Listing(models.Model):
-    description = models.CharField(max_length=100)
+    title = models.CharField(max_length=100)
+    description = models.TextField(max_length=1000)
+    '''
+    image = models.ImageField(blank=True)
+    categories = models.ManyToManyField(Category, blank=True, related_name="categories")
     comments  = models.ManyToManyField(Comment, blank=True,related_name="comments")
-    bids = models.ManyToManyField(Bid, blank=True, related_name="comments")
+    '''
 
     def __str__(self):
-        return f"ID: {self.id}, Description: {self.description}"
+        return f"ID: {self.id}, Title: {self.title}"
 
 
 class Auction(models.Model):
-    listings = models.ManyToManyField(Listing, blank=True, related_name="listings")
-    categories = models.ManyToManyField(Category, blank=True, related_name="categories")
-    start_time = models.TimeField()
-    duration = models.TimeField()
+    listing = models.OneToOneField(Listing, on_delete=models.CASCADE, related_name="listing")
+    bids = models.ManyToManyField(Bid, blank=True, related_name="bids")
+    active = models.BooleanField(default=True)
+
     def __str__(self):
-        return f"ID: {self.id}, Listing: {self.listing}"
+        return f"ID: {self.id} Listing: {self.listing.title}"
 
 
 class User(AbstractUser):

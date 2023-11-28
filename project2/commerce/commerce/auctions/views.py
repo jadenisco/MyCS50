@@ -8,9 +8,10 @@ from django import forms
 from .models import *
 
 class ListingForm(forms.Form):
-    description = forms.CharField(label="Description", max_length=100)
-    comment  = forms.CharField(label="Comment", widget=forms.Textarea)
-    bid = forms.DecimalField(label="Starting bid (Dollars)", max_value=10000, min_value=0, decimal_places=2)
+    title = forms.CharField(label="Title", max_length=100)
+    description  = forms.CharField(label="Description", widget=forms.Textarea)
+    bid = forms.DecimalField(label="Starting bid $", max_value=10000, min_value=0, decimal_places=2)
+    categories = forms.ModelChoiceField(label="Category", queryset=Category.objects.all())
 
 
 def index(request):
@@ -78,23 +79,16 @@ def create(request):
         else:
             form = ListingForm(request.POST)
             if form.is_valid:
-                description = form.data["description"]
-                cf  = form.data["comment"]
-                bf = form.data["bid"]
-
-                comment = Comment(comment=cf)
-                bid = Bid(amount=float(bf))
-                listing = Listing(description=description)
-                comment.save()
+                bid = Bid(amount=float(form.data["bid"]))
                 bid.save()
+
+                listing = Listing(title=form.data["title"],
+                                  description=form.data["description"])
                 listing.save()
-                
-                listing.comments.add(comment)
-                listing.bids.add(bid)
-                
-                # Add the listing to an auction
-                
-                # Add the auction to the user
+
+                auction = Auction(listing=listing)
+                auction.save()
+                auction.bids.add(bid)
 
                 return HttpResponseRedirect(reverse("index"))
             else:
