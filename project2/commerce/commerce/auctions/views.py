@@ -11,7 +11,8 @@ class ListingForm(forms.Form):
     title = forms.CharField(label="Title", max_length=100)
     description  = forms.CharField(label="Description", widget=forms.Textarea)
     bid = forms.DecimalField(label="Starting bid $", max_value=10000, min_value=0, decimal_places=2)
-    categories = forms.ModelChoiceField(label="Category", queryset=Category.objects.all())
+    category = forms.ModelChoiceField(label="Category", required=False, queryset=Category.objects.all())
+    image = forms.ImageField(label="Image", required=False, widget=forms.URLInput)
 
 
 def index(request):
@@ -84,7 +85,13 @@ def create(request):
 
                 listing = Listing(title=form.data["title"],
                                   description=form.data["description"])
+                ctg = form.data['category']
+                img = form.data['image']
+                if img != '':
+                    listing.image = img
                 listing.save()
+                if ctg != '':
+                    listing.category.add(Category.objects.get(id=int(ctg)))
 
                 auction = Auction(listing=listing)
                 auction.save()

@@ -27,11 +27,9 @@ class Bid(models.Model):
 class Listing(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
-    '''
-    image = models.ImageField(blank=True)
-    categories = models.ManyToManyField(Category, blank=True, related_name="categories")
+    image = models.URLField(blank=True)
+    category = models.ManyToManyField(Category, blank=True, related_name="categories")
     comments  = models.ManyToManyField(Comment, blank=True,related_name="comments")
-    '''
 
     def __str__(self):
         return f"ID: {self.id}, Title: {self.title}"
