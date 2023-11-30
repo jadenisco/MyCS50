@@ -16,6 +16,13 @@ class ListingForm(forms.Form):
 
 
 def index(request):
+
+    user = request.user
+    if user.is_authenticated:
+        print("Print Only the ones associated with and then selling and bidding on")
+    else:
+        print("Print all the Listings")
+
     return render(request, "auctions/index.html")
 
 
@@ -71,7 +78,8 @@ def register(request):
         return render(request, "auctions/register.html")
 
 def create(request):
-    if request.user.is_authenticated:  
+    user = request.user
+    if user.is_authenticated:  
         if request.method == "GET":
             form = ListingForm()
             return render(request, "auctions/create.html", {
@@ -96,6 +104,8 @@ def create(request):
                 auction = Auction(listing=listing)
                 auction.save()
                 auction.bids.add(bid)
+
+                user.selling.add(auction.id)
 
                 return HttpResponseRedirect(reverse("index"))
             else:
