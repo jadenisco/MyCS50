@@ -19,11 +19,16 @@ def index(request):
 
     user = request.user
     if user.is_authenticated:
-        print("Print Only the ones associated with and then selling and bidding on")
+        return render(request,"auctions/index.html", {
+                                "all": None,
+                                "bids" : user.user_bids.all(),
+                                "auctions" : user.auctions.all()}
+                       )
     else:
-        print("Print all the Listings")
-
-    return render(request, "auctions/index.html")
+        return render(request,"auctions/index.html", {
+                                "all": Listing.objects.all(),
+                                "bids" : None,
+                                "auctions" : None})
 
 
 def login_view(request):
@@ -105,7 +110,7 @@ def create(request):
                 auction.save()
                 auction.bids.add(bid)
 
-                user.selling.add(auction.id)
+                user.auctions.add(auction.id)
 
                 return HttpResponseRedirect(reverse("index"))
             else:

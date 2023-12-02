@@ -45,5 +45,5 @@ class Auction(models.Model):
 
 
 class User(AbstractUser):
-    selling = models.ManyToManyField(Auction, blank=True, related_name="selling")
-    buying = models.ManyToManyField(Auction, blank=True, related_name="buying")
+    auctions = models.ManyToManyField(Auction, blank=True, related_name="auctions")
+    user_bids = models.ManyToManyField(Bid, blank=True, related_name="user_bids")
