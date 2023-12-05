@@ -4,6 +4,7 @@
     {% if all %}
         <h2>Active Listings</h2>
         {% for listing in all %}
+        <img src="{{ listing.image }}"/>
         <h3>{{ listing.title }}</h3>
         <p>{{ listing.description }}</p>
     {% endfor %}
@@ -11,11 +12,13 @@
         <h2>Active Listings</h2>
         <h3>Bids</h3>
         {% for listing in bids %}
+            <img src="{{ listing.image }}"/>
             <h2>{{ listing.title }}</h3>
             <p>{{ listing.description }}</p>
         {% endfor %}
         <h3>Auctions</h3>
         {% for auction in auctions %}
+            <img src="{{ auction.listing.image }}"/>
             <h4>{{ auction.listing.title }}</h4>
             {% if auction.active is True %}
                 <p>This auction is still active</p>

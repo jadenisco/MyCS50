@@ -99,6 +99,7 @@ def create(request):
                 listing = Listing(title=form.data["title"],
                                   description=form.data["description"])
                 ctg = form.data['category']
+                #jadfix image must be in the form /static/images
                 img = form.data['image']
                 if img != '':
                     listing.image = img

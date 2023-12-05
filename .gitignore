@@ -3,6 +3,7 @@ Lecture3Practice/
 Lecture4Practice/
 project2/commerce/commerce/db.sqlite3
 project2/commerce/commerce/auctions/migrations/
+project2/commerce/commerce/auctions/static/images/
 project2/tmp/
 
 # Byte-compiled / optimized / DLL files
