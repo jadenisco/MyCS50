@@ -4,22 +4,33 @@
     {% if all %}
         <h2>Active Listings</h2>
         {% for listing in all %}
-        <img src="{{ listing.image }}"/>
+        <!-- Check for image -->
+        {% if listing.image is not '' %}
+            <img src="{{ listing.image }}"/>
+        {% endif %}
         <h3>{{ listing.title }}</h3>
         <p>{{ listing.description }}</p>
+        <h4>{{ listing.high_bid.amount }}</h4>
     {% endfor %}
     {% else %}
         <h2>Active Listings</h2>
         <h3>Bids</h3>
         {% for listing in bids %}
-            <img src="{{ listing.image }}"/>
+            {% if listing.image is not '' %}
+                <img src="{{ listing.image }}"/>
+            {% endif %}
             <h2>{{ listing.title }}</h3>
             <p>{{ listing.description }}</p>
+            <h4>{{ listing.high_bid.amount }}</h4>
         {% endfor %}
         <h3>Auctions</h3>
         {% for auction in auctions %}
-            <img src="{{ auction.listing.image }}"/>
+            {% if auction.listing.image is not '' %}
+                <img src="{{ auction.listing.image }}"/>
+            {% endif %}
             <h4>{{ auction.listing.title }}</h4>
+            <p>{{ listing.description }}</p>
+            <h4>{{ auction.listing.high_bid.amount }}</h4>
             {% if auction.active is True %}
                 <p>This auction is still active</p>
             {% endif %}

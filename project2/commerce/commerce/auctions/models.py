@@ -30,14 +30,15 @@ class Listing(models.Model):
     image = models.URLField(blank=True)
     category = models.ManyToManyField(Category, blank=True, related_name="categories")
     comments  = models.ManyToManyField(Comment, blank=True,related_name="comments")
+    high_bid = models.OneToOneField(Bid, on_delete=models.CASCADE, related_name="high_bid")
 
     def __str__(self):
         return f"ID: {self.id}, Title: {self.title}"
 
 
 class Auction(models.Model):
-    listing = models.OneToOneField(Listing, on_delete=models.CASCADE, related_name="listing")
-    bids = models.ManyToManyField(Bid, blank=True, related_name="bids")
+    listing = models.OneToOneField(Listing, on_delete=models.CASCADE, related_name="auction_listing")
+    bids = models.ManyToManyField(Bid, blank=True, related_name="auction_bids")
     active = models.BooleanField(default=True)
 
     def __str__(self):
@@ -45,5 +46,5 @@ class Auction(models.Model):
 
 
 class User(AbstractUser):
-    auctions = models.ManyToManyField(Auction, blank=True, related_name="auctions")
+    auctions = models.ManyToManyField(Auction, blank=True, related_name="user_auctions")
     user_bids = models.ManyToManyField(Bid, blank=True, related_name="user_bids")

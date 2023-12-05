@@ -97,9 +97,9 @@ def create(request):
                 bid.save()
 
                 listing = Listing(title=form.data["title"],
-                                  description=form.data["description"])
+                                  description=form.data["description"],
+                                  high_bid=bid)
                 ctg = form.data['category']
-                #jadfix image must be in the form /static/images
                 img = form.data['image']
                 if img != '':
                     listing.image = img
