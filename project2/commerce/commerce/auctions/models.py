@@ -25,6 +25,7 @@ class Bid(models.Model):
 
 
 class Listing(models.Model):
+    username = models.CharField(max_length=100)
     title = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
     image = models.URLField(blank=True)

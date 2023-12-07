@@ -15,8 +15,18 @@ class ListingForm(forms.Form):
     image = forms.ImageField(label="Image", required=False, widget=forms.URLInput)
 
 
-def index(request):
+def listing(request, listing_id):
+    user = request.user
+    if user.is_authenticated:
+        listing = Listing.objects.get(pk=listing_id)
+        return render(request, "auctions/listing.html", {
+            "listing": listing
+        })
+    else:
+        return HttpResponseRedirect(reverse("login"))
 
+
+def index(request):
     user = request.user
     if user.is_authenticated:
         return render(request,"auctions/index.html", {
@@ -96,7 +106,7 @@ def create(request):
                 bid = Bid(amount=float(form.data["bid"]))
                 bid.save()
 
-                listing = Listing(title=form.data["title"],
+                listing = Listing(username=user.get_username(), title=form.data["title"],
                                   description=form.data["description"],
                                   high_bid=bid)
                 ctg = form.data['category']
