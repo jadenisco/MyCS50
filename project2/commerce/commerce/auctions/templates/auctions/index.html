@@ -25,15 +25,17 @@
         {% endfor %}
         <h3>Auctions</h3>
         {% for auction in auctions %}
-            {% if auction.listing.image is not '' %}
-                <img src="{{ auction.listing.image }}"/>
-            {% endif %}
-            <h4>{{ auction.listing.title }}</h4>
-            <p>{{ listing.description }}</p>
-            <h4>{{ auction.listing.high_bid.amount }}</h4>
-            {% if auction.active is True %}
-                <p>This auction is still active</p>
-            {% endif %}
+            <div><a href="{{ auction.listing.id }}">
+                {% if auction.listing.image is not '' %}
+                    <img src="{{ auction.listing.image }}"/>
+                {% endif %}
+                <h4>{{ auction.listing.title }}</h4>
+                <p>{{ auction.listing.description }}</p>
+                <h4>{{ auction.listing.high_bid.amount }}</h4>
+                {% if auction.active is True %}
+                    <p>This auction is still active</p>
+                {% endif %}
+            </a></div>
         {% endfor %}
 
     {% endif %}
