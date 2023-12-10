@@ -15,12 +15,53 @@ class ListingForm(forms.Form):
     image = forms.ImageField(label="Image", required=False, widget=forms.URLInput)
 
 
+def _active_auctions():
+
+    active_auctions = []
+    for a in Auction.objects.all():
+        if a.active:
+            active_auctions.append(a)
+    return active_auctions
+
+
+def watchlistremove(request, listing_id):
+    user = request.user
+    if user.is_authenticated:
+        listing = Listing.objects.get(pk=listing_id)
+        if listing.auction_listing not in user.watch_list.all():
+            user.watch_list.add(listing.auction_listing)
+        else:
+            user.watch_list.remove(listing.auction_listing)
+        return render(request, "auctions/listing.html", {
+            "listing": listing,
+            "watchlist": user.watch_list.all()
+        })
+    else:
+        return HttpResponseRedirect(reverse("login"))
+
+
+def watchlist(request, listing_id):
+    user = request.user
+    if user.is_authenticated:
+        listing = Listing.objects.get(pk=listing_id)
+        watch_list = user.watch_list.all()
+        if listing.auction_listing not in watch_list:
+            user.watch_list.add(listing.auction_listing)
+        return render(request, "auctions/listing.html", {
+            "listing": listing,
+            "watchlist": watch_list
+        })
+    else:
+        return HttpResponseRedirect(reverse("login"))
+
+
 def listing(request, listing_id):
     user = request.user
     if user.is_authenticated:
         listing = Listing.objects.get(pk=listing_id)
         return render(request, "auctions/listing.html", {
-            "listing": listing
+            "listing": listing,
+            "watchlist": user.watch_list.all()
         })
     else:
         return HttpResponseRedirect(reverse("login"))
@@ -30,13 +71,15 @@ def index(request):
     user = request.user
     if user.is_authenticated:
         return render(request,"auctions/index.html", {
-                                "all": None,
+                                "authenticated": True,
+                                "all": _active_auctions(),
                                 "bids" : user.user_bids.all(),
                                 "auctions" : user.auctions.all()}
                        )
     else:
         return render(request,"auctions/index.html", {
-                                "all": Listing.objects.all(),
+                                "authenticated": False,
+                                "all": _active_auctions(),
                                 "bids" : None,
                                 "auctions" : None})
 

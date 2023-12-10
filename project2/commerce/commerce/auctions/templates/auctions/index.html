@@ -1,19 +1,19 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    {% if all %}
+    {% if authenticated %}
         <h2>Active Listings</h2>
-        {% for listing in all %}
-        <!-- Check for image -->
-        {% if listing.image is not '' %}
-            <img src="{{ listing.image }}"/>
-        {% endif %}
-        <h3>{{ listing.title }}</h3>
-        <p>{{ listing.description }}</p>
-        <h4>{{ listing.high_bid.amount }}</h4>
-    {% endfor %}
-    {% else %}
-        <h2>Active Listings</h2>
+        {% for auction in all %}
+            <div><a href="{{ auction.listing.id }}">
+                {% if listing.image is not '' %}
+                    <img src="{{ auction.listing.image }}"/>
+                {% endif %}
+                <h3>{{ auction.listing.title }}</h3>
+                <p>{{ auction.listing.description }}</p>
+                <h4>{{ auction.listing.high_bid.amount }}</h4>
+            </a></div>
+        {% endfor %}
+        
         <h3>Bids</h3>
         {% for listing in bids %}
             {% if listing.image is not '' %}
@@ -23,6 +23,7 @@
             <p>{{ listing.description }}</p>
             <h4>{{ listing.high_bid.amount }}</h4>
         {% endfor %}
+
         <h3>Auctions</h3>
         {% for auction in auctions %}
             <div><a href="{{ auction.listing.id }}">
@@ -33,11 +34,25 @@
                 <p>{{ auction.listing.description }}</p>
                 <h4>{{ auction.listing.high_bid.amount }}</h4>
                 {% if auction.active is True %}
-                    <p>This auction is still active</p>
+                    <p>This auction is ACTIVE</p>
+                {% else %}
+                    <p>This auction is NOT ACTIVE</p>
                 {% endif %}
             </a></div>
         {% endfor %}
 
+    {% else %}
+        <h2>Active Listings</h2>
+        {% for auction in all %}
+            <div><a href="{{ auction.listing.id }}">
+                {% if listing.image is not '' %}
+                    <img src="{{ auction.listing.image }}"/>
+                {% endif %}
+                <h3>{{ auction.listing.title }}</h3>
+                <p>{{ auction.listing.description }}</p>
+                <h4>{{ auction.listing.high_bid.amount }}</h4>
+            </a></div>
+        {% endfor %}
     {% endif %}
 
 {% endblock %}

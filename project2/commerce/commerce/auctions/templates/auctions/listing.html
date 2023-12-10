@@ -10,7 +10,11 @@
     <p>High Bid ${{ listing.high_bid.amount }}</p>
     <p>This auction is from {{ listing.username }}</p>
     {% if listing.auction_listing.active is True %}
-        <p>This auction is still active</p>
+        {% if listing.auction_listing not in watchlist %}
+            <p><a href="{% url 'watchlist' listing.id %}">Add to your watchlist</a></p>
+        {% else %}
+            <p><a href="{% url 'watchlistremove' listing.id %}">Remove from your watchlist</a></p>
+        {% endif %}
     {% else %}
         <p>This auction is no longer active</p>
     {% endif %}

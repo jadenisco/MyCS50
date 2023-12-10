@@ -49,3 +49,4 @@ class Auction(models.Model):
 class User(AbstractUser):
     auctions = models.ManyToManyField(Auction, blank=True, related_name="user_auctions")
     user_bids = models.ManyToManyField(Bid, blank=True, related_name="user_bids")
+    watch_list = models.ManyToManyField(Auction, blank=True, related_name="user_watch_list")
