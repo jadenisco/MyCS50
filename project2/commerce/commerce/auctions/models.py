@@ -18,6 +18,7 @@ class Comment(models.Model):
 
 
 class Bid(models.Model):
+    user_id = models.IntegerField()
     amount = models.DecimalField(max_digits=10000, decimal_places=0)
 
     def __str__(self):

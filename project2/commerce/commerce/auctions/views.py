@@ -10,18 +10,35 @@ from .models import *
 class ListingForm(forms.Form):
     title = forms.CharField(label="Title", max_length=100)
     description  = forms.CharField(label="Description", widget=forms.Textarea)
-    bid = forms.DecimalField(label="Starting bid $", max_value=10000, min_value=0, decimal_places=2)
+    bid = forms.DecimalField(label="Starting bid $", max_value=10000, min_value=0, decimal_places=0)
     category = forms.ModelChoiceField(label="Category", required=False, queryset=Category.objects.all())
     image = forms.ImageField(label="Image", required=False, widget=forms.URLInput)
 
 
 def _active_auctions():
-
     active_auctions = []
     for a in Auction.objects.all():
         if a.active:
             active_auctions.append(a)
     return active_auctions
+
+
+def bid(request, listing_id):
+    user = request.user
+    if user.is_authenticated:
+        listing = Listing.objects.get(pk=listing_id)
+        auction = listing.auction_listing
+        bid = Bid(user_id=user.id, amount=float(request.POST['bid']))
+        bid.save()
+        listing.high_bid = bid
+        listing.save()
+        auction.bids.add(bid)
+        return render(request, "auctions/listing.html", {
+            "listing": listing,
+            "watchlist": user.watch_list.all()
+        })
+    else:
+        return HttpResponseRedirect(reverse("login"))
 
 
 def watchlistremove(request, listing_id):
@@ -59,10 +76,50 @@ def listing(request, listing_id):
     user = request.user
     if user.is_authenticated:
         listing = Listing.objects.get(pk=listing_id)
+
         return render(request, "auctions/listing.html", {
+            "min_bid": listing.high_bid.amount + 1,
             "listing": listing,
             "watchlist": user.watch_list.all()
         })
+    else:
+        return HttpResponseRedirect(reverse("login"))
+
+
+def create(request):
+    user = request.user
+    if user.is_authenticated:  
+        if request.method == "GET":
+            form = ListingForm()
+            return render(request, "auctions/create.html", {
+                "form": form
+            })
+        else:
+            form = ListingForm(request.POST)
+            if form.is_valid:
+                bid = Bid(user_id=user.id, amount=float(form.data["bid"]))
+                bid.save()
+
+                listing = Listing(username=user.get_username(), title=form.data["title"],
+                                  description=form.data["description"],
+                                  high_bid=bid)
+                ctg = form.data['category']
+                img = form.data['image']
+                if img != '':
+                    listing.image = img
+                listing.save()
+                if ctg != '':
+                    listing.category.add(Category.objects.get(id=int(ctg)))
+
+                auction = Auction(listing=listing)
+                auction.save()
+                auction.bids.add(bid)
+
+                user.auctions.add(auction.id)
+
+                return HttpResponseRedirect(reverse("index"))
+            else:
+                return HttpResponseBadRequest("Bad Request: Invalid Form")
     else:
         return HttpResponseRedirect(reverse("login"))
 
@@ -134,40 +191,3 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auctions/register.html")
-
-def create(request):
-    user = request.user
-    if user.is_authenticated:  
-        if request.method == "GET":
-            form = ListingForm()
-            return render(request, "auctions/create.html", {
-                "form": form
-            })
-        else:
-            form = ListingForm(request.POST)
-            if form.is_valid:
-                bid = Bid(amount=float(form.data["bid"]))
-                bid.save()
-
-                listing = Listing(username=user.get_username(), title=form.data["title"],
-                                  description=form.data["description"],
-                                  high_bid=bid)
-                ctg = form.data['category']
-                img = form.data['image']
-                if img != '':
-                    listing.image = img
-                listing.save()
-                if ctg != '':
-                    listing.category.add(Category.objects.get(id=int(ctg)))
-
-                auction = Auction(listing=listing)
-                auction.save()
-                auction.bids.add(bid)
-
-                user.auctions.add(auction.id)
-
-                return HttpResponseRedirect(reverse("index"))
-            else:
-                return HttpResponseBadRequest("Bad Request: Invalid Form")
-    else:
-        return HttpResponseRedirect(reverse("login"))
