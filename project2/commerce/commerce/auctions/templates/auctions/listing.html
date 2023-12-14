@@ -2,16 +2,17 @@
 
 {% block body %}
     <h1>{{ listing.title }}</h1>
-    {% if listing.image is not '' %}
-        <img src="{{ listing.image }}"/>
-    {% endif %}
-
     <p>{{ listing.description }}</p>
-    <p>High Bid ${{ listing.high_bid.amount }}</p>
-    <p>This auction is from {{ listing.username }}</p>
+
     {% if listing.auction_listing.active is True %}
+        {% if listing.image is not '' %}
+            <img src="{{ listing.image }}"/>
+        {% endif %}
+        <p>High Bid ${{ listing.high_bid.amount }}</p>
+        <p>This auction is from {{ auction_user.username }}</p>
+
         {% if listing.auction_listing not in watchlist %}
-            <p><a href="{% url 'watchlist' listing.id %}">Add to your watchlist</a></p>
+            <p><a href="{% url 'watchlistadd' listing.id %}">Add to your watchlist</a></p>
         {% else %}
             <p><a href="{% url 'watchlistremove' listing.id %}">Remove from your watchlist</a></p>
         {% endif %}
@@ -23,8 +24,11 @@
             <input type="submit">
         </form>
 
+        {% if auction_user.id is user.id %}
+            <p><a href="{% url 'close' listing.id %}">Close this auction</a></p>
+        {% endif %}
     {% else %}
-        <p>This auction is no longer active</p>
+        <h2>This auction is closed</h2>
+        <h3>The Winner is "{{ high_bid_user.username }}" with a bid of ${{ listing.high_bid.amount }}</h3>
     {% endif %}
-
 {% endblock %}

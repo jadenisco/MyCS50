@@ -23,6 +23,18 @@ def _active_auctions():
     return active_auctions
 
 
+def close(request, listing_id):
+    user = request.user
+    if user.is_authenticated:
+        listing = Listing.objects.get(pk=listing_id)
+        auction = listing.auction_listing
+        auction.active = False
+        auction.save()
+        return HttpResponseRedirect(reverse("listing", args=(listing_id, )))
+    else:
+        return HttpResponseRedirect(reverse("login"))
+
+
 def bid(request, listing_id):
     user = request.user
     if user.is_authenticated:
@@ -33,10 +45,7 @@ def bid(request, listing_id):
         listing.high_bid = bid
         listing.save()
         auction.bids.add(bid)
-        return render(request, "auctions/listing.html", {
-            "listing": listing,
-            "watchlist": user.watch_list.all()
-        })
+        return HttpResponseRedirect(reverse("listing", args=(listing_id, )))
     else:
         return HttpResponseRedirect(reverse("login"))
 
@@ -45,29 +54,20 @@ def watchlistremove(request, listing_id):
     user = request.user
     if user.is_authenticated:
         listing = Listing.objects.get(pk=listing_id)
-        if listing.auction_listing not in user.watch_list.all():
-            user.watch_list.add(listing.auction_listing)
-        else:
+        if listing.auction_listing in user.watch_list.all():
             user.watch_list.remove(listing.auction_listing)
-        return render(request, "auctions/listing.html", {
-            "listing": listing,
-            "watchlist": user.watch_list.all()
-        })
+        return HttpResponseRedirect(reverse("listing", args=(listing_id, )))
     else:
         return HttpResponseRedirect(reverse("login"))
 
 
-def watchlist(request, listing_id):
+def watchlistadd(request, listing_id):
     user = request.user
     if user.is_authenticated:
         listing = Listing.objects.get(pk=listing_id)
-        watch_list = user.watch_list.all()
-        if listing.auction_listing not in watch_list:
+        if listing.auction_listing not in user.watch_list.all():
             user.watch_list.add(listing.auction_listing)
-        return render(request, "auctions/listing.html", {
-            "listing": listing,
-            "watchlist": watch_list
-        })
+        return HttpResponseRedirect(reverse("listing", args=(listing_id, )))
     else:
         return HttpResponseRedirect(reverse("login"))
 
@@ -76,11 +76,15 @@ def listing(request, listing_id):
     user = request.user
     if user.is_authenticated:
         listing = Listing.objects.get(pk=listing_id)
-
+        auction = listing.auction_listing
+        auction_user = User.objects.get(pk=auction.user_id)
+        high_bid_user = User.objects.get(pk=listing.high_bid.user_id)
         return render(request, "auctions/listing.html", {
-            "min_bid": listing.high_bid.amount + 1,
+            "auction_user": auction_user,
             "listing": listing,
-            "watchlist": user.watch_list.all()
+            "watchlist": user.watch_list.all(),
+            "min_bid": listing.high_bid.amount + 1,
+            "high_bid_user": high_bid_user
         })
     else:
         return HttpResponseRedirect(reverse("login"))
@@ -100,7 +104,7 @@ def create(request):
                 bid = Bid(user_id=user.id, amount=float(form.data["bid"]))
                 bid.save()
 
-                listing = Listing(username=user.get_username(), title=form.data["title"],
+                listing = Listing(title=form.data["title"],
                                   description=form.data["description"],
                                   high_bid=bid)
                 ctg = form.data['category']
@@ -111,7 +115,7 @@ def create(request):
                 if ctg != '':
                     listing.category.add(Category.objects.get(id=int(ctg)))
 
-                auction = Auction(listing=listing)
+                auction = Auction(user_id=user.id, listing=listing)
                 auction.save()
                 auction.bids.add(bid)
 

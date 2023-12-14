@@ -24,7 +24,7 @@
             <h4>{{ listing.high_bid.amount }}</h4>
         {% endfor %}
 
-        <h3>Auctions</h3>
+        <h3>My Auctions</h3>
         {% for auction in auctions %}
             <div><a href="{{ auction.listing.id }}">
                 {% if auction.listing.image is not '' %}
@@ -33,6 +33,7 @@
                 <h4>{{ auction.listing.title }}</h4>
                 <p>{{ auction.listing.description }}</p>
                 <h4>{{ auction.listing.high_bid.amount }}</h4>
+
                 {% if auction.active is True %}
                     <p>This auction is ACTIVE</p>
                 {% else %}

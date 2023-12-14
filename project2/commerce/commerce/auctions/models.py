@@ -26,7 +26,6 @@ class Bid(models.Model):
 
 
 class Listing(models.Model):
-    username = models.CharField(max_length=100)
     title = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
     image = models.URLField(blank=True)
@@ -39,6 +38,7 @@ class Listing(models.Model):
 
 
 class Auction(models.Model):
+    user_id = models.IntegerField()
     listing = models.OneToOneField(Listing, on_delete=models.CASCADE, related_name="auction_listing")
     bids = models.ManyToManyField(Bid, blank=True, related_name="auction_bids")
     active = models.BooleanField(default=True)
