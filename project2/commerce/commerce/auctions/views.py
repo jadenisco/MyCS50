@@ -73,7 +73,13 @@ def bid(request, listing_id):
 
 
 def watchlist(request):
-    print("watchlist")
+    user = request.user
+    if user.is_authenticated:
+        return render(request,"auctions/watchlist.html", {
+                        "watchlist" : user.watch_list.all()}
+                    )
+    else:
+        return HttpResponseBadRequest("Bad Request: Invalid Form")
 
 
 def watchlistremove(request, listing_id):
