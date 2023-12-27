@@ -11,6 +11,7 @@ class Category(models.Model):
 
 
 class Comment(models.Model):
+    username = models.CharField(max_length=64)
     comment = models.CharField(max_length=64)
 
     def __str__(self):

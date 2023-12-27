@@ -11,6 +11,10 @@
         <p>High Bid ${{ listing.high_bid.amount }}</p>
         <p>This auction is from {{ auction_user.username }}</p>
 
+        {% if auction_user.id is user.id %}
+            <p><a href="{% url 'close' listing.id %}">Close this auction</a></p>
+        {% endif %}
+
         {% if listing.auction_listing not in watchlist %}
             <p><a href="{% url 'watchlistadd' listing.id %}">Add to your watchlist</a></p>
         {% else %}
@@ -24,11 +28,22 @@
             <input type="submit">
         </form>
 
-        {% if auction_user.id is user.id %}
-            <p><a href="{% url 'close' listing.id %}">Close this auction</a></p>
-        {% endif %}
-    {% else %}
-        <h2>This auction is closed</h2>
-        <h3>The Winner is "{{ high_bid_user.username }}" with a bid of ${{ listing.high_bid.amount }}</h3>
+        <form action="{% url 'comment' listing.id %}" method="post">
+            {% csrf_token %}
+            <table>
+                {{ commentform }}
+            </table>
+        <input type="submit" value="Comment">
+        </form>
+
+        {% for cmt in listing.comments.all %}
+            <h2>Comments:</h2>
+            <h3>Comment by {{ cmt.username }}</h3>
+            {{ cmt.comment }}
+        {% endfor %}
+
+        {% else %}
+            <h2>This auction is closed</h2>
+            <h3>The Winner is "{{ high_bid_user.username }}" with a bid of ${{ listing.high_bid.amount }}</h3>
     {% endif %}
 {% endblock %}

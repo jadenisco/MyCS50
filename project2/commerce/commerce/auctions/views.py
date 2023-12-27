@@ -15,6 +15,10 @@ class ListingForm(forms.Form):
     image = forms.ImageField(label="Image", required=False, widget=forms.URLInput)
 
 
+class CommentForm(forms.Form):
+    comment = forms.CharField(label="Comment", widget=forms.Textarea(attrs={'rows':4, 'cols':15}))
+
+
 def _active_auctions():
     active_auctions = []
     for a in Auction.objects.all():
@@ -35,6 +39,24 @@ def close(request, listing_id):
         return HttpResponseRedirect(reverse("login"))
 
 
+def comment(request, listing_id):
+    user = request.user
+    if user.is_authenticated:
+        form = CommentForm(request.POST)
+        if form.is_valid:
+            comment = Comment(username=user.username, comment=form.data['comment'])
+            comment.save()   
+            listing = Listing.objects.get(pk=listing_id)
+            listing.comments.add(comment)
+            listing.save()
+
+            return HttpResponseRedirect(reverse("listing", args=(listing_id, )))
+        else:
+            return HttpResponseBadRequest("Bad Request: Invalid Form")
+    else:
+        return HttpResponseRedirect(reverse("login"))
+
+
 def bid(request, listing_id):
     user = request.user
     if user.is_authenticated:
@@ -48,6 +70,10 @@ def bid(request, listing_id):
         return HttpResponseRedirect(reverse("listing", args=(listing_id, )))
     else:
         return HttpResponseRedirect(reverse("login"))
+
+
+def watchlist(request):
+    print("watchlist")
 
 
 def watchlistremove(request, listing_id):
@@ -79,12 +105,14 @@ def listing(request, listing_id):
         auction = listing.auction_listing
         auction_user = User.objects.get(pk=auction.user_id)
         high_bid_user = User.objects.get(pk=listing.high_bid.user_id)
+        commentform = CommentForm()
         return render(request, "auctions/listing.html", {
             "auction_user": auction_user,
             "listing": listing,
             "watchlist": user.watch_list.all(),
             "min_bid": listing.high_bid.amount + 1,
-            "high_bid_user": high_bid_user
+            "high_bid_user": high_bid_user,
+            "commentform": commentform
         })
     else:
         return HttpResponseRedirect(reverse("login"))
