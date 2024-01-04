@@ -19,6 +19,13 @@ class CommentForm(forms.Form):
     comment = forms.CharField(label="Comment", widget=forms.Textarea(attrs={'rows':4, 'cols':15}))
 
 
+class CategoryForm(forms.Form):
+        colors = forms.ModelChoiceField(label="Category",
+                                    required=False,
+                                    widget=forms.CheckboxSelectMultiple,
+                                    queryset=Category.objects.all())
+
+
 def _active_auctions():
     active_auctions = []
     for a in Auction.objects.all():
@@ -161,22 +168,51 @@ def create(request):
     else:
         return HttpResponseRedirect(reverse("login"))
 
+class SimpleForm(forms.Form):
+    colors = forms.MultipleChoiceField(
+        required = True,
+        widget = forms.CheckboxSelectMultiple,
+        choices = [('1','red'),('2','green'),('3','blue')]
+    )
+
+class SimpleForm2(forms.Form):
+    colors = forms.ModelMultipleChoiceField(widget = forms.CheckboxSelectMultiple,
+                                            queryset=Category.objects.all())
 
 def index(request):
     user = request.user
-    if user.is_authenticated:
-        return render(request,"auctions/index.html", {
-                                "authenticated": True,
-                                "all": _active_auctions(),
-                                "bids" : user.user_bids.all(),
-                                "auctions" : user.auctions.all()}
-                       )
+    if request.method == 'POST':
+        form = SimpleForm2(request.POST)
+        if form.is_valid():
+            print(form.changed_data)
+            if form.changed_data:
+                print(form.cleaned_data)
+                cdc = form.cleaned_data
+                print(cdc)
+                print(cdc['colors'])
+                print(form.fields['colors'].choices)
+                return render(request,"auctions/scratch.html", {
+                                                            "form": form,
+                                                            "authenticated": True,
+                                                            })
+        else:
+            return render(request,"auctions/scratch.html", {
+                                                            "form": form,
+                                                            "authenticated": True,
+                                                            })
     else:
-        return render(request,"auctions/index.html", {
-                                "authenticated": False,
-                                "all": _active_auctions(),
-                                "bids" : None,
-                                "auctions" : None})
+        form = SimpleForm2()
+        if user.is_authenticated:
+            return render(request,"auctions/scratch.html", {
+                                    "form": form,
+                                    "authenticated": True})
+        else:
+            return render(request,"auctions/index.html", {
+                                    "categories": form,   
+                                    "authenticated": False,
+                                    "all": _active_auctions(),
+                                    "bids" : None,
+                                    "auctions" : None})
 
 
 def login_view(request):

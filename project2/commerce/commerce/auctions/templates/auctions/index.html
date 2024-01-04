@@ -3,6 +3,13 @@
 {% block body %}
     {% if authenticated %}
         <h2>Active Listings</h2>
+        <form action="{% url 'index' %}" method="post">
+            {% csrf_token %}
+            <h2>Categories</h2>
+            {{ form.categories }}
+            <input type="submit" value="Submit">
+        </form>
+
         {% for auction in all %}
             <div><a href="{{ auction.listing.id }}">
                 {% if listing.image is not '' %}
