@@ -14,17 +14,23 @@ class ListingForm(forms.Form):
     category = forms.ModelChoiceField(label="Category", required=False, queryset=Category.objects.all())
     image = forms.ImageField(label="Image", required=False, widget=forms.URLInput)
 
-
 class CommentForm(forms.Form):
     comment = forms.CharField(label="Comment", widget=forms.Textarea(attrs={'rows':4, 'cols':15}))
 
-
 class CategoryForm(forms.Form):
-        colors = forms.ModelChoiceField(label="Category",
-                                    required=False,
-                                    widget=forms.CheckboxSelectMultiple,
-                                    queryset=Category.objects.all())
+        categories = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+                                                    queryset=Category.objects.all())
 
+class SimpleForm(forms.Form):
+    colors = forms.MultipleChoiceField(
+        required = True,
+        widget = forms.CheckboxSelectMultiple,
+        choices = [('1','red'),('2','green'),('3','blue')]
+    )
+
+class SimpleForm2(forms.Form):
+    colors = forms.ModelMultipleChoiceField(widget = forms.CheckboxSelectMultiple,
+                                            queryset=Category.objects.all())
 
 def _active_auctions():
     active_auctions = []
@@ -168,44 +174,39 @@ def create(request):
     else:
         return HttpResponseRedirect(reverse("login"))
 
-class SimpleForm(forms.Form):
-    colors = forms.MultipleChoiceField(
-        required = True,
-        widget = forms.CheckboxSelectMultiple,
-        choices = [('1','red'),('2','green'),('3','blue')]
-    )
-
-class SimpleForm2(forms.Form):
-    colors = forms.ModelMultipleChoiceField(widget = forms.CheckboxSelectMultiple,
-                                            queryset=Category.objects.all())
 
 def index(request):
     user = request.user
     if request.method == 'POST':
-        form = SimpleForm2(request.POST)
+        form = CategoryForm(request.POST)
         if form.is_valid():
+            # Get the listings in this category
             print(form.changed_data)
             if form.changed_data:
                 print(form.cleaned_data)
-                cdc = form.cleaned_data
-                print(cdc)
-                print(cdc['colors'])
-                print(form.fields['colors'].choices)
+                categories_selected = form.cleaned_data['categories']
+                print(categories_selected)
+                # Get a list of all the auctions with the selected categories
+                # print(cdc['colors'])
+                # print(form.fields['colors'].choices)
                 return render(request,"auctions/scratch.html", {
                                                             "form": form,
                                                             "authenticated": True,
                                                             })
         else:
-            return render(request,"auctions/scratch.html", {
+            return render(request,"auctions/index.html", {
                                                             "form": form,
                                                             "authenticated": True,
                                                             })
     else:
-        form = SimpleForm2()
+        category_form = CategoryForm()
         if user.is_authenticated:
-            return render(request,"auctions/scratch.html", {
-                                    "form": form,
-                                    "authenticated": True})
+            return render(request,"auctions/index.html", {
+                                    "category_form": category_form,
+                                    "authenticated": True,
+                                    "all": _active_auctions(),
+                                    "bids": None,
+                                    "auctions": None})
         else:
             return render(request,"auctions/index.html", {
                                     "categories": form,   

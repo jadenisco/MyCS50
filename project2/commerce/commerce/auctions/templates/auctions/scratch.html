@@ -5,8 +5,7 @@
         <h2>Active Listings</h2>
         <form action="{% url 'index' %}" method="post">
             {% csrf_token %}
-            <h2>Categories</h2>
-            {{ form.colors }}
+            {{ category_form.categories }}
             <input type="submit" value="Submit">
         </form>
     {% endif %}    
