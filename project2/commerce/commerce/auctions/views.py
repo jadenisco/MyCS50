@@ -32,7 +32,7 @@ class SimpleForm2(forms.Form):
     colors = forms.ModelMultipleChoiceField(widget = forms.CheckboxSelectMultiple,
                                             queryset=Category.objects.all())
 
-def _active_auctions():
+def _active_auctions(categories=None):
     active_auctions = []
     for a in Auction.objects.all():
         if a.active:
@@ -178,42 +178,41 @@ def create(request):
 def index(request):
     user = request.user
     if request.method == 'POST':
-        form = CategoryForm(request.POST)
-        if form.is_valid():
+        category_form = CategoryForm(request.POST)
+        if category_form.is_valid():
             # Get the listings in this category
-            print(form.changed_data)
-            if form.changed_data:
-                print(form.cleaned_data)
-                categories_selected = form.cleaned_data['categories']
+            print(category_form.changed_data)
+            if category_form.changed_data:
+                print(category_form.cleaned_data)
+                categories_selected = category_form.cleaned_data['categories']
                 print(categories_selected)
                 # Get a list of all the auctions with the selected categories
                 # print(cdc['colors'])
                 # print(form.fields['colors'].choices)
-                return render(request,"auctions/scratch.html", {
-                                                            "form": form,
-                                                            "authenticated": True,
-                                                            })
+
+            # use categories here
+            all = _active_auctions()
         else:
-            return render(request,"auctions/index.html", {
-                                                            "form": form,
-                                                            "authenticated": True,
-                                                            })
+            category_form = CategoryForm()
+            all = _active_auctions()
     else:
         category_form = CategoryForm()
-        if user.is_authenticated:
-            return render(request,"auctions/index.html", {
-                                    "category_form": category_form,
-                                    "authenticated": True,
-                                    "all": _active_auctions(),
-                                    "bids": None,
-                                    "auctions": None})
-        else:
-            return render(request,"auctions/index.html", {
-                                    "categories": form,   
-                                    "authenticated": False,
-                                    "all": _active_auctions(),
-                                    "bids" : None,
-                                    "auctions" : None})
+        all = _active_auctions()
+
+    if user.is_authenticated:
+        return render(request,"auctions/index.html", {
+                                "category_form": category_form,
+                                "authenticated": True,
+                                "all": all,
+                                "bids": None,
+                                "auctions": None})
+    else:
+        return render(request,"auctions/index.html", {
+                                "categories": category_form,   
+                                "authenticated": False,
+                                "all": all,
+                                "bids" : None,
+                                "auctions" : None})
 
 
 def login_view(request):
