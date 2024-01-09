@@ -30,7 +30,7 @@ class Listing(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
     image = models.URLField(blank=True)
-    category = models.ManyToManyField(Category, blank=True, related_name="category_listings")
+    categories = models.ManyToManyField(Category, blank=True, related_name="listing_categories")
     comments  = models.ManyToManyField(Comment, blank=True,related_name="comments")
     high_bid = models.OneToOneField(Bid, on_delete=models.CASCADE, related_name="high_bid")
 

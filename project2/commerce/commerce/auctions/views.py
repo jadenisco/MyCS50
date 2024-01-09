@@ -33,10 +33,15 @@ class SimpleForm2(forms.Form):
                                             queryset=Category.objects.all())
 
 def _active_auctions(categories=None):
-    active_auctions = []
+    active_auctions = set()
     for a in Auction.objects.all():
         if a.active:
-            active_auctions.append(a)
+            if categories:
+                for c in categories.all():
+                    if c in a.listing.categories.all():
+                        active_auctions.add(a)
+            else:
+                active_auctions.add(a)
     return active_auctions
 
 
@@ -160,7 +165,7 @@ def create(request):
                     listing.image = img
                 listing.save()
                 if ctg != '':
-                    listing.category.add(Category.objects.get(id=int(ctg)))
+                    listing.categories.add(Category.objects.get(id=int(ctg)))
 
                 auction = Auction(user_id=user.id, listing=listing)
                 auction.save()
@@ -180,20 +185,12 @@ def index(request):
     if request.method == 'POST':
         category_form = CategoryForm(request.POST)
         if category_form.is_valid():
-            # Get the listings in this category
-            print(category_form.changed_data)
             if category_form.changed_data:
-                print(category_form.cleaned_data)
                 categories_selected = category_form.cleaned_data['categories']
-                print(categories_selected)
-                # Get a list of all the auctions with the selected categories
-                # print(cdc['colors'])
-                # print(form.fields['colors'].choices)
-
-            # use categories here
-            all = _active_auctions()
+                all = _active_auctions(categories_selected)
+            else:
+                all = _active_auctions()
         else:
-            category_form = CategoryForm()
             all = _active_auctions()
     else:
         category_form = CategoryForm()
