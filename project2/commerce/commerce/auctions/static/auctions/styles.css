@@ -1,5 +1,24 @@
-body {
+h1 {
+    padding-bottom: 5px;
+    color: darkblue
+}
+
+.site-body {
     padding: 20px;
+    background-color: ghostwhite;
+}
+
+.site-wrapper {
+    background-color: inherit;
+    padding: 10px;
+}
+
+.site-header {
+    background-color: inherit;
+}
+
+.signed-in {
+    padding-bottom: 2px;
 }
 
 img {
