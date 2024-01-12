@@ -1,66 +1,45 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    {% if authenticated %}
-        <h2>Active Listings</h2>
-        <form action="{% url 'index' %}" method="post">
-            {% csrf_token %}
-            <h2>Categories</h2>
-            {{ category_form.categories }}
-            <input type="submit" value="Submit">
-        </form>
+    <main class="site-main">
+    <div class="site-content">
 
-        {% for auction in all %}
-            <div><a href="{{ auction.listing.id }}">
-                {% if listing.image is not '' %}
-                    <img src="{{ auction.listing.image }}"/>
-                {% endif %}
-                <h3>{{ auction.listing.title }}</h3>
-                <p>{{ auction.listing.description }}</p>
-                <h4>{{ auction.listing.high_bid.amount }}</h4>
-            </a></div>
-        {% endfor %}
-        
-        <h3>Bids</h3>
-        {% for listing in bids %}
-            {% if listing.image is not '' %}
-                <img src="{{ listing.image }}"/>
-            {% endif %}
-            <h2>{{ listing.title }}</h3>
-            <p>{{ listing.description }}</p>
-            <h4>{{ listing.high_bid.amount }}</h4>
-        {% endfor %}
+        {% if authenticated %}
+            <h2>Listings</h2>
+                <form action="{% url 'index' %}" method="post">
+                    {% csrf_token %}
+                    <h3>Categories</h3>
+                    {{ category_form.categories }}
+                    <input type="submit" value="Submit">
+                </form>
 
-        <h3>My Auctions</h3>
-        {% for auction in auctions %}
-            <div><a href="{{ auction.listing.id }}">
-                {% if auction.listing.image is not '' %}
-                    <img src="{{ auction.listing.image }}"/>
-                {% endif %}
-                <h4>{{ auction.listing.title }}</h4>
-                <p>{{ auction.listing.description }}</p>
-                <h4>{{ auction.listing.high_bid.amount }}</h4>
-
-                {% if auction.active is True %}
-                    <p>This auction is ACTIVE</p>
-                {% else %}
-                    <p>This auction is NOT ACTIVE</p>
-                {% endif %}
-            </a></div>
-        {% endfor %}
-
-    {% else %}
-        <h2>Active Listings</h2>
-        {% for auction in all %}
-            <div><a href="{{ auction.listing.id }}">
-                {% if listing.image is not '' %}
-                    <img src="{{ auction.listing.image }}"/>
-                {% endif %}
-                <h3>{{ auction.listing.title }}</h3>
-                <p>{{ auction.listing.description }}</p>
-                <h4>{{ auction.listing.high_bid.amount }}</h4>
-            </a></div>
-        {% endfor %}
-    {% endif %}
+            {% for auction in all %}
+                <div><a href="{{ auction.listing.id }}">
+                    {% if listing.image is not '' %}
+                        <img src="{{ auction.listing.image }}"/>
+                    {% endif %}
+                    <h3>{{ auction.listing.title }}</h3>
+                    <p>{{ auction.listing.description }}</p>
+                    <h4>{{ auction.listing.high_bid.amount }}</h4>
+                    <h4>Listing (Auction) Owner ?</h4>
+                    <h4>If my auction is it active</h4>
+                    <h4>My Bid ?</h4>
+                </a></div>
+            {% endfor %}
+        {% else %}
+            <h2>Listings</h2>
+            {% for auction in all %}
+                <div><a href="{{ auction.listing.id }}">
+                    {% if listing.image is not '' %}
+                        <img src="{{ auction.listing.image }}"/>
+                    {% endif %}
+                    <h3>{{ auction.listing.title }}</h3>
+                    <p>{{ auction.listing.description }}</p>
+                    <h4>{{ auction.listing.high_bid.amount }}</h4>
+                </a></div>
+            {% endfor %}
+        {% endif %}
+    </div><!-- site-content -->
+    </main><!-- site-main -->
 
 {% endblock %}

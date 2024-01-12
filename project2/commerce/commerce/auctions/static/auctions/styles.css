@@ -3,6 +3,12 @@ h1 {
     color: darkblue
 }
 
+h2 {
+    padding-bottom: 5px;
+    color: darkblue
+}
+
+
 .site-body {
     padding: 20px;
     background-color: ghostwhite;
@@ -15,6 +21,24 @@ h1 {
 
 .site-header {
     background-color: inherit;
+}
+
+.site-main {
+    background-color: inherit;
+}
+
+.site-content {
+    padding-bottom: 20px;
+}
+
+.categories {
+    display: flex;
+}
+
+#id_categories * {
+    display: flex;
+    padding-bottom: 5px;
+    margin: 2px;
 }
 
 .signed-in {

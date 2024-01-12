@@ -18,7 +18,7 @@ class CommentForm(forms.Form):
     comment = forms.CharField(label="Comment", widget=forms.Textarea(attrs={'rows':4, 'cols':15}))
 
 class CategoryForm(forms.Form):
-        categories = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+        categories = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(attrs={"class": "categories"}),
                                                     queryset=Category.objects.all())
 
 class SimpleForm(forms.Form):
@@ -198,18 +198,14 @@ def index(request):
 
     if user.is_authenticated:
         return render(request,"auctions/index.html", {
-                                "category_form": category_form,
                                 "authenticated": True,
-                                "all": all,
-                                "bids": None,
-                                "auctions": None})
+                                "category_form": category_form,
+                                "all": all})
     else:
         return render(request,"auctions/index.html", {
-                                "categories": category_form,   
                                 "authenticated": False,
-                                "all": all,
-                                "bids" : None,
-                                "auctions" : None})
+                                "categories": category_form,   
+                                "all": all})
 
 
 def login_view(request):
