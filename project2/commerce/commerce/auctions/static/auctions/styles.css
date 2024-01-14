@@ -4,7 +4,6 @@ h1 {
 }
 
 h2 {
-    padding-bottom: 5px;
     color: darkblue
 }
 
@@ -31,13 +30,28 @@ h2 {
     padding-bottom: 20px;
 }
 
+.category_header {
+    display: flex;
+    align-items: center;
+}
+
+.category_h4 {
+    padding-right: 5px;
+    padding-top: 5px;
+}
+
+
+.category_form {
+    background-color: inherit;
+    padding-left: 10px;
+}
+
 .categories {
     display: flex;
 }
 
 #id_categories * {
     display: flex;
-    padding-bottom: 5px;
     margin: 2px;
 }
 
