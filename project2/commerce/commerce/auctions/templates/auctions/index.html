@@ -19,31 +19,12 @@
             <hr>
 
             {% for auction in all %}
-                <h3 style="color: darkblue">{{ auction.listing.title }}</h3>
-                <div><a href="{{ auction.listing.id }}">
-                    <div class="auction_listing">
-                        {% if listing.image is not '' %}
-                            <img src="{{ auction.listing.image }}"/>
-                        {% endif %}
-                        <p>{{ auction.listing.description }}</p>
-                        <h5>High Bid: ${{ auction.listing.high_bid.amount }}</h5>
-                        {% if user.id == auction.listing.high_bid.user_id %}
-                            <p>You currently have the high bid!</p>
-                        {% endif %}
-                    </div>
-                </a></div>
+                {% include "auctions/listing_summary.html" %}
             {% endfor %}
         {% else %}
             <h2>Listings</h2>
             {% for auction in all %}
-                <div><a href="{{ auction.listing.id }}">
-                    {% if listing.image is not '' %}
-                        <img src="{{ auction.listing.image }}"/>
-                    {% endif %}
-                    <h3>{{ auction.listing.title }}</h3>
-                    <p>{{ auction.listing.description }}</p>
-                    <h4>{{ auction.listing.high_bid.amount }}</h4>
-                </a></div>
+                {% include "auctions/listing_summary.html" %}
             {% endfor %}
         {% endif %}
     </div><!-- site-content -->
