@@ -55,10 +55,16 @@ h2 {
     margin: 2px;
 }
 
+.auction_listing {
+    padding-left: 10px;
+    color: black;
+}
+
 .signed-in {
     padding-bottom: 2px;
 }
 
 img {
     height: 100px;
+    padding-bottom: 10px;
 }

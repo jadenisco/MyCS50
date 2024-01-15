@@ -18,18 +18,19 @@
             </div>
             <hr>
 
-
             {% for auction in all %}
+                <h3 style="color: darkblue">{{ auction.listing.title }}</h3>
                 <div><a href="{{ auction.listing.id }}">
-                    {% if listing.image is not '' %}
-                        <img src="{{ auction.listing.image }}"/>
-                    {% endif %}
-                    <h3>{{ auction.listing.title }}</h3>
-                    <p>{{ auction.listing.description }}</p>
-                    <h4>{{ auction.listing.high_bid.amount }}</h4>
-                    <h4>Listing (Auction) Owner ?</h4>
-                    <h4>If my auction is it active</h4>
-                    <h4>My Bid ?</h4>
+                    <div class="auction_listing">
+                        {% if listing.image is not '' %}
+                            <img src="{{ auction.listing.image }}"/>
+                        {% endif %}
+                        <p>{{ auction.listing.description }}</p>
+                        <h5>High Bid: ${{ auction.listing.high_bid.amount }}</h5>
+                        {% if user.id == auction.listing.high_bid.user_id %}
+                            <p>You currently have the high bid!</p>
+                        {% endif %}
+                    </div>
                 </a></div>
             {% endfor %}
         {% else %}
