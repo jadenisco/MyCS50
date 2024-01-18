@@ -1,14 +1,11 @@
 <h3 style="color: darkblue">{{ auction.listing.title }}</h3>
-<div><a href="{{ auction.listing.id }}">
-    <div class="auction_listing">
-        {% if listing.image is not '' %}
-            <img src="{{ auction.listing.image }}"/>
-        {% endif %}
-        <p>{{ auction.listing.description }}</p>
-        <h5>High Bid: ${{ auction.listing.high_bid.amount }}</h5>
-        {% if user.id == auction.listing.high_bid.user_id %}
-            <p>You currently have the high bid!</p>
-        {% endif %}
-        <p style="color: darkblue">More Details....</p>
-    </div>
-</a></div>
+<div class="auction_listing">
+    {% if listing.image is not '' %}
+        <img src="{{ auction.listing.image }}"/>
+    {% endif %}
+    <p>{{ auction.listing.description }}</p>
+    <h5>High Bid: ${{ auction.listing.high_bid.amount }}</h5>
+    {% if user.id == auction.listing.high_bid.user_id %}
+        <p>You currently have the high bid!</p>
+    {% endif %}
+</div>

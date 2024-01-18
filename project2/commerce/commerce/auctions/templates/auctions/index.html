@@ -17,17 +17,25 @@
                 </form>
             </div>
             <hr>
-
             {% for auction in all %}
-                {% include "auctions/listing_summary.html" %}
-            {% endfor %}
-        {% else %}
+                <div><a href="{{ auction.listing.id }}">
+                    {% include "auctions/listing_summary.html" %}
+                    <div class="auction_listing">
+                        <p style="color: darkblue">More Details....</p>
+                    </div>
+                </a></div>
+                {% endfor %}
+            {% else %}
             <h2>Listings</h2>
             {% for auction in all %}
-                {% include "auctions/listing_summary.html" %}
+                <div><a href="{{ auction.listing.id }}">
+                    {% include "auctions/listing_summary.html" %}
+                    <div class="auction_listing">
+                        <p style="color: darkblue">More Details....</p>
+                    </div>
+                </a></div>
             {% endfor %}
         {% endif %}
     </div><!-- site-content -->
     </main><!-- site-main -->
-
 {% endblock %}

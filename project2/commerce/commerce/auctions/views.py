@@ -15,7 +15,7 @@ class ListingForm(forms.Form):
     image = forms.ImageField(label="Image", required=False, widget=forms.URLInput)
 
 class CommentForm(forms.Form):
-    comment = forms.CharField(label="Comment", widget=forms.Textarea(attrs={'rows':4, 'cols':15}))
+    comment = forms.CharField(label="", widget=forms.Textarea(attrs={'rows':5, 'cols':40}))
 
 class CategoryForm(forms.Form):
         categories = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(attrs={"class": "categories"}),
@@ -131,6 +131,7 @@ def listing(request, listing_id):
         high_bid_user = User.objects.get(pk=listing.high_bid.user_id)
         commentform = CommentForm()
         return render(request, "auctions/listing.html", {
+            "auction": auction,
             "auction_user": auction_user,
             "listing": listing,
             "watchlist": user.watch_list.all(),
