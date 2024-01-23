@@ -3,7 +3,6 @@
 {% block body %}
     <main class="site-main">
     <div class="site-content">
-
         {% if authenticated %}
             <h2>Listings</h2>
             <div class="category_form">
@@ -24,9 +23,20 @@
                         <p style="color: darkblue">More Details....</p>
                     </div>
                 </a></div>
-                {% endfor %}
-            {% else %}
+            {% endfor %}
+        {% else %}
             <h2>Listings</h2>
+            <div class="category_form">
+                <form action="{% url 'index' %}" method="post">
+                    <div class="category_header">
+                        <h4 class="category_h4">Categories</h4>
+                        <input type="submit" value="Select">
+                    </div>
+                    {% csrf_token %}
+                    {{ category_form.categories }}
+                </form>
+            </div>
+            <hr>
             {% for auction in all %}
                 <div><a href="{{ auction.listing.id }}">
                     {% include "auctions/listing_summary.html" %}

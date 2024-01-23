@@ -1,19 +1,22 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    {% if watchlist  %}
-        <h1> My Watchlist </h1>
-        {% for auction in watchlist %}
-            <div><a href="{{ auction.listing.id }}">
-                {% if listing.image is not '' %}
-                    <img src="{{ auction.listing.image }}"/>
-                {% endif %}
-                <h3>{{ auction.listing.title }}</h3>
-                <p>{{ auction.listing.description }}</p>
-                <h4>{{ auction.listing.high_bid.amount }}</h4>
-            </a></div>
-        {% endfor %}
-    {% else %}
-        <h1>My Watchlist is Empty</h1>
-    {% endif %}
+    <main class="site-main">
+    <div class="site-content">
+        {% if watchlist  %}
+            <h2> My Watchlist </h2>
+            <hr>
+            {% for auction in watchlist %}
+                <div><a href="{{ auction.listing.id }}">
+                    {% include "auctions/listing_summary.html" %}
+                    <div class="auction_listing">
+                        <p style="color: darkblue">More Details....</p>
+                    </div>
+                </a></div>
+            {% endfor %}
+        {% else %}
+            <h3 style="color: darkblue">Watchlist is Empty</h3>
+        {% endif %}
+    </div><!-- site-content -->
+    </main><!-- site-main -->
 {% endblock %}

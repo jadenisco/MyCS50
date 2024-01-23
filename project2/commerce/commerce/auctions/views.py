@@ -205,7 +205,7 @@ def index(request):
     else:
         return render(request,"auctions/index.html", {
                                 "authenticated": False,
-                                "categories": category_form,   
+                                "category_form": category_form,   
                                 "all": all})
 
 
