@@ -24,14 +24,19 @@
 - Take button types from bootstrap
 - Cleanup and add asthetics
 
-# Project3
+## Project3
 
 - Copy downloaded files to project3 directory
 - Commit
 - Delete all files
-- execute 'django-admin startproject project3'
+- Execute 'django-admin startproject project3'
 - Look at diffs, except for mail directory
-- commit
+- Commit
   - Will need to add mail to INSTALLED_APPS in settings.py
   - Will need to add path('', include('mail.urls')) to urls.py
-- 
+- Delete mail directory
+- Execute 'python manage.py startapp mail'
+- Look at diffs
+- Carefully restore mail files
+- commit
+
