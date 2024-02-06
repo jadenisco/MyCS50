@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .models import User, Email
 
-'''
+
 def index(request):
 
     # Authenticated users view their inbox
@@ -21,6 +21,7 @@ def index(request):
         return HttpResponseRedirect(reverse("login"))
 
 
+'''
 @csrf_exempt
 @login_required
 def compose(request):
@@ -146,12 +147,10 @@ def login_view(request):
     else:
         return render(request, "mail/login.html")
 
-'''
-# jadfix
+
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
-'''
 
 
 def register(request):
@@ -167,7 +166,6 @@ def register(request):
             })
 
         # Attempt to create new user
-        '''
         try:
             user = User.objects.create_user(email, email, password)
             user.save()
@@ -177,7 +175,6 @@ def register(request):
                 "message": "Email address already taken."
             })
         login(request, user)
-        '''
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "mail/register.html")

@@ -41,4 +41,4 @@
 - commit
 - Add files back, starting with mail/urls.py and mail/views.py
   - Start with register
-  - Maybe create email model
+  - Study js and emails view
