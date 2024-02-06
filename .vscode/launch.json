@@ -6,9 +6,9 @@
     "configurations": [
         {
             "name": "Python: Django",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
-            "cwd": "${workspaceFolder}/project2/commerce/commerce",
+            "cwd": "${workspaceFolder}/project3",
             "program": "manage.py",
             "args": [
                 "runserver"

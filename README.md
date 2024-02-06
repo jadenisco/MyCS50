@@ -22,7 +22,7 @@
 - Work on advanced search
 - Add feel lucky button
 - Take button types from bootstrap
-- Cleanup and add asthetics
+- Cleanup and add aesthetics
 
 ## Project3
 
@@ -39,4 +39,6 @@
 - Look at diffs
 - Carefully restore mail files
 - commit
-
+- Add files back, starting with mail/urls.py and mail/views.py
+  - Start with register
+  - Maybe create email model
