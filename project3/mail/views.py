@@ -21,7 +21,6 @@ def index(request):
         return HttpResponseRedirect(reverse("login"))
 
 
-'''
 @csrf_exempt
 @login_required
 def compose(request):
@@ -126,7 +125,7 @@ def email(request, email_id):
         return JsonResponse({
             "error": "GET or PUT request required."
         }, status=400)
-'''
+
 
 def login_view(request):
     if request.method == "POST":
