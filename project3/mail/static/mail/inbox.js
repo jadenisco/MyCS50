@@ -31,4 +31,11 @@ function load_mailbox(mailbox) {
 
   // Show the mailbox name
   document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
+
+  fetch(`/emails/${mailbox}`)
+  .then(console.log("fetch mailbox: /emails/%s", mailbox))
+  .then(response => response.text())
+  .then(text => {console.log("response text: %s", text)})
+
+
 }
