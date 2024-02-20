@@ -14,28 +14,48 @@
     <div id="emails-view">
     </div>
 
+    <title>Single Page</title>
+    <style>
+        div {
+        display: none;
+    }
+    </style>
+    <script>
+        function showPage(page) {
+            document.querySelectorAll(`div`).forEach(div => {
+                div.style.display = `none`;
+            });
+
+            document.querySelector(`#${page}`).style.display = `block`;
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('button').forEach(button => {
+                button.onclick = function () {
+                    showPage(this.dataset.page);
+                };
+            });
+        });
+    </script>
+
+
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            console.log("DOM Content loaded in Scratch......")
             document.querySelector('form').onsubmit = function() {
-                console.log(this.dataset.form1)
+                console.log("On Submit.....");
             }
         })
         
     </script>
         
     <div id="compose-view">
-        <h3>New Email</h3>
-        <form id="compose-form" data-myform="form1" action="{% url 'compose' %}" method="post">
-            <div class="form-group">
-                From: <input disabled class="form-control" name="from" value="{{ request.user.email }}">
-            </div>
-            <div class="form-group">
-                To: <input id="compose-recipients" name="to" class="form-control">
-            </div>
+        <h3>Compose View</h3>
+        <form id="compose-form" data-myform="form1" action="{% url 'scratch' %}" method="post">
             <div class="form-group">
                 <input class="form-control" id="compose-subject" name="subject" placeholder="Subject">
             </div>
-            <textarea class="form-control" id="compose-body" name="body" placeholder="Body"></textarea>
             <input type="submit" class="btn btn-primary"/>
         </form>
     </div>

@@ -23,6 +23,29 @@ def index(request):
 
 @csrf_exempt
 @login_required
+def scratch(request):
+
+    # Composing a new email must be via POST
+    if request.method == "POST":
+        print("Request Body: {}", request.body)
+
+        # Check recipient emails
+        data = json.loads(request.body)
+        print("Data: {}".format(data))
+        return render(request, "mail/scratch.html")
+    
+    else:
+        # Authenticated users view their inbox
+        if request.user.is_authenticated:
+            return render(request, "mail/scratch.html")
+
+        # Everyone else is prompted to sign in
+        else:
+            return HttpResponseRedirect(reverse("login"))
+
+
+@csrf_exempt
+@login_required
 def compose(request):
 
     # Composing a new email must be via POST

@@ -15,6 +15,33 @@
             ],
             "django": true,
             "justMyCode": true
+        },
+        {
+            "name": "JS",
+            "program": "${workspaceFolder}/project3/mail/static/mail/scratch.js",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
+        },
+        {
+            "type": "chrome",
+            "name": "Open Link 127.0.0.1:8000/",
+            "request": "launch",
+            "url": "http://127.0.0.1:8000/"
+        },
+        {
+            "type": "chrome",
+            "name": "Open Link 127.0.0.1:8000/scratch",
+            "request": "launch",
+            "url": "http://127.0.0.1:8000/scratch"
+        },
+        {
+            "type": "chrome",
+            "name": "Scratch.html",
+            "request": "launch",
+            "file": "${workspaceFolder}/project3/mail/templates/mail/scratch.html",
         }
     ]
 }
