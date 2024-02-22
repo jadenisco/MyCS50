@@ -23,7 +23,7 @@ def index(request):
 
 @csrf_exempt
 @login_required
-def scratch(request):
+def scratch(request, num):
 
     # Composing a new email must be via POST
     if request.method == "POST":
