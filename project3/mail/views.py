@@ -14,7 +14,7 @@ def index(request):
 
     # Authenticated users view their inbox
     if request.user.is_authenticated:
-        return render(request, "mail/inbox.html")
+            return render(request, "mail/inbox.html")
 
     # Everyone else is prompted to sign in
     else:
@@ -32,7 +32,7 @@ def scratch(request):
         # Check recipient emails
         data = json.loads(request.body)
         print("Data: {}".format(data))
-        return render(request, "mail/scratch.html")
+        return JsonResponse({"message": "Email sent successfully."}, status=201)
     
     else:
         # Authenticated users view their inbox

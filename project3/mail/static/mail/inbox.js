@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function compose_email() {
 
+  console.log("compose_email")
   // Show compose view and hide other views
   document.querySelector('#emails-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'block';
@@ -37,4 +38,23 @@ function load_mailbox(mailbox) {
     `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>
     ${text}`
   })
+}
+
+function post_form(event) {
+  console.log("post_form event.target: ")
+  console.log(event.target)
+
+  const formData = new FormData(event.target);
+  const data={}
+  formData.forEach((value, key) => (data[key] = value))
+  console.log(data);
+  fetch("scratch", {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8"
+    }
+  })
+  .then((response) => response.text())
+  .then(text => console.log(text))
 }
