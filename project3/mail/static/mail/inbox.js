@@ -23,6 +23,19 @@ function compose_email() {
   document.querySelector('#compose-body').value = '';
 }
 
+function renderEmailsView(mailbox, emails) {
+  rv = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`
+
+  emails.forEach((email, key) => {
+    console.log("key: %s id: %s", key, email.id);
+    rv += `
+      <h2>${email.id}</h2>
+    `
+  })
+
+  return(rv)
+}
+
 function load_mailbox(mailbox) {
  
   console.log("load_mailbox: %s", mailbox)
@@ -34,15 +47,7 @@ function load_mailbox(mailbox) {
   fetch(`/emails/${mailbox}`)
   .then(response => response.json())
   .then(emails => {
-    console.log("%s", mailbox)
-    emails.forEach((email, key) => {
-      console.log("   " + key + ": "+ email.id);
-      document.querySelector('#emails-view').innerHTML = 
-      `
-      <h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>
-      <h2>${email.id}<h2>
-      `
-    })
+    document.querySelector('#emails-view').innerHTML = renderEmailsView(mailbox, emails)
   })
 }
 
