@@ -32,11 +32,17 @@ function load_mailbox(mailbox) {
 
   console.log("fetch mailbox: /emails/%s", mailbox)
   fetch(`/emails/${mailbox}`)
-  .then(response => response.text())
-  .then(text => {
-    document.querySelector('#emails-view').innerHTML = 
-    `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>
-    ${text}`
+  .then(response => response.json())
+  .then(emails => {
+    console.log("%s", mailbox)
+    emails.forEach((email, key) => {
+      console.log("   " + key + ": "+ email.id);
+      document.querySelector('#emails-view').innerHTML = 
+      `
+      <h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>
+      <h2>${email.id}<h2>
+      `
+    })
   })
 }
 
@@ -48,7 +54,7 @@ function post_form(event) {
   const data={}
   formData.forEach((value, key) => (data[key] = value))
   console.log(data);
-  fetch("scratch", {
+  fetch("emails", {
     method: "POST",
     body: JSON.stringify(data),
     headers: {
