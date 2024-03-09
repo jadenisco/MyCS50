@@ -24,12 +24,17 @@ function compose_email() {
 }
 
 function renderEmailsView(mailbox, emails) {
-  rv = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`
+  rv = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3><hr>`
 
   emails.forEach((email, key) => {
     console.log("key: %s id: %s", key, email.id);
     rv += `
-      <h2>${email.id}</h2>
+    <div class="unread-email">
+      <a href="emails/${email.id}">
+        <b>From:</b> ${email.sender} <b>Subject:</b> ${email.subject} <b>Time:</b> ${email.timestamp}
+      </a>
+    </div>
+    <hr>
     `
   })
 
@@ -43,7 +48,6 @@ function load_mailbox(mailbox) {
   document.querySelector('#emails-view').style.display = 'block';
   document.querySelector('#compose-view').style.display = 'none';
 
-  console.log("fetch mailbox: /emails/%s", mailbox)
   fetch(`/emails/${mailbox}`)
   .then(response => response.json())
   .then(emails => {
