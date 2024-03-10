@@ -2,10 +2,24 @@ textarea {
     min-height: 400px;
 }
 
+.email-link {
+    color: black;
+}
+
 .read-email {
+    display: flex;
+    justify-content: space-between;
     background-color: white;
+    border: solid;
 }
 
 .unread-email {
+    display: flex;
+    justify-content: space-between;
     background-color: lightgray;
+    border: solid;
+}
+
+.timestamp {
+    color: grey;
 }

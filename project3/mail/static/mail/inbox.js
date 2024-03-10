@@ -28,13 +28,24 @@ function renderEmailsView(mailbox, emails) {
 
   emails.forEach((email, key) => {
     console.log("key: %s id: %s", key, email.id);
+
+    rv += `<a class="email-link" href="emails/${email.id}">`
+
+    if (email.read == true) {
+      rv += `<div class=read-email">`
+    } else {
+      rv += `<div class="unread-email">`
+    }
+
     rv += `
-    <div class="unread-email">
-      <a href="emails/${email.id}">
-        <b>From:</b> ${email.sender} <b>Subject:</b> ${email.subject} <b>Time:</b> ${email.timestamp}
-      </a>
-    </div>
-    <hr>
+        <div>
+          <b>${email.sender}</b> ${email.subject}
+        </div>
+        <div class="timestamp">
+          ${email.timestamp}
+        </div>
+      </div>
+    </a>
     `
   })
 
