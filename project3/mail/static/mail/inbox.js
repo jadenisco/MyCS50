@@ -23,33 +23,37 @@ function compose_email() {
   document.querySelector('#compose-body').value = '';
 }
 
+function handleEmailClick() {
+  console.log("HandleEmailClick")
+}
+
 function renderEmailsView(mailbox, emails) {
-  rv = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3><hr>`
+
+  console.log("RenderEmailsView: %s %s", mailbox, emails)
 
   emails.forEach((email, key) => {
     console.log("key: %s id: %s", key, email.id);
 
-    rv += `<a class="email-link" href="emails/${email.id}">`
-
     if (email.read == true) {
-      rv += `<div class=read-email">`
+      contents = `<div class="read-email">`;
     } else {
-      rv += `<div class="unread-email">`
+      contents = `<div class="unread-email">`;
     }
-
-    rv += `
+    contents += `
         <div>
           <b>${email.sender}</b> ${email.subject}
         </div>
         <div class="timestamp">
           ${email.timestamp}
         </div>
-      </div>
-    </a>
-    `
-  })
+      </div>`;
 
-  return(rv)
+    const emailLink = document.createElement('div')
+    emailLink.className = 'email-link';
+    emailLink.innerHTML = contents;
+    document.querySelector('#emails-view').append(emailLink);
+  })
+  document.addEventListener('click', handleEmailClick);
 }
 
 function load_mailbox(mailbox) {
@@ -59,10 +63,13 @@ function load_mailbox(mailbox) {
   document.querySelector('#emails-view').style.display = 'block';
   document.querySelector('#compose-view').style.display = 'none';
 
+  // Show the mailbox name
+  document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
+
   fetch(`/emails/${mailbox}`)
   .then(response => response.json())
   .then(emails => {
-    document.querySelector('#emails-view').innerHTML = renderEmailsView(mailbox, emails)
+    renderEmailsView(mailbox, emails)
   })
 }
 
