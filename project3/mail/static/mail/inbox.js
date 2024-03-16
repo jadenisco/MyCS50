@@ -24,10 +24,23 @@ function compose_email() {
 }
 
 function handleEmailClick(event) {
-  console.log("HandleEmailClick");
-  console.log(event.currentTarget);
-  console.log(event.currentTarget.id);
-  //fetch using the id
+  console.log("HandleEmailClick: " + event);
+
+  //Execute PUT using event.currentTarget.id
+  fetch(`/emails/${event.currentTarget.id}`, {
+    method: "PUT",
+    body: JSON.stringify({read: true}),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8"
+    }
+  })
+  .then(response => response.json())
+  .then(json => {console.log(json)})
+
+  //Execute GET using event.currentTarget.id
+  fetch(`/emails/${event.currentTarget.id}`)
+  .then(response => response.json())
+  .then(json => {console.log(json)})
 }
 
 function renderEmailsView(mailbox, emails) {
