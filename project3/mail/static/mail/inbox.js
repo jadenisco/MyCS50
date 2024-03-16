@@ -23,8 +23,11 @@ function compose_email() {
   document.querySelector('#compose-body').value = '';
 }
 
-function handleEmailClick() {
-  console.log("HandleEmailClick")
+function handleEmailClick(event) {
+  console.log("HandleEmailClick");
+  console.log(event.currentTarget);
+  console.log(event.currentTarget.id);
+  //fetch using the id
 }
 
 function renderEmailsView(mailbox, emails) {
@@ -35,17 +38,13 @@ function renderEmailsView(mailbox, emails) {
     console.log("key: %s id: %s", key, email.id);
 
     if (email.read == true) {
-      contents = `<div class="read-email">`;
+      contents = `<div id="${email.id}" class="read-email" onclick="handleEmailClick(event)">`;
     } else {
-      contents = `<div class="unread-email">`;
+      contents = `<div id="${email.id}" class="unread-email" onclick="handleEmailClick(event)">`;
     }
     contents += `
-        <div>
-          <b>${email.sender}</b> ${email.subject}
-        </div>
-        <div class="timestamp">
-          ${email.timestamp}
-        </div>
+        <div><b>${email.sender}</b> ${email.subject}</div>
+        <div class="timestamp">${email.timestamp}</div>
       </div>`;
 
     const emailLink = document.createElement('div')
@@ -53,7 +52,6 @@ function renderEmailsView(mailbox, emails) {
     emailLink.innerHTML = contents;
     document.querySelector('#emails-view').append(emailLink);
   })
-  document.addEventListener('click', handleEmailClick);
 }
 
 function load_mailbox(mailbox) {

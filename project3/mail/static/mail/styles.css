@@ -4,20 +4,19 @@ textarea {
 
 .email-link {
     color: black;
+    border: solid;
 }
 
 .read-email {
     display: flex;
     justify-content: space-between;
     background-color: white;
-    border: solid;
 }
 
 .unread-email {
     display: flex;
     justify-content: space-between;
     background-color: lightgray;
-    border: solid;
 }
 
 .timestamp {
