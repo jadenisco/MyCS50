@@ -15,6 +15,7 @@ function compose_email() {
   console.log("compose_email")
   // Show compose view and hide other views
   document.querySelector('#emails-view').style.display = 'none';
+  document.querySelector('#email-details-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'block';
 
   // Clear out composition fields
@@ -22,6 +23,26 @@ function compose_email() {
   document.querySelector('#compose-subject').value = '';
   document.querySelector('#compose-body').value = '';
 }
+
+
+function renderEmailDetailView(email) {
+  console.log("RenderEmailDetailView: %s", email)
+
+  contents = `
+  <p><b>From: </b>${email.sender}</p>
+  <p><b>To: </b>${email.recipients}</p>
+  <p><b>Subject: </b>${email.subject}</p>
+  <p><b>Timestamp: </b>${email.timestamp}</p>
+  <button class="btn btn-sm btn-outline-primary" id="reply">Reply</button>
+  <hr>
+  <p>${email.body}</p>`;
+  
+  const emailLink = document.createElement('div')
+  emailLink.className = 'email-detail';
+  emailLink.innerHTML = contents;
+  document.querySelector('#email-details-view').append(emailLink);
+}
+
 
 function handleEmailClick(event) {
   console.log("HandleEmailClick: " + event);
@@ -34,14 +55,19 @@ function handleEmailClick(event) {
       "Content-type": "application/json; charset=UTF-8"
     }
   })
-  .then(response => response.json())
-  .then(json => {console.log(json)})
-
+  
   //Execute GET using event.currentTarget.id
   fetch(`/emails/${event.currentTarget.id}`)
   .then(response => response.json())
-  .then(json => {console.log(json)})
+  .then(email => {
+    console.log(email);
+    document.querySelector('#emails-view').style.display = 'none';
+    document.querySelector('#email-details-view').style.display = 'block';
+
+    renderEmailDetailView(email);
+  })
 }
+
 
 function renderEmailsView(mailbox, emails) {
 
@@ -72,6 +98,7 @@ function load_mailbox(mailbox) {
   console.log("load_mailbox: %s", mailbox)
   // Show the mailbox and hide other views
   document.querySelector('#emails-view').style.display = 'block';
+  document.querySelector('#email-details-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'none';
 
   // Show the mailbox name

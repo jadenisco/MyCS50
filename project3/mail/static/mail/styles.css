@@ -2,6 +2,10 @@ textarea {
     min-height: 400px;
 }
 
+p {
+    margin: 0;
+}
+
 .email-link {
     color: black;
     border: solid;
