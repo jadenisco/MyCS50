@@ -4,48 +4,59 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelector('#inbox').addEventListener('click', () => load_mailbox('inbox'));
   document.querySelector('#sent').addEventListener('click', () => load_mailbox('sent'));
   document.querySelector('#archived').addEventListener('click', () => load_mailbox('archive'));
-  document.querySelector('#compose').addEventListener('click', compose_email);
+  document.querySelector('#compose').addEventListener('click', () => compose_email(null));
 
   // By default, load the inbox
   load_mailbox('inbox');
 });
 
-function compose_email() {
+function compose_email(email) {
+  console.log("compose_email: " + email)
 
-  console.log("compose_email")
   // Show compose view and hide other views
   document.querySelector('#emails-view').style.display = 'none';
   document.querySelector('#email-details-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'block';
 
-  // Clear out composition fields
-  document.querySelector('#compose-recipients').value = '';
-  document.querySelector('#compose-subject').value = '';
-  document.querySelector('#compose-body').value = '';
+  if (email == null) {
+    // Clear out composition fields
+    document.querySelector('#compose-recipients').value = '';
+    document.querySelector('#compose-subject').value = '';
+    document.querySelector('#compose-body').value = '';
+  } else {
+    document.querySelector('#compose-recipients').value = `${email.sender}`;
+    if (email.subject.substr(0, 4) != 'RE: ') {
+      document.querySelector('#compose-subject').value = 'RE: ' + `${email.subject}`;
+    }
+    document.querySelector('#compose-body').value = '\n\n>>> ' + `${email.body}`;
+  }
+  
 }
 
 
 function renderEmailDetailView(email) {
-  console.log("RenderEmailDetailView: %s", email)
+  console.log("RenderEmailDetailView:" + email)
+  document.querySelector('#email-details-view').value = '';
 
   contents = `
   <p><b>From: </b>${email.sender}</p>
   <p><b>To: </b>${email.recipients}</p>
   <p><b>Subject: </b>${email.subject}</p>
   <p><b>Timestamp: </b>${email.timestamp}</p>
-  <button class="btn btn-sm btn-outline-primary" id="reply">Reply</button>
+  <button class="btn btn-sm btn-outline-primary" id="reply-button">Reply</button>
   <hr>
-  <p>${email.body}</p>`;
+  <p style="white-space: pre-line">${email.body}</p>`;
   
   const emailLink = document.createElement('div')
   emailLink.className = 'email-detail';
   emailLink.innerHTML = contents;
   document.querySelector('#email-details-view').append(emailLink);
+  document.querySelector('#reply-button').addEventListener('click', () => compose_email(email));
 }
 
 
 function handleEmailClick(event) {
-  console.log("HandleEmailClick: " + event);
+  console.log("HandleEmailClick");
 
   //Execute PUT using event.currentTarget.id
   fetch(`/emails/${event.currentTarget.id}`, {
@@ -63,15 +74,13 @@ function handleEmailClick(event) {
     console.log(email);
     document.querySelector('#emails-view').style.display = 'none';
     document.querySelector('#email-details-view').style.display = 'block';
-
     renderEmailDetailView(email);
   })
 }
 
 
 function renderEmailsView(mailbox, emails) {
-
-  console.log("RenderEmailsView: %s %s", mailbox, emails)
+  console.log("RenderEmailsView")
 
   emails.forEach((email, key) => {
     console.log("key: %s id: %s", key, email.id);
@@ -93,9 +102,9 @@ function renderEmailsView(mailbox, emails) {
   })
 }
 
-function load_mailbox(mailbox) {
- 
+function load_mailbox(mailbox) { 
   console.log("load_mailbox: %s", mailbox)
+
   // Show the mailbox and hide other views
   document.querySelector('#emails-view').style.display = 'block';
   document.querySelector('#email-details-view').style.display = 'none';
@@ -112,8 +121,7 @@ function load_mailbox(mailbox) {
 }
 
 function post_form(event) {
-  console.log("post_form event.target: ")
-  console.log(event.target)
+  console.log("post_form event.target: " + event.target)
 
   const formData = new FormData(event.target);
   const data={}
