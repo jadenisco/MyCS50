@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
   load_mailbox('inbox');
 });
 
+
 function compose_email(email) {
   console.log("compose_email: " + email)
 
@@ -19,18 +20,26 @@ function compose_email(email) {
   document.querySelector('#compose-view').style.display = 'block';
 
   if (email == null) {
-    // Clear out composition fields
+    // New Email
     document.querySelector('#compose-recipients').value = '';
     document.querySelector('#compose-subject').value = '';
     document.querySelector('#compose-body').value = '';
   } else {
+    // Reply
     document.querySelector('#compose-recipients').value = `${email.sender}`;
     if (email.subject.substr(0, 4) != 'RE: ') {
       document.querySelector('#compose-subject').value = 'RE: ' + `${email.subject}`;
+    } else {
+      document.querySelector('#compose-subject').value = `${email.subject}`;
     }
-    document.querySelector('#compose-body').value = '\n\n>>> ' + `${email.body}`;
+
+    replyBody = '\n\n';
+    email.body.split('\n').forEach((v) => {
+      replyBody += '>>>' + v + '\n';
+    });
+    replyBody = replyBody.trimEnd();
+    document.querySelector('#compose-body').value = replyBody;
   }
-  
 }
 
 
@@ -102,6 +111,7 @@ function renderEmailsView(mailbox, emails) {
   })
 }
 
+
 function load_mailbox(mailbox) { 
   console.log("load_mailbox: %s", mailbox)
 
@@ -119,6 +129,7 @@ function load_mailbox(mailbox) {
     renderEmailsView(mailbox, emails)
   })
 }
+
 
 function post_form(event) {
   console.log("post_form event.target: " + event.target)
