@@ -33,7 +33,7 @@ function compose_email(email) {
       document.querySelector('#compose-subject').value = `${email.subject}`;
     }
 
-    replyBody = '\n\n';
+    replyBody = `\n\n>>>On ${email.timestamp} ${email.sender} wrote:\n`;
     email.body.split('\n').forEach((v) => {
       replyBody += '>>>' + v + '\n';
     });
@@ -53,6 +53,7 @@ function renderEmailDetailView(email) {
   <p><b>Subject: </b>${email.subject}</p>
   <p><b>Timestamp: </b>${email.timestamp}</p>
   <button class="btn btn-sm btn-outline-primary" id="reply-button">Reply</button>
+  <button class="btn btn-sm btn-outline-primary" id="delete-button">Delete</button>
   <hr>
   <p style="white-space: pre-line">${email.body}</p>`;
   
@@ -61,6 +62,22 @@ function renderEmailDetailView(email) {
   emailLink.innerHTML = contents;
   document.querySelector('#email-details-view').append(emailLink);
   document.querySelector('#reply-button').addEventListener('click', () => compose_email(email));
+  document.querySelector('#delete-button').addEventListener('click', () => handleDeleteClick(email));
+}
+
+
+function handleDeleteClick(email) {
+  console.log("HandleDeleteClick: " + email);
+
+  fetch(`/emails/${email.id}`, {
+    method: "PUT",
+    body: JSON.stringify({delete: true}),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8"
+    }
+  })
+
+  load_mailbox('inbox');
 }
 
 

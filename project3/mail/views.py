@@ -140,6 +140,10 @@ def email(request, email_id):
             email.read = data["read"]
         if data.get("archived") is not None:
             email.archived = data["archived"]
+        if data.get("delete") is not None:
+            email.delete()
+            return HttpResponse(status=204)
+
         email.save()
         return HttpResponse(status=204)
 
