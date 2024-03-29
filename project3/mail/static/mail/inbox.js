@@ -45,7 +45,6 @@ function compose_email(email) {
 
 function renderEmailDetailView(email) {
   console.log("RenderEmailDetailView:" + email)
-  document.querySelector('#email-details-view').value = '';
 
   contents = `
   <p><b>From: </b>${email.sender}</p>
@@ -57,17 +56,24 @@ function renderEmailDetailView(email) {
   <hr>
   <p style="white-space: pre-line">${email.body}</p>`;
   
-  const emailLink = document.createElement('div')
-  emailLink.className = 'email-detail';
-  emailLink.innerHTML = contents;
-  document.querySelector('#email-details-view').append(emailLink);
+  try {
+    document.querySelector('.email-detail').innerHTML = contents;
+  } catch (e) {
+    const emailLink = document.createElement('div');
+    emailLink.className = 'email-detail';
+    emailLink.innerHTML = contents;
+    document.querySelector('#email-details-view').append(emailLink);
+  }
+
   document.querySelector('#reply-button').addEventListener('click', () => compose_email(email));
   document.querySelector('#delete-button').addEventListener('click', () => handleDeleteClick(email));
+  document.querySelector('#emails-view').style.display = 'none';
+  document.querySelector('#email-details-view').style.display = 'block';
 }
 
 
 function handleDeleteClick(email) {
-  console.log("HandleDeleteClick: " + email);
+  console.log("HandleDeleteClick: " + email.id);
 
   fetch(`/emails/${email.id}`, {
     method: "PUT",
@@ -76,8 +82,8 @@ function handleDeleteClick(email) {
       "Content-type": "application/json; charset=UTF-8"
     }
   })
+  .then(load_mailbox('inbox'));
 
-  load_mailbox('inbox');
 }
 
 
@@ -98,8 +104,6 @@ function handleEmailClick(event) {
   .then(response => response.json())
   .then(email => {
     console.log(email);
-    document.querySelector('#emails-view').style.display = 'none';
-    document.querySelector('#email-details-view').style.display = 'block';
     renderEmailDetailView(email);
   })
 }
