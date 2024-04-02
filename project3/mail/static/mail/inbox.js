@@ -81,9 +81,10 @@ function handleDeleteClick(email) {
     headers: {
       "Content-type": "application/json; charset=UTF-8"
     }
+  }).then((response) => {
+    console.log("Response Status: ", response.status);
+    load_mailbox('inbox');
   })
-  .then(load_mailbox('inbox'));
-
 }
 
 
@@ -98,13 +99,17 @@ function handleEmailClick(event) {
       "Content-type": "application/json; charset=UTF-8"
     }
   })
-  
+
   //Execute GET using event.currentTarget.id
   fetch(`/emails/${event.currentTarget.id}`)
   .then(response => response.json())
   .then(email => {
-    console.log(email);
-    renderEmailDetailView(email);
+    if (email['error']) {
+      console.error('Email was not found!')
+    } else {
+      console.log(email);
+      renderEmailDetailView(email);
+    }
   })
 }
 
