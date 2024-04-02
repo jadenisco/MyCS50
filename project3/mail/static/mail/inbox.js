@@ -52,6 +52,7 @@ function renderEmailDetailView(email) {
   <p><b>Subject: </b>${email.subject}</p>
   <p><b>Timestamp: </b>${email.timestamp}</p>
   <button class="btn btn-sm btn-outline-primary" id="reply-button">Reply</button>
+  <button class="btn btn-sm btn-outline-primary" id="archive-button">Archive</button>
   <button class="btn btn-sm btn-outline-primary" id="delete-button">Delete</button>
   <hr>
   <p style="white-space: pre-line">${email.body}</p>`;
@@ -66,6 +67,7 @@ function renderEmailDetailView(email) {
   }
 
   document.querySelector('#reply-button').addEventListener('click', () => compose_email(email));
+  document.querySelector('#archive-button').addEventListener('click', () => handleArchiveClick(email));
   document.querySelector('#delete-button').addEventListener('click', () => handleDeleteClick(email));
   document.querySelector('#emails-view').style.display = 'none';
   document.querySelector('#email-details-view').style.display = 'block';
@@ -78,6 +80,22 @@ function handleDeleteClick(email) {
   fetch(`/emails/${email.id}`, {
     method: "PUT",
     body: JSON.stringify({delete: true}),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8"
+    }
+  }).then((response) => {
+    console.log("Response Status: ", response.status);
+    load_mailbox('inbox');
+  })
+}
+  
+  
+function handleArchiveClick(email) {
+  console.log("HandleArchiveClick: " + email.id);
+  
+  fetch(`/emails/${email.id}`, {
+    method: "PUT",
+    body: JSON.stringify({archived: true}),
     headers: {
       "Content-type": "application/json; charset=UTF-8"
     }
