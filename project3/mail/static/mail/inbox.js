@@ -44,7 +44,10 @@ function compose_email(email) {
 
 
 function renderEmailDetailView(email) {
-  console.log("RenderEmailDetailView:" + email)
+  console.log("RenderEmailDetailView: " + email)
+
+  mailbox = document.getElementById("emails-view").children[0].innerHTML;
+  console.log("Mailbox: " + mailbox)
 
   contents = `
     <p><b>From: </b>${email.sender}</p>
@@ -53,13 +56,14 @@ function renderEmailDetailView(email) {
     <p><b>Timestamp: </b>${email.timestamp}</p>
     <button class="btn btn-sm btn-outline-primary" id="reply-button">Reply</button>`;
 
-  if (email.archived) {
-    contents += `
-      <button class="btn btn-sm btn-outline-primary" id="archive-button">UNArchive</button>`;
-
-  } else {
-    contents += `
-      <button class="btn btn-sm btn-outline-primary" id="archive-button">Archive</button>`;
+  if (mailbox != 'Sent') {
+    if (email.archived) {
+      contents += `
+        <button class="btn btn-sm btn-outline-primary" id="archive-button">UNArchive</button>`;
+    } else {
+      contents += `
+        <button class="btn btn-sm btn-outline-primary" id="archive-button">Archive</button>`;
+    }
   }
 
   contents += `
@@ -77,10 +81,13 @@ function renderEmailDetailView(email) {
   }
 
   document.querySelector('#reply-button').addEventListener('click', () => compose_email(email));
-  document.querySelector('#archive-button').addEventListener('click', () => handleArchiveClick(email));
   document.querySelector('#delete-button').addEventListener('click', () => handleDeleteClick(email));
   document.querySelector('#emails-view').style.display = 'none';
   document.querySelector('#email-details-view').style.display = 'block';
+
+  if (mailbox != 'Sent') {
+    document.querySelector('#archive-button').addEventListener('click', () => handleArchiveClick(email));
+  }
 }
 
 
@@ -148,7 +155,7 @@ function handleEmailClick(event) {
 }
 
 
-function renderEmailsView(mailbox, emails) {
+function renderEmailsView(emails) {
   console.log("RenderEmailsView")
 
   emails.forEach((email, key) => {
@@ -186,7 +193,7 @@ function load_mailbox(mailbox) {
   fetch(`/emails/${mailbox}`)
   .then(response => response.json())
   .then(emails => {
-    renderEmailsView(mailbox, emails)
+    renderEmailsView(emails)
   })
 }
 
