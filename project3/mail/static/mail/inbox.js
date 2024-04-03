@@ -47,15 +47,25 @@ function renderEmailDetailView(email) {
   console.log("RenderEmailDetailView:" + email)
 
   contents = `
-  <p><b>From: </b>${email.sender}</p>
-  <p><b>To: </b>${email.recipients}</p>
-  <p><b>Subject: </b>${email.subject}</p>
-  <p><b>Timestamp: </b>${email.timestamp}</p>
-  <button class="btn btn-sm btn-outline-primary" id="reply-button">Reply</button>
-  <button class="btn btn-sm btn-outline-primary" id="archive-button">Archive</button>
-  <button class="btn btn-sm btn-outline-primary" id="delete-button">Delete</button>
-  <hr>
-  <p style="white-space: pre-line">${email.body}</p>`;
+    <p><b>From: </b>${email.sender}</p>
+    <p><b>To: </b>${email.recipients}</p>
+    <p><b>Subject: </b>${email.subject}</p>
+    <p><b>Timestamp: </b>${email.timestamp}</p>
+    <button class="btn btn-sm btn-outline-primary" id="reply-button">Reply</button>`;
+
+  if (email.archived) {
+    contents += `
+      <button class="btn btn-sm btn-outline-primary" id="archive-button">UNArchive</button>`;
+
+  } else {
+    contents += `
+      <button class="btn btn-sm btn-outline-primary" id="archive-button">Archive</button>`;
+  }
+
+  contents += `
+    <button class="btn btn-sm btn-outline-primary" id="delete-button">Delete</button>
+    <hr>
+    <p style="white-space: pre-line">${email.body}</p>`;
   
   try {
     document.querySelector('.email-detail').innerHTML = contents;
@@ -92,10 +102,16 @@ function handleDeleteClick(email) {
   
 function handleArchiveClick(email) {
   console.log("HandleArchiveClick: " + email.id);
+
+  if (email.archived) {
+    body = JSON.stringify({archived: false});
+  } else {
+    body = JSON.stringify({archived: true});
+  }
   
   fetch(`/emails/${email.id}`, {
     method: "PUT",
-    body: JSON.stringify({archived: true}),
+    body:  body,
     headers: {
       "Content-type": "application/json; charset=UTF-8"
     }
