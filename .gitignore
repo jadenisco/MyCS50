@@ -5,9 +5,8 @@ project2/commerce/commerce/db.sqlite3
 project2/commerce/commerce/auctions/migrations/
 project2/commerce/commerce/auctions/static/images/
 project2/tmp/
-project4/commerce/commerce/db.sqlite3
-project4/commerce/commerce/auctions/migrations/
-project4/commerce/commerce/auctions/static/images/
+project4/db.sqlite3
+project4/network/migrations/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
