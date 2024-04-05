@@ -8,7 +8,7 @@
             "name": "Python: Django",
             "type": "debugpy",
             "request": "launch",
-            "cwd": "${workspaceFolder}/project3",
+            "cwd": "${workspaceFolder}/project4",
             "program": "manage.py",
             "args": [
                 "runserver"
