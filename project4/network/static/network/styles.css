@@ -1,0 +1,15 @@
+textarea {
+    min-height: 100px;
+}
+
+p {
+    margin: 0;
+}
+
+#new-post-view {
+    margin: 10px;
+}
+
+#posts-view {
+    margin: 10px;
+}
