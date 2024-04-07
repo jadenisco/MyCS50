@@ -7,9 +7,19 @@ p {
 }
 
 #new-post-view {
-    margin: 10px;
+    border: double;
+    border-color: darkgrey;
+    margin: 5px;
+    padding: 5px;
 }
 
 #posts-view {
-    margin: 10px;
+    border: double;
+    border-color: darkgrey;
+    margin: 5px;
+    padding: 5px;
+}
+
+.btn-primary {
+    margin-top: 10px;
 }
