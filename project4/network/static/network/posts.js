@@ -20,3 +20,22 @@ function load_posts(title) {
     document.querySelector('#posts-view').innerHTML = `<h3>${title}</h3>`;
 
 }
+
+function post_form(event) {
+    console.log("post_form event.target: " + event.target)
+  
+    const formData = new FormData(event.target);
+    const data={}
+    formData.forEach((value, key) => (data[key] = value))
+    console.log(data);
+    fetch("post", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8"
+      }
+    })
+    .then((response) => response.text())
+    .then(text => console.log(text))
+  }
+  

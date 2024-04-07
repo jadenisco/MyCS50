@@ -4,10 +4,10 @@
 {% block body %}
     <div id="new-post-view">
         <h3>New Post</h3>
-        <form> 
+        <form id="compose-form" onsubmit="post_form(event)">
         <textarea class="form-control" id="compose-body" name="body" placeholder="Body"></textarea>
-        </form>
         <input type="submit" value="Post" class="btn btn-primary"/>
+        </form>
     </div>
 
     <div id="posts-view">
