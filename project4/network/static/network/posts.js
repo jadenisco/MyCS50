@@ -12,13 +12,26 @@ function load_new_post() {
     document.querySelector('#new-post-view').style.display = 'block';
 }
 
+function render_all_posts() {
+    console.log("render_all_posts");
+
+    fetch("posts", {
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        }
+      })
+      .then((response) => response.json())
+      .then(json => console.log(json))
+  
+}
+
 function load_posts(title) {
     console.log("load_posts: %s", title)
 
     document.querySelector('#posts-view').style.display = 'block';
 
     document.querySelector('#posts-view').innerHTML = `<h3>${title}</h3>`;
-
+    render_all_posts()
 }
 
 function post_form(event) {

@@ -32,6 +32,16 @@ def post(request):
 
     return JsonResponse({"message": "Post was successful."}, status=201)
 
+@csrf_exempt
+@login_required
+def posts(request):
+    print(f'POSTS: {request}')
+
+    posts = Post.objects.all()
+    posts = posts.order_by("-timestamp").all()
+
+    return JsonResponse([post.serialize() for post in posts], safe=False)
+
 
 def login_view(request):
     if request.method == "POST":
