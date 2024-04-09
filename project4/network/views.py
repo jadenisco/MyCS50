@@ -1,3 +1,5 @@
+
+import json
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
@@ -7,7 +9,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import User
+from .models import User, Post 
 
 
 def index(request):
@@ -16,7 +18,17 @@ def index(request):
 @csrf_exempt
 @login_required
 def post(request):
-    print(f'POST {request}')
+    print(f'POST: {request}')
+
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required."}, status=400)
+    
+    data = json.loads(request.body)
+    post = Post(
+        user = request.user,
+        body = data.get("body", "")
+    )
+    post.save()
 
     return JsonResponse({"message": "Post was successful."}, status=201)
 
