@@ -32,15 +32,16 @@ def post(request):
 
     return JsonResponse({"message": "Post was successful."}, status=201)
 
-@csrf_exempt
-@login_required
 def posts(request):
-    print(f'POSTS: {request}')
 
-    posts = Post.objects.all()
-    posts = posts.order_by("-timestamp").all()
+    if request.user.is_authenticated:
+        posts = Post.objects.all()
+        posts = posts.order_by("-timestamp").all()
 
-    return JsonResponse([post.serialize() for post in posts], safe=False)
+        return JsonResponse([post.serialize() for post in posts], safe=False)
+    else:
+        # This needs to be handled
+        return render(request, "network/login.html")
 
 
 def login_view(request):

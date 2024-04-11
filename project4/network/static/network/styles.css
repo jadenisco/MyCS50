@@ -6,6 +6,10 @@ p {
     margin: 0;
 }
 
+#all-posts-view {
+    padding: 5px;
+}
+
 #new-post-view {
     border: double;
     border-color: darkgrey;
@@ -14,10 +18,13 @@ p {
 }
 
 #posts-view {
+    margin: 5px;
+}
+
+.post-link {
+    margin-top: 5px;
     border: double;
     border-color: darkgrey;
-    margin: 5px;
-    padding: 5px;
 }
 
 .btn-primary {

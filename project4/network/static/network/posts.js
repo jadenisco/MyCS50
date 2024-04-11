@@ -1,19 +1,34 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-    load_new_post();
-
-    load_posts('All Posts');
-
+  render_all_posts()
 })
 
-function load_new_post() {
-    console.log("load_new_post")
-
-    document.querySelector('#new-post-view').style.display = 'block';
-}
 
 function render_all_posts() {
-    console.log("render_all_posts");
+  document.querySelector('#all-posts-view').style.display = 'block';
+  document.querySelector('#new-post-view').style.display = 'block';
+
+  load_posts();
+}
+
+
+function render_posts(posts) {
+
+  posts.forEach((post, key) => {
+
+    console.log("key: %s id: %s", key, post.id);
+    contents = `<div id="#${post.id}"
+      <h3>add post here!</h3>
+    </div>`
+
+    const postLink = document.createElement('div')
+    postLink.className = 'post-link';
+    postLink.innerHTML = contents;
+    document.querySelector('#posts-view').append(postLink);
+  })
+}
+
+function load_posts() {
 
     fetch("posts", {
         headers: {
@@ -21,26 +36,14 @@ function render_all_posts() {
         }
       })
       .then((response) => response.json())
-      .then(json => console.log(json))
-  
-}
-
-function load_posts(title) {
-    console.log("load_posts: %s", title)
-
-    document.querySelector('#posts-view').style.display = 'block';
-
-    document.querySelector('#posts-view').innerHTML = `<h3>${title}</h3>`;
-    render_all_posts()
+      .then(posts => {render_posts(posts)})
 }
 
 function post_form(event) {
-    console.log("post_form event.target: " + event.target)
   
     const formData = new FormData(event.target);
     const data={}
     formData.forEach((value, key) => (data[key] = value))
-    console.log(data);
     fetch("post", {
       method: "POST",
       body: JSON.stringify(data),
@@ -50,5 +53,5 @@ function post_form(event) {
     })
     .then((response) => response.text())
     .then(text => console.log(text))
-  }
+}
   
