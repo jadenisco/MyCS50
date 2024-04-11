@@ -13,7 +13,11 @@ from .models import User, Post
 
 
 def index(request):
-    return render(request, "network/index.html")
+    if request.user.is_authenticated:
+        return render(request, "network/index.html")
+    else:
+        return HttpResponseRedirect(reverse("login"))
+
 
 @csrf_exempt
 @login_required
@@ -32,16 +36,15 @@ def post(request):
 
     return JsonResponse({"message": "Post was successful."}, status=201)
 
+
+@csrf_exempt
+@login_required
 def posts(request):
 
-    if request.user.is_authenticated:
-        posts = Post.objects.all()
-        posts = posts.order_by("-timestamp").all()
+    posts = Post.objects.all()
+    posts = posts.order_by("-timestamp").all()
 
-        return JsonResponse([post.serialize() for post in posts], safe=False)
-    else:
-        # This needs to be handled
-        return render(request, "network/login.html")
+    return JsonResponse([post.serialize() for post in posts], safe=False)
 
 
 def login_view(request):
