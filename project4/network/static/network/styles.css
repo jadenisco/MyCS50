@@ -22,6 +22,7 @@ p {
 }
 
 .post-link {
+    padding: 5px;
     margin-top: 5px;
     border: double;
     border-color: darkgrey;

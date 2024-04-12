@@ -17,8 +17,13 @@ function render_posts(posts) {
   posts.forEach((post, key) => {
 
     console.log("key: %s id: %s", key, post.id);
-    contents = `<div id="#${post.id}"
-      <h3>add post here!</h3>
+    contents = `<div id="post-link-${post.id}"
+      <h3>${post.name}</h3>
+      <p>Edit</p>
+      <p>${post.body}</p>
+      <p style="color: red">♥️ <b style="color:grey">${post.likes}</b></p>
+      <p style="color:grey">${post.timestamp}</p>
+      <p>Comment</p>
     </div>`
 
     const postLink = document.createElement('div')
