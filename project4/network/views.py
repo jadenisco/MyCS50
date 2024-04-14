@@ -21,6 +21,12 @@ def index(request):
 
 @csrf_exempt
 @login_required
+def profile(request, name):
+    print(f"PROFILE: {name}")
+
+
+@csrf_exempt
+@login_required
 def post(request):
     print(f'POST: {request}')
 
