@@ -10,6 +10,10 @@ p {
     padding: 5px;
 }
 
+#profile-view {
+    padding: 5px;
+}
+
 #new-post-view {
     border: double;
     border-color: darkgrey;
@@ -17,7 +21,11 @@ p {
     padding: 5px;
 }
 
-#posts-view {
+#all-posts-posts-view {
+    margin: 5px;
+}
+
+#profile-posts-view {
     margin: 5px;
 }
 

@@ -12,21 +12,7 @@ function render_all_posts() {
 }
 
 
-function handleProfileClick(event) {
-  console.log("handleProfileClick")
-
-  fetch(`/profile/${event.currentTarget.id}`)
-  .then(response => response.json())
-  .then(profile => {
-    if (profile['error']) {
-      console.error('Profile was not found!')
-    } else {
-      console.log(profile);
-    }
-  })
-}
-
-function render_posts(posts) {
+function render_posts(posts, postsView) {
 
   posts.forEach((post, key) => {
 
@@ -45,9 +31,36 @@ function render_posts(posts) {
     const postLink = document.createElement('div');
     postLink.className = 'post-link';
     postLink.innerHTML = contents;
-    document.querySelector('#posts-view').append(postLink);
+    document.querySelector(postsView).append(postLink);
   })
 }
+
+
+function render_profile (profile) {
+  document.querySelector('#all-posts-view').style.display = 'none';
+  document.querySelector('#new-post-view').style.display = 'none';
+  document.querySelector('#profile-view').style.display = 'block';
+
+  render_posts(profile.posts, '#profile-posts-view')
+
+}
+
+
+function handleProfileClick(event) {
+  console.log("handleProfileClick")
+
+  fetch(`/profile/${event.currentTarget.id}`)
+  .then(response => response.json())
+  .then(profile => {
+    if (profile['error']) {
+      console.error('Profile was not found!')
+    } else {
+      console.log(profile);
+      render_profile(profile);
+    }
+  })
+}
+
 
 function load_posts() {
 
@@ -57,8 +70,9 @@ function load_posts() {
         }
       })
       .then((response) => response.json())
-      .then(posts => {render_posts(posts)})
+      .then(posts => {render_posts(posts, '#all-posts-view')})
 }
+
 
 function post_form(event) {
   
@@ -75,4 +89,3 @@ function post_form(event) {
     .then((response) => response.text())
     .then(text => console.log(text))
 }
-  

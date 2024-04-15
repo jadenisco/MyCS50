@@ -22,7 +22,16 @@ def index(request):
 @csrf_exempt
 @login_required
 def profile(request, name):
-    print(f"PROFILE: {name}")
+    print(f"profile: {name}")
+    profile = User.objects.get(username=name.split('-')[1])
+    posts = Post.objects.filter(user=profile)
+    posts = posts.order_by("-timestamp").all()
+
+    rsp_data = {
+        'user': {'username': profile.username, 'email': profile.email},
+        'posts': [post.serialize() for post in posts]}
+
+    return JsonResponse(rsp_data, safe=False)
 
 
 @csrf_exempt
