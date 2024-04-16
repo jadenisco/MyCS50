@@ -6,11 +6,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function render_all_posts() {
   document.querySelector('#all-posts-view').style.display = 'block';
-  document.querySelector('#new-post-view').style.display = 'block';
+  document.querySelector('#profile-view').style.display = 'none';
 
   load_posts();
 }
 
+
+function render_profile_user(profileUser) {
+  console.log(render_profile_user);
+
+  contents = `<div style="display: flex; align-items: center;">
+    <div><h3 style="margin-right: 15px;">${profileUser.username}:</h3></div>
+    <div><h5>${profileUser.email}</h5></div>
+  </div>`;
+
+  const profile = document.createElement('div');
+  profile.className = 'profile-user-view';
+  profile.innerHTML = contents;
+  document.querySelector('#profile-user').append(profile);
+}
 
 function render_posts(posts, postsView) {
 
@@ -38,11 +52,10 @@ function render_posts(posts, postsView) {
 
 function render_profile (profile) {
   document.querySelector('#all-posts-view').style.display = 'none';
-  document.querySelector('#new-post-view').style.display = 'none';
   document.querySelector('#profile-view').style.display = 'block';
 
-  render_posts(profile.posts, '#profile-posts-view')
-
+  render_profile_user(profile.user);
+  render_posts(profile.posts, '#profile-posts-view');
 }
 
 
@@ -63,7 +76,6 @@ function handleProfileClick(event) {
 
 
 function load_posts() {
-
     fetch("posts", {
         headers: {
           "Content-type": "application/json; charset=UTF-8"
@@ -75,9 +87,9 @@ function load_posts() {
 
 
 function post_form(event) {
-  
     const formData = new FormData(event.target);
     const data={}
+
     formData.forEach((value, key) => (data[key] = value))
     fetch("post", {
       method: "POST",

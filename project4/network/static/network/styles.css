@@ -25,6 +25,13 @@ p {
     margin: 5px;
 }
 
+#profile-user {
+    padding: 5px;
+    margin: 5px;
+    border: double;
+    border-color: darkgrey;
+}
+
 #profile-posts-view {
     margin: 5px;
 }
