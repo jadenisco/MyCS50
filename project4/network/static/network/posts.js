@@ -54,6 +54,16 @@ function render_profile (profile) {
   document.querySelector('#all-posts-view').style.display = 'none';
   document.querySelector('#profile-view').style.display = 'block';
 
+  document.querySelector('#profile-user').remove();
+  const profileUser = document.createElement('div');
+  profileUser.id = 'profile-user';
+  document.querySelector('#profile-view').append(profileUser);
+  
+  document.querySelector('#profile-posts-view').remove()
+  const profilePostsView = document.createElement('div');
+  profilePostsView.id = 'profile-posts-view';
+  document.querySelector('#profile-view').append(profilePostsView);
+
   render_profile_user(profile.user);
   render_posts(profile.posts, '#profile-posts-view');
 }
