@@ -28,7 +28,10 @@ def profile(request, name):
     posts = posts.order_by("-timestamp").all()
 
     rsp_data = {
-        'user': {'username': profile.username, 'email': profile.email},
+        'user': {'requestor': request.user.username,
+                 'username': profile.username,
+                 'email': profile.email,
+                 'followers': []},
         'posts': [post.serialize() for post in posts]}
 
     return JsonResponse(rsp_data, safe=False)

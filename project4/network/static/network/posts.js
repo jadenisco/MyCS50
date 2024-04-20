@@ -17,8 +17,13 @@ function render_profile_user(profileUser) {
 
   contents = `<div style="display: flex; align-items: center;">
     <div><h3 style="margin-right: 15px;">${profileUser.username}:</h3></div>
-    <div><h5>${profileUser.email}</h5></div>
-  </div>`;
+      <div><h5>${profileUser.email}</h5></div>
+    </div>`;
+
+  if (profileUser.requestor != profileUser.username) {
+    contents += `<button type="button" class="btn btn-secondary btn-sm">Unfollow</button>`;
+    contents += `<button type="button" class="btn btn-primary btn-sm">Follow</button>`;
+  }
 
   const profile = document.createElement('div');
   profile.className = 'profile-user-view';
