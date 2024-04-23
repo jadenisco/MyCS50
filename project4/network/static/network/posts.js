@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', function() {
 function render_all_posts() {
   document.querySelector('#all-posts-view').style.display = 'block';
   document.querySelector('#profile-view').style.display = 'none';
-
   load_posts();
 }
 
@@ -63,6 +62,7 @@ function render_profile_user(profileUser) {
   profile.className = 'profile-user-view';
   profile.innerHTML = contents;
   document.querySelector('#profile-user').append(profile);
+
   if (profileUser.requestor != profileUser.username) {
     document.querySelector('#follow-button').addEventListener('click', () => handleFollowClick(profileUser));
   }
@@ -123,28 +123,26 @@ function handleProfileClick(event) {
 
 
 function load_posts() {
-    fetch("posts", {
-        headers: {
-          "Content-type": "application/json; charset=UTF-8"
-        }
-      })
-      .then((response) => response.json())
-      .then(posts => {render_posts(posts, '#all-posts-view')})
+  fetch("posts", {
+    headers: {
+      "Content-type": "application/json; charset=UTF-8"
+    }})
+    .then((response) => response.json())
+    .then(posts => {render_posts(posts, '#all-posts-view')})
 }
 
 
 function post_form(event) {
-    const formData = new FormData(event.target);
-    const data={}
+  const formData = new FormData(event.target);
+  const data={}
 
-    formData.forEach((value, key) => (data[key] = value))
-    fetch("post", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8"
-      }
-    })
+  formData.forEach((value, key) => (data[key] = value))
+  fetch("post", {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8"
+    }})
     .then((response) => response.text())
     .then(text => console.log(text))
 }
