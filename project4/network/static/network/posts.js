@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-
   render_all_posts()
 })
 
@@ -12,30 +11,66 @@ function render_all_posts() {
 }
 
 
-function render_profile_user(profileUser) {
-  console.log(render_profile_user);
+function toggle_follow() {
+  text = document.querySelector('.profile-user-view').children[1].textContent;
+  if (text == 'Follow') {
+    document.querySelector('.profile-user-view').children[1].textContent = 'Unfollow';
+    document.querySelector('.profile-user-view').children[1].className = "btn btn-secondary btn-sm"
+  } else {
+    document.querySelector('.profile-user-view').children[1].textContent = 'Follow';
+    document.querySelector('.profile-user-view').children[1].className = "btn btn-primary btn-sm"
+  }
+}
 
+
+function handleFollowClick(profileUser) {
+  if (profileUser.followers.includes(profileUser.requestor)) {
+    jsonBody = JSON.stringify({follow: false});
+  } else {
+    jsonBody = JSON.stringify({follow: true});
+  }
+
+  fetch(`/follow/${profileUser.username}`, {
+    method: "PUT",
+    body: jsonBody,
+    headers: {
+      "Content-type": "application/json; charset=UTF-8"
+    }
+  }).then((response) => {
+    console.log("Response Status: ", response.status);
+    if(response.status == '204') {
+      toggle_follow();
+    }
+  })
+}
+
+
+function render_profile_user(profileUser) {
   contents = `<div style="display: flex; align-items: center;">
     <div><h3 style="margin-right: 15px;">${profileUser.username}:</h3></div>
       <div><h5>${profileUser.email}</h5></div>
     </div>`;
 
   if (profileUser.requestor != profileUser.username) {
-    contents += `<button type="button" class="btn btn-secondary btn-sm">Unfollow</button>`;
-    contents += `<button type="button" class="btn btn-primary btn-sm">Follow</button>`;
+    if (profileUser.followers.includes(profileUser.requestor)) {
+      contents += `<button type="button" class="btn btn-secondary btn-sm" id="follow-button">Unfollow</button>`;
+    } else {
+      contents += `<button type="button" class="btn btn-primary btn-sm" id="follow-button">Follow</button>`;
+    }
   }
 
   const profile = document.createElement('div');
   profile.className = 'profile-user-view';
   profile.innerHTML = contents;
   document.querySelector('#profile-user').append(profile);
+  if (profileUser.requestor != profileUser.username) {
+    document.querySelector('#follow-button').addEventListener('click', () => handleFollowClick(profileUser));
+  }
 }
 
 function render_posts(posts, postsView) {
 
   posts.forEach((post, key) => {
-
-    console.log("key: %s id: %s", key, post.id);
     contents = `<div id="post-${post.id}">
       <div id="profile-${post.name}" onclick="handleProfileClick(event)">
         <h5>${post.name}</h5>
@@ -75,15 +110,12 @@ function render_profile (profile) {
 
 
 function handleProfileClick(event) {
-  console.log("handleProfileClick")
-
   fetch(`/profile/${event.currentTarget.id}`)
   .then(response => response.json())
   .then(profile => {
     if (profile['error']) {
       console.error('Profile was not found!')
     } else {
-      console.log(profile);
       render_profile(profile);
     }
   })

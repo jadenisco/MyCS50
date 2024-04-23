@@ -21,8 +21,31 @@ def index(request):
 
 @csrf_exempt
 @login_required
+def follow(request, username):
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return JsonResponse({"error": "Username not found."}, status=404)
+
+    if request.method != "PUT":
+        return JsonResponse({
+            "error": "GET or PUT request required."
+        }, status=400)
+
+
+    data = json.loads(request.body)
+    requestor = User.objects.get(username=request.user)
+    if requestor in user.followers.all() and data['follow'] is False:
+        user.followers.remove(requestor)
+    if requestor not in user.followers.all() and data['follow'] is True:
+        user.followers.add(requestor)
+
+    return HttpResponse(status=204)
+
+
+@csrf_exempt
+@login_required
 def profile(request, name):
-    print(f"profile: {name}")
     profile = User.objects.get(username=name.split('-')[1])
     posts = Post.objects.filter(user=profile)
     posts = posts.order_by("-timestamp").all()
@@ -31,7 +54,7 @@ def profile(request, name):
         'user': {'requestor': request.user.username,
                  'username': profile.username,
                  'email': profile.email,
-                 'followers': []},
+                 'followers': [f.username for f in profile.followers.all()]},
         'posts': [post.serialize() for post in posts]}
 
     return JsonResponse(rsp_data, safe=False)
@@ -40,8 +63,6 @@ def profile(request, name):
 @csrf_exempt
 @login_required
 def post(request):
-    print(f'POST: {request}')
-
     if request.method != "POST":
         return JsonResponse({"error": "POST request required."}, status=400)
     
@@ -58,6 +79,8 @@ def post(request):
 @csrf_exempt
 @login_required
 def posts(request):
+    if request.method != "GET":
+        return JsonResponse({"error": "GET request required."}, status=400)
 
     posts = Post.objects.all()
     posts = posts.order_by("-timestamp").all()
