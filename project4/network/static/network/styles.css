@@ -14,6 +14,10 @@ p {
     padding: 5px;
 }
 
+#following-view {
+    padding: 5px;
+}
+
 #new-post-view {
     border: double;
     border-color: darkgrey;
@@ -33,6 +37,10 @@ p {
 }
 
 #profile-posts-view {
+    margin: 5px;
+}
+
+#following-posts-view {
     margin: 5px;
 }
 

@@ -1,12 +1,25 @@
 document.addEventListener('DOMContentLoaded', function() {
-  render_all_posts()
+
+  if (this.location.pathname == '/following') {
+    render_following();
+  } else {
+    render_all_posts();
+  }
 })
 
 
 function render_all_posts() {
   document.querySelector('#all-posts-view').style.display = 'block';
   document.querySelector('#profile-view').style.display = 'none';
+  document.querySelector('#following-view').style.display = 'none';
   load_posts();
+}
+
+function render_following() {
+  document.querySelector('#all-posts-view').style.display = 'none';
+  document.querySelector('#profile-view').style.display = 'none';
+  document.querySelector('#following-view').style.display = 'block';
+
 }
 
 
@@ -93,6 +106,7 @@ function render_posts(posts, postsView) {
 function render_profile (profile) {
   document.querySelector('#all-posts-view').style.display = 'none';
   document.querySelector('#profile-view').style.display = 'block';
+  document.querySelector('#following-view').style.display = 'none';
 
   document.querySelector('#profile-user').remove();
   const profileUser = document.createElement('div');

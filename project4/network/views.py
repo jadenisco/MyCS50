@@ -37,8 +37,10 @@ def follow(request, username):
     requestor = User.objects.get(username=request.user)
     if requestor in user.followers.all() and data['follow'] is False:
         user.followers.remove(requestor)
+        requestor.following.remove(user)
     if requestor not in user.followers.all() and data['follow'] is True:
         user.followers.add(requestor)
+        requestor.following.add(user)
 
     return HttpResponse(status=204)
 
@@ -74,6 +76,18 @@ def post(request):
     post.save()
 
     return JsonResponse({"message": "Post was successful."}, status=201)
+
+
+@csrf_exempt
+@login_required
+def following(request):
+    if request.method != "GET":
+        return JsonResponse({"error": "GET request required."}, status=400)
+
+    posts = Post.objects.all()
+    posts = posts.order_by("-timestamp").all()
+
+    return JsonResponse([post.serialize() for post in posts], safe=False)
 
 
 @csrf_exempt
