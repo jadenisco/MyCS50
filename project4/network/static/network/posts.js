@@ -15,11 +15,12 @@ function render_all_posts() {
   load_posts();
 }
 
+
 function render_following() {
   document.querySelector('#all-posts-view').style.display = 'none';
   document.querySelector('#profile-view').style.display = 'none';
   document.querySelector('#following-view').style.display = 'block';
-
+  load_following_posts();
 }
 
 
@@ -81,6 +82,7 @@ function render_profile_user(profileUser) {
   }
 }
 
+
 function render_posts(posts, postsView) {
 
   posts.forEach((post, key) => {
@@ -133,6 +135,16 @@ function handleProfileClick(event) {
       render_profile(profile);
     }
   })
+}
+
+
+function load_following_posts() {
+  fetch("following_posts", {
+    headers: {
+      "Content-type": "application/json; charset=UTF-8"
+    }})
+    .then((response) => response.json())
+    .then(posts => {render_posts(posts, '#following-view')})
 }
 
 

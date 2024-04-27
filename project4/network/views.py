@@ -80,13 +80,16 @@ def post(request):
 
 @csrf_exempt
 @login_required
-def following(request):
+def following_posts(request):
     if request.method != "GET":
         return JsonResponse({"error": "GET request required."}, status=400)
 
-    posts = Post.objects.all()
-    posts = posts.order_by("-timestamp").all()
+    user = User.objects.get(username=request.user.username)
+    posts = Post.objects.none()
+    for f in user.following.all():
+        posts = posts.union(posts, Post.objects.filter(user=f))
 
+    posts = posts.order_by("-timestamp").all()
     return JsonResponse([post.serialize() for post in posts], safe=False)
 
 
@@ -98,7 +101,6 @@ def posts(request):
 
     posts = Post.objects.all()
     posts = posts.order_by("-timestamp").all()
-
     return JsonResponse([post.serialize() for post in posts], safe=False)
 
 
