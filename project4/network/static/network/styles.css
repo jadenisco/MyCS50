@@ -44,6 +44,10 @@ p {
     margin: 5px;
 }
 
+.post-user {
+    font-size: larger;
+}
+
 .post-link {
     padding: 5px;
     margin-top: 5px;

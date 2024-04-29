@@ -87,8 +87,7 @@ function render_posts(posts, postsView) {
 
   posts.forEach((post, key) => {
     contents = `<div id="post-${post.id}">
-      <div id="profile-${post.name}" onclick="handleProfileClick(event)">
-        <h5>${post.name}</h5>
+      <a class="post-user" id="profile-${post.name}" href="#" onclick="handleProfileClick(event)"><strong>${post.name}</strong></a>
       </div>
       <p>Edit</p>
       <p>${post.body}</p>
