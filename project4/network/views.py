@@ -8,8 +8,24 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
+from django.core.paginator import Paginator
 
 from .models import User, Post 
+
+
+def scratch(request):
+    posts = Post.objects.all()
+    posts = posts.order_by("-timestamp").all()
+
+    paginator = Paginator(posts, 2)
+
+    if request.GET.get("page"):
+        page_number = request.GET.get("page")
+    else:
+        page_number = 1
+
+    page_obj = paginator.get_page(page_number)
+    return render(request, "network/scratch.html", {"page_obj": page_obj})
 
 
 def index(request):
