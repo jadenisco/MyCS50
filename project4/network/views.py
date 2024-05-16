@@ -94,6 +94,18 @@ def post(request):
     return JsonResponse({"message": "Post was successful."}, status=201)
 
 
+def _get_page_obj(posts):
+
+    posts = posts.order_by("-timestamp").all()
+    paginator = Paginator(posts, 3)
+    page_number = 1
+    page = paginator.get_page(page_number)
+
+    page_obj = {}
+    page_obj['page'] = {'current': page_number, 'posts': [post.serialize() for post in page]}
+    return page_obj
+
+
 @csrf_exempt
 @login_required
 def following_posts(request):
@@ -105,8 +117,7 @@ def following_posts(request):
     for f in user.following.all():
         posts = posts.union(posts, Post.objects.filter(user=f))
 
-    posts = posts.order_by("-timestamp").all()
-    return JsonResponse([post.serialize() for post in posts], safe=False)
+    return JsonResponse(_get_page_obj(posts), safe=False)
 
 
 @csrf_exempt
@@ -116,8 +127,7 @@ def posts(request):
         return JsonResponse({"error": "GET request required."}, status=400)
 
     posts = Post.objects.all()
-    posts = posts.order_by("-timestamp").all()
-    return JsonResponse([post.serialize() for post in posts], safe=False)
+    return JsonResponse(_get_page_obj(posts), safe=False)
 
 
 def login_view(request):

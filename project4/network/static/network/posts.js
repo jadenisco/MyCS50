@@ -83,8 +83,9 @@ function render_profile_user(profileUser) {
 }
 
 
-function render_posts(posts, postsView) {
+function render_posts(page_obj, postsView) {
 
+  posts = page_obj.page.posts
   posts.forEach((post, key) => {
     contents = `<div id="post-${post.id}">
       <a class="post-user" id="profile-${post.name}" href="#" onclick="handleProfileClick(event)"><strong>${post.name}</strong></a>
@@ -143,7 +144,7 @@ function load_following_posts() {
       "Content-type": "application/json; charset=UTF-8"
     }})
     .then((response) => response.json())
-    .then(posts => {render_posts(posts, '#following-view')})
+    .then(page_obj => {render_posts(page_obj, '#following-view')})
 }
 
 
@@ -153,7 +154,7 @@ function load_posts() {
       "Content-type": "application/json; charset=UTF-8"
     }})
     .then((response) => response.json())
-    .then(posts => {render_posts(posts, '#all-posts-view')})
+    .then(page_obj => {render_posts(page_obj, '#all-posts-view')})
 }
 
 
