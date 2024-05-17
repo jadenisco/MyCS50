@@ -144,7 +144,7 @@ function load_following_posts() {
       "Content-type": "application/json; charset=UTF-8"
     }})
     .then((response) => response.json())
-    .then(page_obj => {render_posts(page_obj, '#following-view')})
+    .then(page_obj => {render_posts(page_obj, '#following-posts-view')})
 }
 
 
@@ -154,7 +154,7 @@ function load_posts() {
       "Content-type": "application/json; charset=UTF-8"
     }})
     .then((response) => response.json())
-    .then(page_obj => {render_posts(page_obj, '#all-posts-view')})
+    .then(page_obj => {render_posts(page_obj, '#all-posts-posts-view')})
 }
 
 
