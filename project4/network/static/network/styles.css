@@ -44,6 +44,10 @@ p {
     margin: 5px;
 }
 
+#paginator-view {
+    margin: 5px;
+}
+
 #following-posts-view {
     margin: 5px;
 }

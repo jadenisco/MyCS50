@@ -102,6 +102,10 @@ function render_posts(page_obj, postsView) {
     postLink.innerHTML = contents;
     document.querySelector(postsView).append(postLink);
   })
+
+// Add paginator here
+
+
 }
 
 
@@ -120,8 +124,13 @@ function render_profile (profile) {
   profilePostsView.id = 'profile-posts-view';
   document.querySelector('#profile-view').append(profilePostsView);
 
+  document.querySelector('#paginator-view').remove()
+  const profilePaginatorView = document.createElement('div');
+  profilePaginatorView.id = 'paginator-view';
+  document.querySelector('#profile-view').append(profilePostsView);
+
   render_profile_user(profile.user);
-  render_posts(profile.posts, '#profile-posts-view');
+  render_posts(profile.page_obj, '#profile-posts-view');
 }
 
 

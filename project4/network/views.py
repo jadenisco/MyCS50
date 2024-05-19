@@ -73,7 +73,7 @@ def profile(request, name):
                  'username': profile.username,
                  'email': profile.email,
                  'followers': [f.username for f in profile.followers.all()]},
-        'posts': [post.serialize() for post in posts]}
+        'page_obj': _get_page_obj(posts)}
 
     return JsonResponse(rsp_data, safe=False)
 
