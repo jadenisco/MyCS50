@@ -102,7 +102,8 @@ def _get_page_obj(posts):
     page = paginator.get_page(page_number)
 
     page_obj = {}
-    page_obj['page'] = {'current': page_number, 'posts': [post.serialize() for post in page]}
+    page_obj['page'] = {'current': page_number,
+                        'posts': [post.serialize() for post in page]}
     return page_obj
 
 

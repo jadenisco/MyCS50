@@ -82,6 +82,27 @@ function render_profile_user(profileUser) {
   }
 }
 
+function render_paginator(page_obj, view) {
+
+  contents = `<hr>
+    <nav aria-label="Page navigation example">
+    <ul class="pagination pagination-sm justify-content-left">
+  `
+  if (page_obj.page.current > 1) {
+    contents += `<li class="page-item">
+      contents += <a class="page-link" href="?page={{ page_obj.page.current - 1 }}">&laquo; Previous</a>
+      </li>`
+  } else {
+    contents += `<li class="page-item disabled">
+      <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&laquo; Previous</a>
+    </li>`
+  }
+
+  const paginatorView = document.createElement('div');
+  paginatorView.id = 'paginator-view';
+  paginatorView.innerHTML = contents;
+  document.querySelector(view).append(paginatorView);
+}
 
 function render_posts(page_obj, postsView) {
 
@@ -103,9 +124,7 @@ function render_posts(page_obj, postsView) {
     document.querySelector(postsView).append(postLink);
   })
 
-// Add paginator here
-
-
+  render_paginator(page_obj, postsView);
 }
 
 
