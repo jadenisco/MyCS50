@@ -87,15 +87,35 @@ function render_paginator(page_obj, view) {
   contents = `<hr>
     <nav aria-label="Page navigation example">
     <ul class="pagination pagination-sm justify-content-left">
-  `
-  if (page_obj.page.current > 1) {
+  `;
+
+  if (page_obj.page.has_previous) {
     contents += `<li class="page-item">
-      contents += <a class="page-link" href="?page={{ page_obj.page.current - 1 }}">&laquo; Previous</a>
-      </li>`
+      <a class="page-link" href="?page={{ page_obj.page.current - 1 }}">&laquo; Previous</a>
+      </li>`;
   } else {
     contents += `<li class="page-item disabled">
       <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&laquo; Previous</a>
-    </li>`
+    </li>`;
+  }
+
+  for (let i = 0; i < page_obj.page.range.length; i++) {
+    p = page_obj.page.range[i];
+    if (page_obj.page.current == p) {
+      contents += `<li class="page-item active"><a class="page-link" href="?page=${p}}">${p}</a></li>`;
+    } else {
+      contents += `<li class="page-item"><a class="page-link" href="?page=${p}">${p}</a></li>`;
+    }
+  }
+
+  if (page_obj.page.has_next) {
+    contents += `<li class="page-item">
+      <a class="page-link" href="?page={{ page_obj.page.current + 1 }}">Next &raquo;</a>
+      </li>`;
+  } else {
+    contents += `<li class="page-item disabled">
+      <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next &raquo;</a>
+    </li>`;
   }
 
   const paginatorView = document.createElement('div');

@@ -103,6 +103,9 @@ def _get_page_obj(posts):
 
     page_obj = {}
     page_obj['page'] = {'current': page_number,
+                        'range': list(paginator.page_range),
+                        'has_previous': page.has_previous(), 
+                        'has_next': page.has_next(), 
                         'posts': [post.serialize() for post in page]}
     return page_obj
 
