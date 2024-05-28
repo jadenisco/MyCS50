@@ -85,13 +85,13 @@ function render_profile_user(profileUser) {
 function render_paginator(page_obj, view) {
 
   contents = `<hr>
-    <nav aria-label="Page navigation example">
+    <nav aria-label="Page navigation">
     <ul class="pagination pagination-sm justify-content-left">
   `;
 
   if (page_obj.page.has_previous) {
     contents += `<li class="page-item">
-      <a class="page-link" href="?page={{ page_obj.page.current - 1 }}">&laquo; Previous</a>
+      <a class="page-link" href="?page=${ page_obj.page.current - 1 }">&laquo; Previous</a>
       </li>`;
   } else {
     contents += `<li class="page-item disabled">
@@ -110,7 +110,7 @@ function render_paginator(page_obj, view) {
 
   if (page_obj.page.has_next) {
     contents += `<li class="page-item">
-      <a class="page-link" href="?page={{ page_obj.page.current + 1 }}">Next &raquo;</a>
+      <a class="page-link" href="?page=${ page_obj.page.current + 1 }">Next &raquo;</a>
       </li>`;
   } else {
     contents += `<li class="page-item disabled">
@@ -187,7 +187,8 @@ function handleProfileClick(event) {
 
 
 function load_following_posts() {
-  fetch("following_posts", {
+  uri = "following_posts/" + this.location.search;
+  fetch(uri, {
     headers: {
       "Content-type": "application/json; charset=UTF-8"
     }})
@@ -197,7 +198,15 @@ function load_following_posts() {
 
 
 function load_posts() {
-  fetch("posts", {
+  let params = new URLSearchParams(document.location.search);
+  let page = params.get("page");
+  if (page) {
+    url = "posts/" + page;
+  } else {
+    url = "posts/" + "1";
+  }
+
+  fetch(url, {
     headers: {
       "Content-type": "application/json; charset=UTF-8"
     }})

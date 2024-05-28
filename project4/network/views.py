@@ -94,11 +94,11 @@ def post(request):
     return JsonResponse({"message": "Post was successful."}, status=201)
 
 
-def _get_page_obj(posts):
+def _get_page_obj(posts, page):
 
     posts = posts.order_by("-timestamp").all()
     paginator = Paginator(posts, 3)
-    page_number = 1
+    page_number = page
     page = paginator.get_page(page_number)
 
     page_obj = {}
@@ -126,12 +126,12 @@ def following_posts(request):
 
 @csrf_exempt
 @login_required
-def posts(request):
+def posts(request, page):
     if request.method != "GET":
         return JsonResponse({"error": "GET request required."}, status=400)
 
     posts = Post.objects.all()
-    return JsonResponse(_get_page_obj(posts), safe=False)
+    return JsonResponse(_get_page_obj(posts, page), safe=False)
 
 
 def login_view(request):
