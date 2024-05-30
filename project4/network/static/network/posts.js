@@ -174,7 +174,16 @@ function render_profile (profile) {
 
 
 function handleProfileClick(event) {
-  fetch(`/profile/${event.currentTarget.id}`)
+  let profile = '/profile/' + event.currentTarget.id + '/';
+  let params = new URLSearchParams(document.location.search);
+  let page = params.get("page");
+  if (page) {
+    url = profile + page;
+  } else {
+    url = profile + "1";
+  }
+
+  fetch(url)
   .then(response => response.json())
   .then(profile => {
     if (profile['error']) {
@@ -187,8 +196,15 @@ function handleProfileClick(event) {
 
 
 function load_following_posts() {
-  uri = "following_posts/" + this.location.search;
-  fetch(uri, {
+  let params = new URLSearchParams(document.location.search);
+  let page = params.get("page");
+  if (page) {
+    url = "following_posts/" + page;
+  } else {
+    url = "following_posts/" + "1";
+  }
+
+  fetch(url, {
     headers: {
       "Content-type": "application/json; charset=UTF-8"
     }})

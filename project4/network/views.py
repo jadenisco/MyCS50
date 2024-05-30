@@ -63,23 +63,6 @@ def follow(request, username):
 
 @csrf_exempt
 @login_required
-def profile(request, name):
-    profile = User.objects.get(username=name.split('-')[1])
-    posts = Post.objects.filter(user=profile)
-    posts = posts.order_by("-timestamp").all()
-
-    rsp_data = {
-        'user': {'requestor': request.user.username,
-                 'username': profile.username,
-                 'email': profile.email,
-                 'followers': [f.username for f in profile.followers.all()]},
-        'page_obj': _get_page_obj(posts)}
-
-    return JsonResponse(rsp_data, safe=False)
-
-
-@csrf_exempt
-@login_required
 def post(request):
     if request.method != "POST":
         return JsonResponse({"error": "POST request required."}, status=400)
@@ -112,7 +95,24 @@ def _get_page_obj(posts, page):
 
 @csrf_exempt
 @login_required
-def following_posts(request):
+def profile(request, name, page):
+    profile = User.objects.get(username=name.split('-')[1])
+    posts = Post.objects.filter(user=profile)
+    posts = posts.order_by("-timestamp").all()
+
+    rsp_data = {
+        'user': {'requestor': request.user.username,
+                 'username': profile.username,
+                 'email': profile.email,
+                 'followers': [f.username for f in profile.followers.all()]},
+        'page_obj': _get_page_obj(posts, page)}
+
+    return JsonResponse(rsp_data, safe=False)
+
+
+@csrf_exempt
+@login_required
+def following_posts(request, page):
     if request.method != "GET":
         return JsonResponse({"error": "GET request required."}, status=400)
 
@@ -121,7 +121,7 @@ def following_posts(request):
     for f in user.following.all():
         posts = posts.union(posts, Post.objects.filter(user=f))
 
-    return JsonResponse(_get_page_obj(posts), safe=False)
+    return JsonResponse(_get_page_obj(posts, page), safe=False)
 
 
 @csrf_exempt
