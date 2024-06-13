@@ -131,11 +131,10 @@ function render_posts(page_obj, postsView) {
     contents = `<div id="post-${post.id}">
       <a class="post-user" id="profile-${post.name}" href="#" onclick="handleProfileClick(event)"><strong>${post.name}</strong></a>
       </div>
-      <p>Edit</p>
+      <a class="post-edit" id="profile-${post.name}" href="#" onclick="handleEditClick(event)">Edit</a>
       <p>${post.body}</p>
       <p style="color: red">♥️ <b style="color:grey">${post.likes}</b></p>
       <p style="color:grey">${post.timestamp}</p>
-      <p>Comment</p>
     </div>`;
 
     const postLink = document.createElement('div');
@@ -170,6 +169,11 @@ function render_profile (profile) {
 
   render_profile_user(profile.user);
   render_posts(profile.page_obj, '#profile-posts-view');
+}
+
+
+function handleEditClick(event) {
+  console.log("handleEditClick..")
 }
 
 

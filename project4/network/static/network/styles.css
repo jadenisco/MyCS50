@@ -56,6 +56,10 @@ p {
     font-size: larger;
 }
 
+.post-edit {
+    font-size: medium;
+}
+
 .post-link {
     padding: 5px;
     margin-top: 5px;
