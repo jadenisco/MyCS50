@@ -130,8 +130,7 @@ function render_posts(page_obj, postsView) {
   posts.forEach((post, key) => {
     contents = `<div id="post-${post.id}">
       <a class="post-user" id="profile-${post.name}" href="#" onclick="handleProfileClick(event)"><strong>${post.name}</strong></a>
-      </div>
-      <a class="post-edit" id="profile-${post.name}" href="#" onclick="handleEditClick(event)">Edit</a>
+      <div><a class="post-edit" href="#" onclick="handleEditClick(event)">Edit</a></div>
       <p>${post.body}</p>
       <p style="color: red">♥️ <b style="color:grey">${post.likes}</b></p>
       <p style="color:grey">${post.timestamp}</p>
@@ -173,7 +172,22 @@ function render_profile (profile) {
 
 
 function handleEditClick(event) {
-  console.log("handleEditClick..")
+  const post = event.target.parentNode.parentNode;
+  const pLink = post.parentNode;
+
+  // Remove and rebuild post
+  post.remove();
+  pLink.append(post);
+
+  // Example contents
+  contents = `<div id="post-${post.id}">
+  <a class="post-user" id="profile-${post.name}" href="#" onclick="handleProfileClick(event)"><strong>${post.name}</strong></a>
+  </div>
+  <a class="post-edit" id="profile-${post.name}" href="#" onclick="handleEditClick(event)">Edit</a>
+  <p>${post.body}</p>
+  <p style="color: red">♥️ <b style="color:grey">${post.likes}</b></p>
+  <p style="color:grey">${post.timestamp}</p>
+  </div>`;
 }
 
 

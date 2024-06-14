@@ -77,6 +77,22 @@ def post(request):
     return JsonResponse({"message": "Post was successful."}, status=201)
 
 
+@csrf_exempt
+@login_required
+def edit(request, post_number):
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required."}, status=400)
+    
+    data = json.loads(request.body)
+    post = Post(
+        user = request.user,
+        body = data.get("body", "")
+    )
+    post.save()
+
+    return JsonResponse({"message": "Post was successful."}, status=201)
+
+
 def _get_page_obj(posts, page):
 
     posts = posts.order_by("-timestamp").all()

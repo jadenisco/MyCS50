@@ -60,7 +60,7 @@ p {
     font-size: medium;
 }
 
-.post-link {
+[class^="post-link"] {
     padding: 5px;
     margin-top: 5px;
     border: double;

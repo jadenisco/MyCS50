@@ -12,6 +12,7 @@ urlpatterns = [
     path("scratch", views.scratch, name="scratch"),
     path("following", views.index, name="following"),
     path("post", views.post, name="post"),
+    path("edit/<str:post_number>", views.posts, name="edit"),
     path("profile/<str:name>/<int:page>", views.profile, name="profile"),
     path("follow/<str:username>", views.follow, name="follow"),
     path("posts/<int:page>", views.posts, name="posts"),

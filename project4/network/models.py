@@ -12,7 +12,6 @@ class Post(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     body = models.TextField(blank=True)
     likes = models.IntegerField(default=0)
-    comment = models.TextField(blank=True)
 
     def serialize(self):
         return {
