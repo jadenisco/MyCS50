@@ -126,6 +126,7 @@ function render_paginator(page_obj, view) {
 
 function render_posts(page_obj, postsView) {
 
+  // jadfix: Edit should only show up if post == profile
   posts = page_obj.page.posts
   posts.forEach((post, key) => {
     contents = `<div id="post-${post.id}">
@@ -174,20 +175,21 @@ function render_profile (profile) {
 function handleEditClick(event) {
   const post = event.target.parentNode.parentNode;
   const pLink = post.parentNode;
+  const newPost = document.createElement('div');
+  const postText = post.children[2].getInnerHTML()
 
   // Remove and rebuild post
   post.remove();
-  pLink.append(post);
 
-  // Example contents
-  contents = `<div id="post-${post.id}">
-  <a class="post-user" id="profile-${post.name}" href="#" onclick="handleProfileClick(event)"><strong>${post.name}</strong></a>
-  </div>
-  <a class="post-edit" id="profile-${post.name}" href="#" onclick="handleEditClick(event)">Edit</a>
-  <p>${post.body}</p>
-  <p style="color: red">♥️ <b style="color:grey">${post.likes}</b></p>
-  <p style="color:grey">${post.timestamp}</p>
-  </div>`;
+  contents = `<p>Edit Post</p><form id="compose-form" onsubmit="post_form(event)">
+    <textarea class="form-control" id="compose-body" name="body">${postText}</textarea>
+    <input type="submit" value="Save" class="btn btn-primary btn-sm"/>
+    <input type="submit" value="Cancel" class="btn btn-primary btn-sm"/>
+    </form>`
+
+  newPost.id = post.id
+  newPost.innerHTML = contents;
+  pLink.append(newPost);
 }
 
 
