@@ -127,11 +127,17 @@ function render_paginator(page_obj, view) {
 function render_posts(page_obj, postsView) {
 
   // jadfix: Edit should only show up if post == profile
+  // Look at post.name and document.getElementbyID 
   posts = page_obj.page.posts
   posts.forEach((post, key) => {
     contents = `<div id="post-${post.id}">
-      <a class="post-user" id="profile-${post.name}" href="#" onclick="handleProfileClick(event)"><strong>${post.name}</strong></a>
-      <div><a class="post-edit" href="#" onclick="handleEditClick(event)">Edit</a></div>
+      <a class="post-user" id="post-nm-${post.name}" href="#" onclick="handleProfileClick(event)"><strong>${post.name}</strong></a>`;
+
+    if (document.getElementById(`profile-${post.name}`)) {
+      contents += `<div><a class="post-edit" href="#" onclick="handleEditClick(event)">Edit</a></div>`
+    };
+
+    contents += `
       <p>${post.body}</p>
       <p style="color: red">♥️ <b style="color:grey">${post.likes}</b></p>
       <p style="color:grey">${post.timestamp}</p>
