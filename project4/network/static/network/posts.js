@@ -126,8 +126,6 @@ function render_paginator(page_obj, view) {
 
 function render_posts(page_obj, postsView) {
 
-  // jadfix: Edit should only show up if post == profile
-  // Look at post.name and document.getElementbyID 
   posts = page_obj.page.posts
   posts.forEach((post, key) => {
     contents = `<div id="post-${post.id}">
@@ -177,6 +175,10 @@ function render_profile (profile) {
   render_posts(profile.page_obj, '#profile-posts-view');
 }
 
+function handleEditCancel(event) {
+  console.log("Handle Edit Cancel")
+}
+
 
 function handleEditClick(event) {
   const post = event.target.parentNode.parentNode;
@@ -190,7 +192,7 @@ function handleEditClick(event) {
   contents = `<p>Edit Post</p><form id="compose-form" onsubmit="post_form(event)">
     <textarea class="form-control" id="compose-body" name="body">${postText}</textarea>
     <input type="submit" value="Save" class="btn btn-primary btn-sm"/>
-    <input type="submit" value="Cancel" class="btn btn-primary btn-sm"/>
+    <input type="button" value="Cancel" class="btn btn-primary btn-sm" onclick="handleEditCancel(event)"/>
     </form>`
 
   newPost.id = post.id
