@@ -175,8 +175,12 @@ function render_profile (profile) {
   render_posts(profile.page_obj, '#profile-posts-view');
 }
 
+
 function handleEditCancel(event) {
-  console.log("Handle Edit Cancel")
+  // Get the original post
+  pLink = event.target.parentNode.parentNode.parentNode;
+  pLink.children[1].hidden = false;
+  pLink.children[0].remove();
 }
 
 
@@ -198,6 +202,8 @@ function handleEditClick(event) {
   newPost.id = post.id
   newPost.innerHTML = contents;
   pLink.append(newPost);
+  post.hidden = true;
+  pLink.append(post)
 }
 
 
