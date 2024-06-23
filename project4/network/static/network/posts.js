@@ -177,10 +177,9 @@ function render_profile (profile) {
 
 
 function handleEditCancel(event) {
-  // Get the original post
   pLink = event.target.parentNode.parentNode.parentNode;
-  pLink.children[1].hidden = false;
-  pLink.children[0].remove();
+  pLink.children[0].hidden = false;
+  pLink.children[1].remove();
 }
 
 
@@ -190,20 +189,16 @@ function handleEditClick(event) {
   const newPost = document.createElement('div');
   const postText = post.children[2].getInnerHTML()
 
-  // Remove and rebuild post
-  post.remove();
-
   contents = `<p>Edit Post</p><form id="compose-form" onsubmit="post_form(event)">
     <textarea class="form-control" id="compose-body" name="body">${postText}</textarea>
     <input type="submit" value="Save" class="btn btn-primary btn-sm"/>
     <input type="button" value="Cancel" class="btn btn-primary btn-sm" onclick="handleEditCancel(event)"/>
     </form>`
 
+  post.hidden = true;
   newPost.id = post.id
   newPost.innerHTML = contents;
   pLink.append(newPost);
-  post.hidden = true;
-  pLink.append(post)
 }
 
 
