@@ -80,10 +80,19 @@ def post(request):
 @csrf_exempt
 @login_required
 def edit(request, post_number):
-    if request.method != "POST":
-        return JsonResponse({"error": "POST request required."}, status=400)
+    if request.method != "PUT":
+        return JsonResponse({"error": "PUT request required."}, status=400)
     
-    data = json.loads(request.body)
+    jl = json.loads(request.body)
+    if jl['type'] == 'save':
+        print("SAVE")
+    elif jl['type'] == 'Delete':
+        print("DELETE")
+    else:
+        return JsonResponse({"error": "Invalid PUT type."}, status=400)
+
+
+'''
     post = Post(
         user = request.user,
         body = data.get("body", "")
@@ -91,6 +100,7 @@ def edit(request, post_number):
     post.save()
 
     return JsonResponse({"message": "Post was successful."}, status=201)
+'''
 
 
 def _get_page_obj(posts, page):

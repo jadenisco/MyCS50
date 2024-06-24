@@ -176,6 +176,30 @@ function render_profile (profile) {
 }
 
 
+function handleEditSave(event) {
+  const post = event.target.parentNode;
+  const formData = new FormData(event.target);
+  const data={};
+  const jsonBody={};
+
+  formData.forEach((value, key) => (data[key] = value))
+  jsonBody['type'] = "save";
+  jsonBody['form'] = data;
+
+  fetch(`edit/${post.id}`, {
+    method: "PUT",
+    body: JSON.stringify(jsonBody),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8"
+    }})
+    .then((response) => response.text())
+    .then(text => console.log(text))
+
+    //pLink.children[0].hidden = false;
+  //pLink.children[1].remove();
+}
+
+
 function handleEditCancel(event) {
   pLink = event.target.parentNode.parentNode.parentNode;
   pLink.children[0].hidden = false;
@@ -189,7 +213,7 @@ function handleEditClick(event) {
   const newPost = document.createElement('div');
   const postText = post.children[2].getInnerHTML()
 
-  contents = `<p>Edit Post</p><form id="compose-form" onsubmit="post_form(event)">
+  contents = `<p>Edit Post</p><form id="compose-form" onsubmit="handleEditSave(event)">
     <textarea class="form-control" id="compose-body" name="body">${postText}</textarea>
     <input type="submit" value="Save" class="btn btn-primary btn-sm"/>
     <input type="button" value="Cancel" class="btn btn-primary btn-sm" onclick="handleEditCancel(event)"/>
