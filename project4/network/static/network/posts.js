@@ -124,6 +124,7 @@ function render_paginator(page_obj, view) {
   document.querySelector(view).append(paginatorView);
 }
 
+
 function render_posts(page_obj, postsView) {
 
   posts = page_obj.page.posts
@@ -183,10 +184,11 @@ function handleEditSave(event) {
   const jsonBody={};
 
   formData.forEach((value, key) => (data[key] = value))
+  jsonBody['post-id'] = `${post.id}`;
   jsonBody['type'] = "save";
   jsonBody['form'] = data;
 
-  fetch(`edit/${post.id}`, {
+  fetch(`edit`, {
     method: "PUT",
     body: JSON.stringify(jsonBody),
     headers: {
@@ -194,9 +196,6 @@ function handleEditSave(event) {
     }})
     .then((response) => response.text())
     .then(text => console.log(text))
-
-    //pLink.children[0].hidden = false;
-  //pLink.children[1].remove();
 }
 
 
