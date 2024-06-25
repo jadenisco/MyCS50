@@ -177,6 +177,11 @@ function render_profile (profile) {
 }
 
 
+function handleEditSaveResponse() {
+  console.log("HandleEditSaveResponse")
+}
+
+
 function handleEditSave(event) {
   const post = event.target.parentNode;
   const formData = new FormData(event.target);
@@ -193,9 +198,12 @@ function handleEditSave(event) {
     body: JSON.stringify(jsonBody),
     headers: {
       "Content-type": "application/json; charset=UTF-8"
-    }})
-    .then((response) => response.text())
-    .then(text => console.log(text))
+    }}).then((response) => {
+      console.log("Response Status: ", response.status);
+      if(response.status == '201') {
+        handleEditSaveResponse();
+      }  
+    })
 }
 
 
