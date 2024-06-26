@@ -107,7 +107,6 @@ def edit(request):
 
 
 def _get_page_obj(posts, page):
-
     posts = posts.order_by("-timestamp").all()
     paginator = Paginator(posts, 3)
     page_number = page
@@ -125,7 +124,7 @@ def _get_page_obj(posts, page):
 @csrf_exempt
 @login_required
 def profile(request, name, page):
-    profile = User.objects.get(username=name.split('-')[1])
+    profile = User.objects.get(username=name.split('-')[2])
     posts = Post.objects.filter(user=profile)
     posts = posts.order_by("-timestamp").all()
 
