@@ -94,12 +94,14 @@ def edit(request):
             post = Post.objects.get(id=post_id)
             post.body = jl['form']['body']
             post.save()
-            return JsonResponse({"error": "Save was successful!"}, status=201)
+            return JsonResponse({"message": "Save was successful!"}, status=201)
         except:
             return JsonResponse({"error": "Post could not be saved!"}, status=400)
 
-    elif jl['type'] == 'Delete':
-        print("DELETE")
+    elif jl['type'] == 'delete':
+        post = Post.objects.get(id=post_id)
+        post.delete()
+        return JsonResponse({"message": "Delete was successful!"}, status=201)
     else:
         return JsonResponse({"error": "Invalid PUT type."}, status=400)
 

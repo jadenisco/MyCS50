@@ -174,6 +174,12 @@ function render_profile (profile) {
 }
 
 
+function handleEditDeleteResponse(event) {
+  pLink = event.target.parentNode.parentNode.parentNode;
+  pLink.remove();
+}
+
+
 function handleEditSaveResponse(event, formBody) {
   pLink = event.target.parentNode.parentNode;
   post = pLink.children[0];
@@ -222,6 +228,28 @@ function handleEditSave(event) {
 }
 
 
+function handleEditDelete(event) {
+  const post = event.target.parentNode.parentNode;
+  const data={};
+  const jsonBody={};
+
+  jsonBody['post-id'] = `${post.id}`;
+  jsonBody['type'] = "delete";
+
+  fetch(`edit`, {
+    method: "PUT",
+    body: JSON.stringify(jsonBody),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8"
+    }}).then((response) => {
+      console.log("Response Status: ", response.status);
+      if(response.status == '201') {
+          handleEditDeleteResponse(event, data['body']);
+      }  
+    })  
+}
+
+
 function handleEditCancel(event) {
   pLink = event.target.parentNode.parentNode.parentNode;
   pLink.children[0].hidden = false;
@@ -239,6 +267,7 @@ function handleEditClick(event) {
     <textarea class="form-control" id="compose-body" name="body">${postText}</textarea>
     <input type="submit" value="Save" class="btn btn-primary btn-sm"/>
     <input type="button" value="Cancel" class="btn btn-primary btn-sm" onclick="handleEditCancel(event)"/>
+    <input type="button" value="Delete" class="btn btn-primary btn-sm" onclick="handleEditDelete(event)"/>
     </form>`
 
   post.hidden = true;
