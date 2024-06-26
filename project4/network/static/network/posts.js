@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-
   if (this.location.pathname == '/following') {
     render_following();
   } else {
@@ -83,7 +82,6 @@ function render_profile_user(profileUser) {
 }
 
 function render_paginator(page_obj, view) {
-
   contents = `<hr>
     <nav aria-label="Page navigation">
     <ul class="pagination pagination-sm justify-content-left">
@@ -126,7 +124,6 @@ function render_paginator(page_obj, view) {
 
 
 function render_posts(page_obj, postsView) {
-
   posts = page_obj.page.posts
   posts.forEach((post, key) => {
     contents = `<div id="post-${post.id}">
@@ -177,8 +174,14 @@ function render_profile (profile) {
 }
 
 
-function handleEditSaveResponse() {
-  console.log("HandleEditSaveResponse")
+function handleEditSaveResponse(event, formBody) {
+  pLink = event.target.parentNode.parentNode;
+  post = pLink.children[0];
+  text = post.children[2];
+
+  text.innerHTML = formBody;
+  post.hidden = false;
+  pLink.children[1].remove();
 }
 
 
@@ -212,7 +215,7 @@ function handleEditSave(event) {
       }}).then((response) => {
         console.log("Response Status: ", response.status);
         if(response.status == '201') {
-          handleEditSaveResponse();
+          handleEditSaveResponse(event, data['body']);
         }  
       })  
   }
