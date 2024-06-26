@@ -182,8 +182,16 @@ function handleEditSaveResponse() {
 }
 
 
+function handleEditSaveSame(event) {
+  pLink = event.target.parentNode.parentNode;
+  pLink.children[0].hidden = false;
+  pLink.children[1].remove();
+}
+
+
 function handleEditSave(event) {
   const post = event.target.parentNode;
+  const text = post.parentNode.children[0].children[2].textContent;
   const formData = new FormData(event.target);
   const data={};
   const jsonBody={};
@@ -193,17 +201,21 @@ function handleEditSave(event) {
   jsonBody['type'] = "save";
   jsonBody['form'] = data;
 
-  fetch(`edit`, {
-    method: "PUT",
-    body: JSON.stringify(jsonBody),
-    headers: {
-      "Content-type": "application/json; charset=UTF-8"
-    }}).then((response) => {
-      console.log("Response Status: ", response.status);
-      if(response.status == '201') {
-        handleEditSaveResponse();
-      }  
-    })
+  if (text == data['body']) {
+    handleEditSaveSame(event);
+  } else {
+    fetch(`edit`, {
+      method: "PUT",
+      body: JSON.stringify(jsonBody),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8"
+      }}).then((response) => {
+        console.log("Response Status: ", response.status);
+        if(response.status == '201') {
+          handleEditSaveResponse();
+        }  
+      })  
+  }
 }
 
 
