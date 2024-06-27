@@ -35,6 +35,29 @@ function toggle_follow() {
 }
 
 
+function handleLikeClick(event, post) {
+  console.log("handleLikeClick")
+//  if (profileUser.followers.includes(profileUser.requestor)) {
+//    jsonBody = JSON.stringify({follow: false});
+//  } else {
+//    jsonBody = JSON.stringify({follow: true});
+//  }
+//
+//  fetch(`/follow/${profileUser.username}`, {
+//    method: "PUT",
+//    body: jsonBody,
+//    headers: {
+//      "Content-type": "application/json; charset=UTF-8"
+//    }
+//  }).then((response) => {
+//    console.log("Response Status: ", response.status);
+//    if(response.status == '204') {
+//      toggle_follow();
+//    }
+//  })
+}
+
+
 function handleFollowClick(profileUser) {
   if (profileUser.followers.includes(profileUser.requestor)) {
     jsonBody = JSON.stringify({follow: false});
@@ -135,7 +158,6 @@ function render_posts(page_obj, postsView) {
 
     contents += `
       <p>${post.body}</p>
-      <p style="color: red">♥️ <b style="color:grey">${post.likes}</b></p>
       <p style="color:grey">${post.timestamp}</p>
     </div>`;
 
