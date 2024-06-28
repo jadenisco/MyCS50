@@ -35,26 +35,20 @@ function toggle_follow() {
 }
 
 
-function handleLikeClick(event, post) {
-  console.log("handleLikeClick")
-//  if (profileUser.followers.includes(profileUser.requestor)) {
-//    jsonBody = JSON.stringify({follow: false});
-//  } else {
-//    jsonBody = JSON.stringify({follow: true});
-//  }
-//
-//  fetch(`/follow/${profileUser.username}`, {
-//    method: "PUT",
-//    body: jsonBody,
-//    headers: {
-//      "Content-type": "application/json; charset=UTF-8"
-//    }
-//  }).then((response) => {
-//    console.log("Response Status: ", response.status);
-//    if(response.status == '204') {
-//      toggle_follow();
-//    }
-//  })
+function handleLikeClick(event) {
+  post = event.target.parentNode.id;
+
+  fetch('/like/' + post, {
+    method: "PUT",
+    headers: {
+      "Content-type": "application/json; charset=UTF-8"
+  }}).then((response) => {
+      console.log("Response Status: ", response.status);
+      if(response.status == '204') {
+        console.log(response);
+  //    toggle_follow();
+      }
+  })
 }
 
 
@@ -147,7 +141,8 @@ function render_paginator(page_obj, view) {
 
 
 function render_posts(page_obj, postsView) {
-  posts = page_obj.page.posts
+  posts = page_obj.page.posts;
+
   posts.forEach((post, key) => {
     contents = `<div id="post-${post.id}">
       <a class="post-user" id="post-nm-${post.name}" href="#" onclick="handleProfileClick(event)"><strong>${post.name}</strong></a>`;
@@ -158,6 +153,7 @@ function render_posts(page_obj, postsView) {
 
     contents += `
       <p>${post.body}</p>
+      <a style="color: red" href="#" onclick="handleLikeClick(event)">♥️ </a><b style="color:grey">${post.likes}</b>
       <p style="color:grey">${post.timestamp}</p>
     </div>`;
 

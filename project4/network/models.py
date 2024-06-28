@@ -14,6 +14,8 @@ class Post(models.Model):
     likes = models.ManyToManyField("User", related_name="user_like")
 
     def serialize(self):
+
+
         return {
             "id": self.id,
             "name": self.user.username,

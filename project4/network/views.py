@@ -37,6 +37,24 @@ def index(request):
 
 @csrf_exempt
 @login_required
+def like(request, post):
+    if request.method != "PUT":
+        return JsonResponse({"error": "PUT request required."}, status=400)
+
+    try:
+        postID  = post.split('-')[1]
+    except:
+        return JsonResponse({"error": "post format invalid."}, status=404)
+
+    print(postID)
+    # if the request user is not in likes add it
+    # User.objects.get(username=request.user.username)
+    # p.likes.all()
+    # p = Post.objects.get(id=postID)
+
+
+@csrf_exempt
+@login_required
 def follow(request, username):
     try:
         user = User.objects.get(username=username)
@@ -47,7 +65,6 @@ def follow(request, username):
         return JsonResponse({
             "error": "GET or PUT request required."
         }, status=400)
-
 
     data = json.loads(request.body)
     requestor = User.objects.get(username=request.user)
