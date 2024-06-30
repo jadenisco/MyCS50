@@ -42,15 +42,18 @@ def like(request, post):
         return JsonResponse({"error": "PUT request required."}, status=400)
 
     try:
-        postID  = post.split('-')[1]
+        postUser  = post.split('-')[1]
     except:
         return JsonResponse({"error": "post format invalid."}, status=404)
 
-    print(postID)
-    # if the request user is not in likes add it
-    # User.objects.get(username=request.user.username)
-    # p.likes.all()
-    # p = Post.objects.get(id=postID)
+    post = Post.objects.get(id=postUser)
+    requestUser = User.objects.get(username=request.user.username)
+    if requestUser in post.likes.all():
+        post.likes.remove(requestUser)
+    else:
+        post.likes.add(requestUser)
+
+    return HttpResponse(status=204)
 
 
 @csrf_exempt
