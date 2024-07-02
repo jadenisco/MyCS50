@@ -23,6 +23,19 @@ function render_following() {
 }
 
 
+function toggle_like(event) {
+  console.log("toggle_like: " + event)
+//  text = document.querySelector('.profile-user-view').children[1].textContent;
+//  if (text == 'Follow') {
+//    document.querySelector('.profile-user-view').children[1].textContent = 'Unfollow';
+//    document.querySelector('.profile-user-view').children[1].className = "btn btn-secondary btn-sm"
+//  } else {
+//    document.querySelector('.profile-user-view').children[1].textContent = 'Follow';
+//    document.querySelector('.profile-user-view').children[1].className = "btn btn-primary btn-sm"
+//  }
+}
+
+
 function toggle_follow() {
   text = document.querySelector('.profile-user-view').children[1].textContent;
   if (text == 'Follow') {
@@ -42,13 +55,22 @@ function handleLikeClick(event) {
     method: "PUT",
     headers: {
       "Content-type": "application/json; charset=UTF-8"
-  }}).then((response) => {
-      console.log("Response Status: ", response.status);
-      if(response.status == '204') {
-        console.log(response);
-  //    toggle_follow();
+  }}).then(response => response.json())
+  .then((json) => {
+      if (json['error'] != null) {
+        console.log("Like failed: " + putError);
+      } else {
+        console.log(json);
       }
   })
+  
+  // This is another way to handle the response
+  //  .then(response => {
+  //   j = response.json();
+  //   s = response.status;
+  //  })
+  //  .catch(error => { console.log(error); return;})
+  //  .then(json => { console.log(json) })
 }
 
 
@@ -262,7 +284,7 @@ function handleEditDelete(event) {
     }}).then((response) => {
       console.log("Response Status: ", response.status);
       if(response.status == '201') {
-          handleEditDeleteResponse(event, data['body']);
+          handleEditDeleteResponse(event);
       }  
     })  
 }

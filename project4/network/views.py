@@ -44,7 +44,7 @@ def like(request, post):
     try:
         postUser  = post.split('-')[1]
     except:
-        return JsonResponse({"error": "post format invalid."}, status=404)
+        return JsonResponse({"error": "post format was invalid."}, status=404)
 
     post = Post.objects.get(id=postUser)
     requestUser = User.objects.get(username=request.user.username)
@@ -53,7 +53,7 @@ def like(request, post):
     else:
         post.likes.add(requestUser)
 
-    return HttpResponse(status=204)
+    return JsonResponse({"JD": "MA"}, status=201, safe=False)
 
 
 @csrf_exempt
