@@ -53,7 +53,7 @@ def like(request, post):
     else:
         post.likes.add(requestUser)
 
-    return JsonResponse({"JD": "MA"}, status=201, safe=False)
+    return JsonResponse({"user": "MA", "likes": ["JD"]}, status=201, safe=False)
 
 
 @csrf_exempt

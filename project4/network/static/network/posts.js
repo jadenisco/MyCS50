@@ -23,16 +23,13 @@ function render_following() {
 }
 
 
-function toggle_like(event) {
-  console.log("toggle_like: " + event)
-//  text = document.querySelector('.profile-user-view').children[1].textContent;
-//  if (text == 'Follow') {
-//    document.querySelector('.profile-user-view').children[1].textContent = 'Unfollow';
-//    document.querySelector('.profile-user-view').children[1].className = "btn btn-secondary btn-sm"
-//  } else {
-//    document.querySelector('.profile-user-view').children[1].textContent = 'Follow';
-//    document.querySelector('.profile-user-view').children[1].className = "btn btn-primary btn-sm"
-//  }
+function set_like(post, json) {
+  if (json.likes.includes(json.user)) {
+    document.querySelector('#' + post).children[3].style.color = "red";
+  } else {
+    document.querySelector('#' + post).children[3].style.color = "black";
+  }
+  document.querySelector('#' + post).children[4].innerHTML = json.likes.length
 }
 
 
@@ -60,7 +57,7 @@ function handleLikeClick(event) {
       if (json['error'] != null) {
         console.log("Like failed: " + putError);
       } else {
-        console.log(json);
+        set_like(post, json);
       }
   })
   
@@ -175,7 +172,8 @@ function render_posts(page_obj, postsView) {
 
     contents += `
       <p>${post.body}</p>
-      <a style="color: red" href="#" onclick="handleLikeClick(event)">♥️ </a><b style="color:grey">${post.likes}</b>
+      <a style="color: red" href="#" onclick="handleLikeClick(event)">♥️ </a>
+      <b style="color:grey">${post.likes}</b>
       <p style="color:grey">${post.timestamp}</p>
     </div>`;
 
