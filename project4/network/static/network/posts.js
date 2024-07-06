@@ -24,7 +24,7 @@ function render_following() {
 
 
 function set_like(post, json) {
-  if (json.likes.includes(json.user)) {
+  if (json.likes.includes(json.name)) {
     document.querySelector('#' + post).children[3].style.color = "red";
   } else {
     document.querySelector('#' + post).children[3].style.color = "black";

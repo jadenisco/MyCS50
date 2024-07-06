@@ -14,12 +14,10 @@ class Post(models.Model):
     likes = models.ManyToManyField("User", related_name="user_like")
 
     def serialize(self):
-
-
         return {
             "id": self.id,
             "name": self.user.username,
             "timestamp": self.timestamp.strftime("%b %d %Y, %I:%M %p"),
             "body": self.body,
-            "likes": ["MA", "JD"]
+            "likes": [l.username for l in self.likes.all()]
         }
