@@ -23,13 +23,14 @@ function render_following() {
 }
 
 
-function set_like(post, json) {
+function set_like(json) {
+  post = '#post-' + json.id;
   if (json.likes.includes(json.name)) {
-    document.querySelector('#' + post).children[3].style.color = "red";
+    document.querySelector(post).children[3].style.color = "red";
   } else {
-    document.querySelector('#' + post).children[3].style.color = "black";
+    document.querySelector(post).children[3].style.color = "black";
   }
-  document.querySelector('#' + post).children[4].innerHTML = json.likes.length
+  document.querySelector(post).children[4].innerHTML = json.likes.length
 }
 
 
@@ -55,9 +56,9 @@ function handleLikeClick(event) {
   }}).then(response => response.json())
   .then((json) => {
       if (json['error'] != null) {
-        console.log("Like failed: " + putError);
+        console.log("Like failed: " + json['error']);
       } else {
-        set_like(post, json);
+        set_like(json);
       }
   })
   
@@ -172,15 +173,28 @@ function render_posts(page_obj, postsView) {
 
     contents += `
       <p>${post.body}</p>
-      <a style="color: red" href="#" onclick="handleLikeClick(event)">♥️ </a>
-      <b style="color:grey">${post.likes}</b>
+      <a href="#" onclick="handleLikeClick(event)">♥️ </a>
+      <b style="color:grey"></b>
       <p style="color:grey">${post.timestamp}</p>
     </div>`;
 
-    const postLink = document.createElement('div');
+    postLink = document.createElement('div');
     postLink.className = 'post-link';
     postLink.innerHTML = contents;
     document.querySelector(postsView).append(postLink);
+
+    fetch('/like/' + postLink.children[0].id, {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8"
+    }}).then(response => response.json())
+    .then((json) => {
+      if(json['error'] != null) {
+        console.log("Like failed: " + json['error']);
+      } else {
+        set_like(json);
+      }
+    })
   })
 
   render_paginator(page_obj, postsView);
