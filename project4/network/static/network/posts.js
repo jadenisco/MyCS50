@@ -24,13 +24,21 @@ function render_following() {
 
 
 function set_like(json) {
-  post = '#post-' + json.id;
-  if (json.likes.includes(json.name)) {
-    document.querySelector(post).children[3].style.color = "red";
+  post = '#post-' + json.post.id;
+  if (document.querySelector(post).children[1].id == 'post-edit') {
+    childIndex = 3;
   } else {
-    document.querySelector(post).children[3].style.color = "black";
+    childIndex = 2;
   }
-  document.querySelector(post).children[4].innerHTML = json.likes.length
+  
+  if (json.post.likes.includes(json.user)) {
+    color = "red";
+  } else {
+    color = "black"
+  }
+
+  document.querySelector(post).children[childIndex].style.color = color;
+  document.querySelector(post).children[childIndex + 1].innerHTML = json.post.likes.length
 }
 
 
@@ -168,7 +176,7 @@ function render_posts(page_obj, postsView) {
       <a class="post-user" id="post-nm-${post.name}" href="#" onclick="handleProfileClick(event)"><strong>${post.name}</strong></a>`;
 
     if (document.getElementById(`profile-${post.name}`)) {
-      contents += `<div><a class="post-edit" href="#" onclick="handleEditClick(event)">Edit</a></div>`
+      contents += `<div id='post-edit'><a class="post-edit" href="#" onclick="handleEditClick(event)">Edit</a></div>`
     };
 
     contents += `

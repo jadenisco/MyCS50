@@ -39,10 +39,14 @@ def index(request):
 @login_required
 def like(request, post):
 
+    if not (request.method == "PUT" or request.method == "GET"):
+        return JsonResponse({"error": "GET or PUT request required."}, status=400)
+
     try:
         postUser  = post.split('-')[1]
     except:
         return JsonResponse({"error": "Post format was invalid."}, status=404)
+
     post = Post.objects.get(id=postUser)
     requestUser = User.objects.get(username=request.user.username)
 
@@ -51,11 +55,11 @@ def like(request, post):
             post.likes.remove(requestUser)
         else:
             post.likes.add(requestUser)
-        return JsonResponse(post.serialize(), status=201, safe=False)
-    elif request.method == "GET":
-        return JsonResponse(post.serialize(), status=201, safe=False)
-    else:
-        return JsonResponse({"error": "GET or PUT request required."}, status=400)
+    
+    jr = {}
+    jr['user'] = requestUser.username
+    jr['post'] = post.serialize()
+    return JsonResponse(jr, status=201, safe=False)
 
 
 @csrf_exempt
