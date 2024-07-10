@@ -43,13 +43,13 @@ function set_like(json) {
 
 
 function toggle_follow() {
-  text = document.querySelector('.profile-user-view').children[1].textContent;
+  text = document.querySelector('.profile-user-view').children[2].textContent;
   if (text == 'Follow') {
-    document.querySelector('.profile-user-view').children[1].textContent = 'Unfollow';
-    document.querySelector('.profile-user-view').children[1].className = "btn btn-secondary btn-sm"
+    document.querySelector('.profile-user-view').children[2].textContent = 'Unfollow';
+    document.querySelector('.profile-user-view').children[2].className = "btn btn-secondary btn-sm"
   } else {
-    document.querySelector('.profile-user-view').children[1].textContent = 'Follow';
-    document.querySelector('.profile-user-view').children[1].className = "btn btn-primary btn-sm"
+    document.querySelector('.profile-user-view').children[2].textContent = 'Follow';
+    document.querySelector('.profile-user-view').children[2].className = "btn btn-primary btn-sm"
   }
 }
 
