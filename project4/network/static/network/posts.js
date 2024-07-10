@@ -176,7 +176,7 @@ function render_posts(page_obj, postsView) {
     contents = `<div id="post-${post.id}">
       <a class="post-user" id="post-nm-${post.name}" href="#" onclick="handleProfileClick(event)"><strong>${post.name}</strong></a>`;
 
-    if (document.getElementById(`profile-${post.name}`)) {
+    if (document.getElementById(`profile-lout-${post.name}`)) {
       contents += `<div id='post-edit'><a class="post-edit" href="#" onclick="handleEditClick(event)">Edit</a></div>`
     };
 
