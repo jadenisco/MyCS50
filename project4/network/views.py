@@ -158,7 +158,8 @@ def profile(request, name, page):
         'user': {'requestor': request.user.username,
                  'username': profile.username,
                  'email': profile.email,
-                 'followers': [f.username for f in profile.followers.all()]},
+                 'followers': [f.username for f in profile.followers.all()],
+                 'following': [f.username for f in profile.following.all()]},
         'page_obj': _get_page_obj(posts, page)}
 
     return JsonResponse(rsp_data, safe=False)
