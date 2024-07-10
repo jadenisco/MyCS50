@@ -106,7 +106,8 @@ function render_profile_user(profileUser) {
   contents = `<div style="display: flex; align-items: center;">
     <div><h3 style="margin-right: 15px;">${profileUser.username}:</h3></div>
       <div><h5>${profileUser.email}</h5></div>
-    </div>`;
+    </div>
+    <div><h6>Following: ${profileUser.following.length} Followers: ${profileUser.followers.length}</h6></div>`;
 
   if (profileUser.requestor != profileUser.username) {
     if (profileUser.followers.includes(profileUser.requestor)) {
@@ -224,7 +225,9 @@ function render_profile (profile) {
   profilePostsView.id = 'profile-posts-view';
   document.querySelector('#profile-view').append(profilePostsView);
 
-  document.querySelector('#paginator-view').remove()
+  if (document.querySelector('paginator-view') != null) {
+    document.querySelector('#paginator-view').remove()
+  }
   const profilePaginatorView = document.createElement('div');
   profilePaginatorView.id = 'paginator-view';
   document.querySelector('#profile-view').append(profilePostsView);
